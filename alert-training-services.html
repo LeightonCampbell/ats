@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alert Training Services | Safety Training | Los Angeles, CA</title>
+<meta name="description" content="EMSA-approved safety training in Los Angeles. Get certified for $65. Evening classes for daycares, schools, and businesses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #1B3A5C;
+    --navy-deep: #122844;
+    --navy-pale: #EEF2F7;
+    --navy-mid:  #C8D8E8;
+    --red:       #E02B2B;
+    --red-pale:  #FDEAEA;
+    --white:     #FFFFFF;
+    --bg:        #F5F5F7;
+    --text:      #1D1D1F;
+    --text2:     #515154;
+    --text3:     #86868B;
+    --border:    rgba(0,0,0,0.08);
+    --radius:    16px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 max(24px, 5vw); height: 52px;
+  }
+
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-brand svg { width: 30px; height: 30px; flex-shrink: 0; }
+  .nav-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.2; }
+  .nav-name span { display: block; font-weight: 400; font-size: 0.7rem; color: var(--text3); letter-spacing: 0.02em; }
+
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 0.84rem; font-weight: 500; color: var(--text2); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--navy); }
+
+  .nav-btn {
+    background: var(--navy); color: var(--white) !important;
+    padding: 7px 18px; border-radius: 980px;
+    font-size: 0.82rem !important; font-weight: 600 !important;
+    transition: background 0.15s !important;
+  }
+  .nav-btn:hover { background: var(--navy-deep) !important; }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+  .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--navy); border-radius: 2px; transition: all 0.25s; }
+
+  .mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+    padding: 32px 28px; z-index: 199; overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: var(--text); font-size: 1.1rem; font-weight: 500; text-decoration: none; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .mob-enroll { margin-top: 24px; background: var(--navy); color: var(--white) !important; text-align: center; padding: 16px !important; border-radius: 14px; font-weight: 700 !important; border: none !important; }
+  .mob-phone { color: var(--red) !important; border-bottom: none !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 24px 64px;
+    position: relative; overflow: hidden; background: var(--white);
+  }
+
+  .hero::before {
+    content: ''; position: absolute;
+    width: 800px; height: 800px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(27,58,92,0.05) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -55%);
+    pointer-events: none;
+  }
+
+  .eyebrow-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--navy-pale); color: var(--navy);
+    border: 1px solid var(--navy-mid);
+    padding: 5px 14px; border-radius: 980px;
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em;
+    margin-bottom: 28px; animation: fadeUp 0.5s ease both;
+  }
+  .eyebrow-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+  h1 {
+    font-size: clamp(2.8rem, 7.5vw, 5.6rem);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.03;
+    color: var(--navy); animation: fadeUp 0.5s 0.08s ease both;
+  }
+  h1 em { font-style: normal; color: var(--red); }
+
+  .hero-sub {
+    margin-top: 20px; font-size: clamp(1rem, 2vw, 1.18rem);
+    color: var(--text2); font-weight: 400; line-height: 1.6;
+    max-width: 500px; animation: fadeUp 0.5s 0.16s ease both;
+  }
+
+  .hero-actions {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    margin-top: 36px; animation: fadeUp 0.5s 0.24s ease both;
+  }
+
+  .btn-primary {
+    background: var(--navy); color: var(--white);
+    padding: 15px 32px; border-radius: 980px;
+    font-size: 1rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em;
+    transition: background 0.15s, transform 0.15s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--navy-deep); transform: scale(1.02); }
+
+  .btn-ghost {
+    background: transparent; color: var(--navy);
+    border: 1.5px solid var(--navy-mid);
+    padding: 13px 32px; border-radius: 980px;
+    font-size: 1rem; font-weight: 500; text-decoration: none; letter-spacing: -0.01em;
+    transition: border-color 0.15s, transform 0.15s; display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--navy); transform: scale(1.02); }
+
+  .hero-proof {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
+    margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);
+    animation: fadeUp 0.5s 0.32s ease both;
+  }
+  .proof-item { text-align: center; }
+  .proof-num { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.04em; color: var(--navy); line-height: 1; }
+  .proof-num sup { font-size: 1rem; vertical-align: super; }
+  .proof-label { font-size: 0.71rem; font-weight: 600; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 5px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── LAYOUT ── */
+  section { padding: 96px max(24px, 5vw); }
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  .eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 3.1rem);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.07; color: var(--navy);
+  }
+
+  .section-lead { color: var(--text2); font-size: 1.05rem; line-height: 1.65; max-width: 480px; margin-top: 14px; }
+
+  /* ── BENEFITS ── */
+  .benefits { background: var(--bg); }
+
+  .benefit-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 48px; border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .benefit-card { background: var(--white); padding: 40px 32px; transition: background 0.2s; }
+  .benefit-card:hover { background: var(--navy-pale); }
+
+  .benefit-icon {
+    width: 46px; height: 46px; border-radius: 11px;
+    background: var(--navy-pale); border: 1px solid var(--navy-mid);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+  }
+  .benefit-icon svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .benefit-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 8px; }
+  .benefit-card p { font-size: 0.9rem; color: var(--text2); line-height: 1.65; }
+
+  /* ── COURSE ── */
+  .course-card {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border); margin-top: 48px;
+  }
+
+  .course-visual {
+    background: var(--navy); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 56px 40px; gap: 22px;
+    min-height: 340px; position: relative; overflow: hidden;
+  }
+  .course-visual::before, .course-visual::after {
+    content: ''; position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .course-visual::before { width: 280px; height: 280px; top: -70px; right: -70px; }
+  .course-visual::after  { width: 180px; height: 180px; bottom: -50px; left: -50px; }
+
+  .course-visual svg.shield { width: 80px; height: 80px; position: relative; z-index: 1; }
+
+  .emsa-pill {
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 980px;
+    font-size: 0.73rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+
+  .stars-visual { color: #F5A623; font-size: 0.92rem; letter-spacing: 1.5px; position: relative; z-index: 1; }
+  .stars-visual span { color: rgba(255,255,255,0.5); font-size: 0.76rem; letter-spacing: 0; margin-left: 4px; }
+
+  .course-info { padding: 44px; background: var(--white); }
+  .course-info h3 { font-size: 1.45rem; font-weight: 700; color: var(--navy); letter-spacing: -0.025em; margin-bottom: 8px; }
+  .course-desc { font-size: 0.93rem; color: var(--text2); line-height: 1.65; margin-bottom: 32px; }
+
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px; }
+  .meta-pill { background: var(--bg); border-radius: var(--radius-sm); padding: 13px 16px; border: 1px solid var(--border); }
+  .meta-pill .ml { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 3px; }
+  .meta-pill .mv { font-size: 0.88rem; font-weight: 600; color: var(--navy); }
+
+  .price-row { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 28px; }
+  .price { font-size: 3rem; font-weight: 700; letter-spacing: -0.04em; color: var(--navy); line-height: 1; }
+  .price-note { font-size: 0.83rem; color: var(--text3); line-height: 1.5; padding-bottom: 5px; }
+
+  /* ── AUDIENCE ── */
+  .audience { background: var(--navy); }
+  .audience h2 { color: var(--white); }
+  .audience .eyebrow { color: #E87070; }
+  .audience .section-lead { color: rgba(255,255,255,0.5); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 48px; }
+  .chip {
+    display: flex; align-items: center; gap: 9px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 980px; padding: 11px 20px;
+    font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.8);
+    transition: all 0.2s; cursor: default;
+  }
+  .chip:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: var(--white); }
+  .chip-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+  /* ── WHY ── */
+  .why { background: var(--bg); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 56px; }
+
+  .why-item { display: flex; gap: 18px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+  .why-item:last-child { border-bottom: none; }
+  .why-num { font-size: 0.7rem; font-weight: 700; color: var(--text3); letter-spacing: 0.04em; min-width: 26px; padding-top: 3px; }
+  .why-text h4 { font-size: 0.98rem; font-weight: 700; color: var(--navy); letter-spacing: -0.015em; margin-bottom: 6px; }
+  .why-text p { font-size: 0.88rem; color: var(--text2); line-height: 1.65; }
+
+  .instructor-card {
+    background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);
+    padding: 40px; text-align: center; position: sticky; top: 70px;
+  }
+  .i-avatar {
+    width: 84px; height: 84px; border-radius: 50%; background: var(--navy);
+    margin: 0 auto 18px; display: flex; align-items: center; justify-content: center;
+    border: 3px solid var(--navy-mid);
+  }
+  .i-avatar svg { width: 42px; height: 42px; }
+  .i-name { font-size: 1.1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; }
+  .i-title { font-size: 0.8rem; color: var(--text3); margin-top: 3px; }
+  .i-stars { color: #F5A623; font-size: 1rem; letter-spacing: 2px; margin: 14px 0 4px; }
+  .i-quote { font-size: 0.86rem; color: var(--text2); line-height: 1.65; font-style: italic; }
+  .i-source { font-size: 0.74rem; color: var(--text3); margin-top: 6px; }
+  .i-badge {
+    display: inline-block; margin-top: 20px;
+    background: var(--navy-pale); color: var(--navy); border: 1px solid var(--navy-mid);
+    padding: 5px 13px; border-radius: 980px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .t-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 48px; }
+
+  .t-card {
+    background: var(--bg); border-radius: var(--radius); padding: 36px;
+    border: 1px solid var(--border); transition: border-color 0.2s;
+  }
+  .t-card:hover { border-color: var(--navy-mid); }
+  .t-stars { color: #F5A623; font-size: 0.83rem; letter-spacing: 2px; margin-bottom: 16px; }
+  .t-body { font-size: 0.93rem; color: var(--text); line-height: 1.72; }
+  .t-author { display: flex; align-items: center; gap: 11px; margin-top: 22px; }
+  .t-av { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 0.76rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .t-name { font-size: 0.86rem; font-weight: 700; color: var(--navy); }
+
+  /* ── CTA ── */
+  .cta-strip { background: var(--navy); padding: 96px max(24px, 5vw); text-align: center; }
+  .cta-strip h2 { color: var(--white); }
+  .cta-strip p { color: rgba(255,255,255,0.5); font-size: 1.05rem; max-width: 440px; margin: 14px auto 36px; line-height: 1.65; }
+
+  .btn-light {
+    background: var(--white); color: var(--navy);
+    padding: 15px 36px; border-radius: 980px;
+    font-size: 1rem; font-weight: 700; text-decoration: none; letter-spacing: -0.01em;
+    display: inline-block; transition: transform 0.15s;
+  }
+  .btn-light:hover { transform: scale(1.02); }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--bg); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; margin-top: 52px; }
+
+  .info-stack { display: flex; flex-direction: column; gap: 10px; }
+  .info-row {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white); border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 15px 18px;
+  }
+  .info-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--navy-pale); border: 1px solid var(--navy-mid);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .info-icon svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .info-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 2px; }
+  .info-val { font-size: 0.9rem; font-weight: 600; color: var(--navy); text-decoration: none; }
+  .info-val:hover { color: var(--red); }
+
+  .hours-card { background: var(--white); border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; margin-top: 10px; }
+  .hours-head { background: var(--navy); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 9px 18px; }
+  .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 18px; border-bottom: 1px solid var(--border); font-size: 0.86rem; }
+  .hours-row:last-child { border-bottom: none; }
+  .hl { color: var(--text2); }
+  .hv { font-weight: 600; color: var(--navy); }
+  .hv.off { font-weight: 400; color: var(--text3); }
+
+  .form-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 40px; }
+  .form-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 22px; }
+  .fg { margin-bottom: 13px; }
+  .fg label { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+  .fg input, .fg textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 11px 14px;
+    font-family: 'Inter', sans-serif; font-size: 0.91rem; color: var(--text);
+    outline: none; transition: border-color 0.15s, background 0.15s;
+  }
+  .fg input:focus, .fg textarea:focus { border-color: var(--navy); background: var(--white); }
+  .fg textarea { height: 96px; resize: vertical; }
+  .fg input::placeholder, .fg textarea::placeholder { color: var(--text3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .submit-btn {
+    width: 100%; background: var(--navy); color: var(--white); border: none;
+    padding: 14px; border-radius: 980px; font-family: 'Inter', sans-serif;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 8px;
+    letter-spacing: -0.01em; transition: background 0.15s;
+  }
+  .submit-btn:hover { background: var(--navy-deep); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy-deep); color: rgba(255,255,255,0.4); padding: 56px max(24px, 5vw) 32px; }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px;
+    padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    max-width: 1080px; margin: 0 auto;
+  }
+  .f-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .f-logo svg { width: 26px; height: 26px; }
+  .f-logo-name { font-size: 0.9rem; font-weight: 700; color: var(--white); }
+  .f-desc { font-size: 0.83rem; line-height: 1.7; }
+  .f-contact { margin-top: 14px; font-size: 0.8rem; }
+  .f-contact a { color: rgba(255,255,255,0.4); text-decoration: none; display: block; margin-bottom: 3px; }
+  .f-contact a:hover { color: var(--white); }
+  .f-col h5 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 16px; }
+  .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .f-col a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.83rem; transition: color 0.15s; }
+  .f-col a:hover { color: var(--white); }
+  .footer-bottom {
+    max-width: 1080px; margin: 26px auto 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.76rem; flex-wrap: wrap; gap: 8px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .benefit-grid { grid-template-columns: 1fr; }
+    .course-card { grid-template-columns: 1fr; }
+    .course-visual { min-height: 200px; }
+    .why-grid { grid-template-columns: 1fr; gap: 0; }
+    .instructor-card { position: static; }
+    .t-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  }
+  @media (max-width: 560px) {
+    section { padding: 72px 20px; }
+    .hero { padding: 64px 20px 48px; }
+    .hero-proof { gap: 20px; }
+    .course-info { padding: 30px 22px; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <svg viewBox="0 0 48 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 2L4 10V26C4 37.5 13 47.5 24 50C35 47.5 44 37.5 44 26V10L24 2Z" fill="#1B3A5C"/>
+      <path d="M24 2L4 10V26C4 37.5 13 47.5 24 50C35 47.5 44 37.5 44 26V10L24 2Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M20 26c0-2.2 1.8-4 4-4s4 1.8 4 4c0 4-4 8-4 8s-4-4-4-8z" fill="#E02B2B"/>
+      <path d="M13 28h6l2.5-5 4.5 9 2.5-6 2 4h7" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <div class="nav-name">Alert<br><span>Training Services</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#courses" class="nav-btn">Enroll — $65</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#courses" onclick="closeMenu()">Courses</a>
+  <a href="#why" onclick="closeMenu()">Why Us</a>
+  <a href="#reviews" onclick="closeMenu()">Reviews</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="tel:3239216244" class="mob-phone">📞 323-921-6244</a>
+  <a href="#courses" class="mob-enroll" onclick="closeMenu()">Enroll Now — $65</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow-pill">
+    <span class="dot"></span>
+    EMSA Approved · California
+  </div>
+  <h1>Be Prepared for<br>Any <em>Emergency</em></h1>
+  <p class="hero-sub">Get the skills to act quickly and confidently when it matters most. Convenient evening classes for daycares, schools, and other caregivers.</p>
+  <div class="hero-actions">
+    <a href="#courses" class="btn-primary">Enroll Now — $65</a>
+    <a href="#courses" class="btn-ghost">View Courses</a>
+  </div>
+  <div class="hero-proof">
+    <div class="proof-item">
+      <div class="proof-num">5.0<sup>★</sup></div>
+      <div class="proof-label">Instructor Rating</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">8 hr</div>
+      <div class="proof-label">Full Certification</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">$65</div>
+      <div class="proof-label">Per Person</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">100%</div>
+      <div class="proof-label">EMSA Approved</div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="container">
+    <div class="eyebrow">Why It Matters</div>
+    <h2>Training that saves lives</h2>
+    <div class="benefit-grid reveal">
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>Saves Lives</h3>
+        <p>Learn the critical skills that can mean the difference between life and death. Trained people make the difference when emergencies strike.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Builds Confidence</h3>
+        <p>Gain the confidence to respond quickly and effectively when emergencies arise in your workplace, school, or community.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Improves Safety Awareness</h3>
+        <p>Develop a heightened awareness of potential hazards and learn how to prevent accidents before they happen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="container">
+    <div class="eyebrow">Certification Programs</div>
+    <h2>Choose your training</h2>
+    <p class="section-lead">Professional certification courses designed for healthcare workers, educators, and community members throughout LA.</p>
+    <div class="course-card reveal">
+      <div class="course-visual">
+        <svg class="shield" viewBox="0 0 96 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48 4L8 20V52C8 75 26 95 48 100C70 95 88 75 88 52V20L48 4Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.22)" stroke-width="2.5"/>
+          <path d="M36 52c0-6.63 5.37-12 12-12s12 5.37 12 12c0 9-12 18-12 18s-12-9-12-18z" fill="#E02B2B"/>
+          <path d="M22 56h12l5-10 10 19 5-12 5 8h15" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div class="emsa-pill">✓ EMSA Approved</div>
+        <div class="stars-visual">★★★★★<span>5.0 rating</span></div>
+      </div>
+      <div class="course-info">
+        <h3>Preventive Health &amp; Safety Training</h3>
+        <p class="course-desc">8-hour EMSA-approved course covering essential health and safety protocols. Delivered in two convenient evening sessions for working professionals.</p>
+        <div class="meta-grid">
+          <div class="meta-pill"><div class="ml">Duration</div><div class="mv">8 hours · 2 sessions</div></div>
+          <div class="meta-pill"><div class="ml">Schedule</div><div class="mv">Mon &amp; Tue · 6–10 PM</div></div>
+          <div class="meta-pill"><div class="ml">Format</div><div class="mv">Online</div></div>
+          <div class="meta-pill"><div class="ml">Certification</div><div class="mv">EMSA Approved</div></div>
+        </div>
+        <div class="price-row">
+          <div class="price">$65</div>
+          <div class="price-note">per person<br>all materials included</div>
+        </div>
+        <a href="#contact" class="btn-primary">Enroll Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section class="audience">
+  <div class="container">
+    <div class="eyebrow">Who We Serve</div>
+    <h2>Built for anyone<br>who cares for others</h2>
+    <p class="section-lead">Our courses are designed for anyone responsible for the safety and well-being of people around them.</p>
+    <div class="chips reveal">
+      <div class="chip"><span class="chip-dot"></span>Daycares &amp; Childcare Centers</div>
+      <div class="chip"><span class="chip-dot"></span>Schools &amp; Educators</div>
+      <div class="chip"><span class="chip-dot"></span>Parents &amp; Caregivers</div>
+      <div class="chip"><span class="chip-dot"></span>Coaches &amp; Youth Leaders</div>
+      <div class="chip"><span class="chip-dot"></span>Businesses &amp; Workplaces</div>
+      <div class="chip"><span class="chip-dot"></span>Community Organizations</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="eyebrow">Why Alert Training</div>
+    <h2>What sets us apart</h2>
+    <div class="why-grid">
+      <div>
+        <div class="why-item reveal">
+          <div class="why-num">01</div>
+          <div class="why-text">
+            <h4>Convenient &amp; Affordable</h4>
+            <p>Evening classes that fit around your schedule at $65 per person — one of the most competitive rates for EMSA-approved training in Los Angeles.</p>
+          </div>
+        </div>
+        <div class="why-item reveal">
+          <div class="why-num">02</div>
+          <div class="why-text">
+            <h4>Modern, Relevant Content</h4>
+            <p>Our programs incorporate the latest industry standards and best practices so you're fully prepared to respond confidently in real-world situations.</p>
+          </div>
+        </div>
+        <div class="why-item reveal">
+          <div class="why-num">03</div>
+          <div class="why-text">
+            <h4>Expert, Personalized Instruction</h4>
+            <p>Miss Judith delivers every course with hands-on real-world scenarios and personal attention — earning a 5-star rating from every student she's trained.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="instructor-card reveal">
+          <div class="i-avatar">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="18" r="9" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+              <path d="M6 44c0-9.94 8.06-18 18-18s18 8.06 18 18" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="i-name">Miss Judith</div>
+          <div class="i-title">Lead Safety Instructor · Los Angeles, CA</div>
+          <div class="i-stars">★★★★★</div>
+          <p class="i-quote">"Knowledgeable, patient, and made the material easy to understand. Her hands-on approach helped us feel truly confident."</p>
+          <div class="i-source">— Dean B., verified student</div>
+          <div class="i-badge">EMSA Certified Trainer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <div class="container">
+    <div class="eyebrow">Reviews</div>
+    <h2>What students say</h2>
+    <div class="t-grid">
+      <div class="t-card reveal">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-body">Thanks to Alert Training Services, I was equipped with the skills and confidence to assist people in crisis situations, long before I joined the fire department.</p>
+        <div class="t-author">
+          <div class="t-av">MC</div>
+          <div class="t-name">Martina C.</div>
+        </div>
+      </div>
+      <div class="t-card reveal">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-body">Miss Judith was a fantastic instructor for our childcare CPR and emergency training. She was knowledgeable, patient, and made the material easy to understand. Her hands-on approach helped us feel confident in our abilities. Highly recommend her to anyone looking for first aid and CPR training.</p>
+        <div class="t-author">
+          <div class="t-av">DB</div>
+          <div class="t-name">Dean B.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Ready to get certified?</h2>
+  <p>Join the next class and be prepared for any emergency. Only $65 per person — all materials included.</p>
+  <a href="#contact" class="btn-light">Enroll Today →</a>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="eyebrow">Get In Touch</div>
+    <h2>Let's get you enrolled</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="info-stack">
+          <div class="info-row reveal">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div>
+              <div class="info-label">Phone</div>
+              <a class="info-val" href="tel:3239216244">323-921-6244</a>
+            </div>
+          </div>
+          <div class="info-row reveal">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="info-label">Email</div>
+              <a class="info-val" href="mailto:info@alerttrainingservices.com">info@alerttrainingservices.com</a>
+            </div>
+          </div>
+          <div class="info-row reveal">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="info-label">Location</div>
+              <span class="info-val">Los Angeles, California</span>
+            </div>
+          </div>
+        </div>
+        <div class="hours-card reveal">
+          <div class="hours-head">Hours &amp; Schedule</div>
+          <div class="hours-row"><span class="hl">Office (Mon – Sat)</span><span class="hv">9:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hl">Sunday</span><span class="hv off">Closed</span></div>
+          <div class="hours-row"><span class="hl">Classes</span><span class="hv">Mon &amp; Tue · 6–10 PM</span></div>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <h3>Send a message</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="fg"><label>First Name</label><input type="text" placeholder="Jane" required></div>
+            <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+          </div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="jane@email.com" required></div>
+          <div class="fg"><label>Phone</label><input type="tel" placeholder="(323) 000-0000"></div>
+          <div class="fg"><label>Message</label><textarea placeholder="Questions about enrollment, scheduling, or group rates…"></textarea></div>
+          <button type="submit" class="submit-btn" id="submitBtn">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="f-logo">
+        <svg viewBox="0 0 48 52" fill="none">
+          <path d="M24 2L4 10V26C4 37.5 13 47.5 24 50C35 47.5 44 37.5 44 26V10L24 2Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+          <path d="M20 26c0-2.2 1.8-4 4-4s4 1.8 4 4c0 3.5-4 7-4 7s-4-3.5-4-7z" fill="#E02B2B"/>
+          <path d="M13 28h5l2.5-5 4.5 9 2.5-5 2 3h7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="f-logo-name">Alert Training Services</span>
+      </div>
+      <div class="f-desc">Empowering communities with life-saving skills. EMSA-approved safety training in Los Angeles, CA.</div>
+      <div class="f-contact">
+        <a href="tel:3239216244">323-921-6244</a>
+        <a href="mailto:info@alerttrainingservices.com">info@alerttrainingservices.com</a>
+      </div>
+    </div>
+    <div class="f-col">
+      <h5>Navigate</h5>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h5>Training For</h5>
+      <ul>
+        <li><a href="#courses">Daycares</a></li>
+        <li><a href="#courses">Schools</a></li>
+        <li><a href="#courses">Parents</a></li>
+        <li><a href="#courses">Coaches</a></li>
+        <li><a href="#courses">Businesses</a></li>
+        <li><a href="#courses">Communities</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Alert Training Services · Los Angeles, CA</span>
+    <span>All Rights Reserved</span>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#1a6b3a';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3500);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
