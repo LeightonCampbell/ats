@@ -114,6 +114,17 @@ const {
         list-style: none;
         justify-self: center;
       }
+      .nav-links > li {
+        position: relative;
+      }
+      .nav-item-dropdown::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        height: 12px;
+      }
       .nav-links a {
         font-size: 0.84rem;
         font-weight: 500;
@@ -123,6 +134,43 @@ const {
       }
       .nav-links a:hover {
         color: var(--navy);
+      }
+      .nav-submenu {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 280px;
+        list-style: none;
+        margin: 0;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 14px 36px rgba(18, 40, 68, 0.12);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        z-index: 220;
+      }
+      .nav-submenu a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text2);
+      }
+      .nav-submenu a:hover {
+        background: var(--navy-pale);
+        color: var(--navy);
+      }
+      .nav-item-dropdown:hover .nav-submenu,
+      .nav-item-dropdown:focus-within .nav-submenu {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
       }
 
       .nav-btn {
