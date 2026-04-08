@@ -17,8 +17,9 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style is:global>
@@ -51,7 +52,7 @@ const {
       }
 
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
         color: var(--text);
         background: var(--white);
         -webkit-font-smoothing: antialiased;
@@ -67,9 +68,9 @@ const {
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         border-bottom: 1px solid var(--border);
-        display: flex;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
-        justify-content: space-between;
         padding: 0 max(24px, 5vw);
         height: 64px;
       }
@@ -111,6 +112,7 @@ const {
         align-items: center;
         gap: 28px;
         list-style: none;
+        justify-self: center;
       }
       .nav-links a {
         font-size: 0.84rem;
@@ -124,8 +126,9 @@ const {
       }
 
       .nav-btn {
-        background: var(--navy);
+        background: var(--red);
         color: var(--white) !important;
+        text-decoration: none !important;
         padding: 7px 18px;
         border-radius: 980px;
         font-size: 0.82rem !important;
@@ -133,7 +136,11 @@ const {
         transition: background 0.15s !important;
       }
       .nav-btn:hover {
-        background: var(--navy-deep) !important;
+        background: #c82424 !important;
+      }
+
+      .nav-cta {
+        justify-self: end;
       }
 
       .hamburger {
@@ -246,6 +253,14 @@ const {
         color: var(--white);
       }
 
+      .hero .btn-primary {
+        background: var(--red);
+      }
+
+      .hero .btn-primary:hover {
+        background: #c82424;
+      }
+
       .hero .btn-ghost:hover {
         border-color: rgba(255, 255, 255, 0.85);
         color: var(--white);
@@ -277,6 +292,7 @@ const {
       h1 {
         font-size: clamp(2.8rem, 7.5vw, 5.6rem);
         font-weight: 700;
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
         letter-spacing: -0.03em;
         line-height: 1.03;
         color: var(--navy);
@@ -291,10 +307,13 @@ const {
         margin-top: 20px;
         font-size: clamp(1rem, 2vw, 1.18rem);
         color: var(--text2);
-        font-weight: 400;
+        font-weight: 300;
         line-height: 1.6;
         max-width: 500px;
         animation: fadeUp 0.5s 0.16s ease both;
+      }
+      p {
+        font-weight: 300;
       }
 
       .hero-actions {
@@ -304,6 +323,12 @@ const {
         gap: 12px;
         margin-top: 36px;
         animation: fadeUp 0.5s 0.24s ease both;
+      }
+
+      .hero .hero-actions .btn-primary,
+      .hero .hero-actions .btn-ghost {
+        min-width: 210px;
+        text-align: center;
       }
 
       .btn-primary {
@@ -856,6 +881,32 @@ const {
       .contact {
         background: var(--bg);
       }
+      .faq-grid {
+        margin-top: 42px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .faq-item {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 22px;
+      }
+      .faq-item h3 {
+        font-size: 1rem;
+        color: var(--navy);
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .faq-item p {
+        font-size: 0.9rem;
+        color: var(--text2);
+        line-height: 1.65;
+      }
+      .faq-item a {
+        color: var(--navy);
+      }
       .contact-grid {
         display: grid;
         grid-template-columns: 1fr 1.1fr;
@@ -986,7 +1037,7 @@ const {
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
         padding: 11px 14px;
-        font-family: "Inter", sans-serif;
+        font-family: "Poppins", sans-serif;
         font-size: 0.91rem;
         color: var(--text);
         outline: none;
@@ -1017,7 +1068,7 @@ const {
         border: none;
         padding: 14px;
         border-radius: 980px;
-        font-family: "Inter", sans-serif;
+        font-family: "Poppins", sans-serif;
         font-size: 0.95rem;
         font-weight: 700;
         cursor: pointer;
@@ -1118,6 +1169,9 @@ const {
         .nav-links {
           display: none;
         }
+        .nav-cta {
+          display: none;
+        }
         .hamburger {
           display: flex;
         }
@@ -1144,6 +1198,9 @@ const {
           grid-template-columns: 1fr;
           gap: 36px;
         }
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
         .footer-top {
           grid-template-columns: 1fr;
           gap: 32px;
@@ -1155,6 +1212,18 @@ const {
         }
         .hero {
           padding: 64px 20px 48px;
+        }
+        .hero .hero-actions {
+          flex-direction: column;
+          width: 100%;
+          max-width: 320px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .hero .hero-actions .btn-primary,
+        .hero .hero-actions .btn-ghost {
+          width: 100%;
+          min-width: 0;
         }
         .hero-proof {
           gap: 20px;

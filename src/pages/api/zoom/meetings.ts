@@ -80,7 +80,7 @@ export const GET: APIRoute = async () => {
     }
 
     return new Response(
-      JSON.stringify({ classes: weeks.slice(0, 6), timezone: PT_TIME_ZONE }),
+      JSON.stringify({ classes: weeks.slice(0, 14), timezone: PT_TIME_ZONE }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err: any) {

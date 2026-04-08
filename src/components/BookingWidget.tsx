@@ -361,6 +361,8 @@ export default function BookingWidget({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [mailingAddress, setMailingAddress] = useState("");
+  const [showInfoValidation, setShowInfoValidation] = useState(false);
   const [step, setStep] = useState<
     "calendar" | "info" | "pay" | "success" | "error"
   >("calendar");
@@ -465,7 +467,9 @@ export default function BookingWidget({
   const selectedClass = selectedWeek;
   const setSelectedClass = setSelectedWeek;
 
-  const personalInfoReady = Boolean(firstName && lastName && email);
+  const personalInfoReady = Boolean(
+    firstName && lastName && email && mailingAddress
+  );
 
   if (!paypalClientId) {
     return (
@@ -481,7 +485,7 @@ export default function BookingWidget({
       style={{
         maxWidth: 520,
         margin: "0 auto",
-        fontFamily: "system-ui, sans-serif",
+        fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
       {step !== "success" && step !== "error" && (
@@ -494,9 +498,9 @@ export default function BookingWidget({
           }}
         >
           {[
-            { id: "calendar", label: "1. Calendar" },
-            { id: "info", label: "2. Personal Info" },
-            { id: "pay", label: "3. Payment" },
+            { id: "calendar", label: "Step 1: Calendar" },
+            { id: "info", label: "Step 2: Personal Info" },
+            { id: "pay", label: "Step 3: Payment" },
           ].map((s) => {
             const active = step === s.id;
             return (
@@ -623,6 +627,28 @@ export default function BookingWidget({
               placeholder="(323) 000-0000"
             />
           </div>
+          <div style={{ marginBottom: 24 }}>
+            <label style={labelStyle}>Mailing Address *</label>
+            <input
+              style={inputStyle}
+              value={mailingAddress}
+              onChange={(e) => setMailingAddress(e.target.value)}
+              placeholder="123 Main St, Los Angeles, CA 90000"
+            />
+          </div>
+          {showInfoValidation && !personalInfoReady && (
+            <p
+              style={{
+                color: "#b42318",
+                fontSize: 13,
+                marginTop: -10,
+                marginBottom: 16,
+              }}
+            >
+              Please complete all required fields (First Name, Last Name, Email,
+              and Mailing Address) to continue.
+            </p>
+          )}
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             <button
@@ -634,13 +660,20 @@ export default function BookingWidget({
             </button>
             <button
               type="button"
-              onClick={() => setStep("pay")}
-              disabled={!personalInfoReady || !selectedWeek}
+              onClick={() => {
+                if (!personalInfoReady || !selectedWeek) {
+                  setShowInfoValidation(true);
+                  return;
+                }
+                setShowInfoValidation(false);
+                setStep("pay");
+              }}
+              disabled={!selectedWeek}
               style={{
                 ...primaryBtn,
                 opacity: personalInfoReady && selectedWeek ? 1 : 0.4,
                 cursor:
-                  personalInfoReady && selectedWeek ? "pointer" : "not-allowed",
+                  selectedWeek ? "pointer" : "not-allowed",
               }}
             >
               Continue to Payment →
@@ -717,6 +750,7 @@ export default function BookingWidget({
                     lastName,
                     email,
                     phone,
+                    mailingAddress,
                     classTitle: COURSE_TITLE,
                     classDate:
                       selectedWeek.label ?? classDateSummary(selectedWeek),
@@ -779,7 +813,7 @@ export default function BookingWidget({
               href={joinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={primaryBtn}
+              style={{ ...primaryBtn, maxWidth: 360, margin: "0 auto" }}
             >
               Join Class on Zoom →
             </a>
@@ -844,7 +878,7 @@ const inputStyle: CSSProperties = {
   border: "1px solid rgba(0,0,0,0.08)",
   borderRadius: 10,
   padding: "11px 14px",
-  fontFamily: "system-ui, sans-serif",
+  fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, sans-serif",
   fontSize: "0.91rem",
   color: "#1d1d1f",
   outline: "none",

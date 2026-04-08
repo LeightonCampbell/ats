@@ -1,8 +1,101 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteContent from "../components/SiteContent.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 ---
 
-<BaseLayout>
-  <SiteContent />
+<BaseLayout
+  title="About Us | Alert Training Services"
+  description="Learn more about Alert Training Services, our mission, and instructor experience serving Los Angeles communities."
+>
+  <SiteHeader />
+  <style>
+    .about-shell section {
+      padding: 0;
+    }
+  </style>
+  <main class="about-shell" style="background:#f5f5f7; padding: 50px 24px;">
+    <section style="max-width:920px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:34px;">
+        <div
+          style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E02B2B;margin-bottom:10px;"
+        >
+          About ATS
+        </div>
+        <h1 style="font-size:2.4rem;font-weight:700;color:#1B3A5C;letter-spacing:-0.03em;margin-bottom:12px;">
+          About Alert Training Services
+        </h1>
+        <p style="max-width:760px;margin:0 auto;color:#515154;font-size:1rem;line-height:1.7;">
+          Alert Training Services (ATS) provides practical, EMSA-aligned safety
+          training designed to help people respond confidently in emergencies.
+        </p>
+      </div>
+
+      <div style="display:grid;gap:16px;">
+        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">What we offer</h2>
+          <p style="color:#515154;line-height:1.7;">
+            Our primary offering is the 8-hour Childcare Preventive Health and
+            Safety training (including nutrition hour requirements for
+            California EMSA childcare-related needs). We also offer a
+            comprehensive guide on how to start a home daycare in California,
+            designed to help providers understand key setup steps and
+            requirements.
+          </p>
+        </article>
+
+        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Our mission</h2>
+          <p style="color:#515154;line-height:1.7;">
+            We aim to deliver clear, engaging, and practical instruction so
+            participants can complete training with confidence and be prepared
+            when emergencies happen at work, school, or in the community.
+          </p>
+        </article>
+
+        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Founder and instructor background</h2>
+          <p style="color:#515154;line-height:1.7;">
+            ATS is led by Judith, a Registered Nurse in California with decades
+            of diverse healthcare experience, including emergency, medical
+            surgical, home health, and behavioral health case management. She
+            has taught CPR and related safety training for many years and brings
+            real-world insight to every class.
+          </p>
+        </article>
+
+        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Why students choose ATS</h2>
+          <ul style="margin:0;padding-left:20px;color:#515154;line-height:1.8;">
+            <li>Convenient evening schedule and affordable pricing</li>
+            <li>Modern, relevant training content</li>
+            <li>Experienced, hands-on instruction</li>
+          </ul>
+        </article>
+      </div>
+
+      <div
+        style="margin-top:22px;background:#1B3A5C;border-radius:16px;padding:26px 24px;text-align:center;"
+      >
+        <h2 style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:10px;">
+          Ready to enroll?
+        </h2>
+        <p style="color:rgba(255,255,255,0.8);margin-bottom:18px;">
+          Call <a href="tel:3239216244" style="color:white;">323-921-6244</a> or
+          email
+          <a href="mailto:info@alerttrainingservices.com" style="color:white;">
+            info@alerttrainingservices.com
+          </a>
+          for help selecting your class.
+        </p>
+        <a
+          href="/preventative-health-and-safety-training"
+          style="display:inline-block;background:#E02B2B;color:white;text-decoration:none;padding:12px 28px;border-radius:999px;font-weight:700;"
+        >
+          Enroll Now
+        </a>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
 </BaseLayout>

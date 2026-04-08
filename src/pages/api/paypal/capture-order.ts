@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { capturePayPalOrder } from "../../../lib/paypal";
 import { registerForOccurrence } from "../../../lib/zoom";
 import { sendReceiptEmail, sendAdminNotification } from "../../../lib/email";
+import { submitHubSpotBookingForm } from "../../../lib/hubspot";
 
 type CaptureBody = {
   orderId?: string;
@@ -12,6 +13,7 @@ type CaptureBody = {
   lastName?: string;
   email?: string;
   phone?: string;
+  mailingAddress?: string;
   classTitle?: string;
   classDate?: string;
 };
@@ -37,6 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
     lastName,
     email,
     phone,
+    mailingAddress,
     classTitle,
     classDate,
   } = body;
@@ -92,6 +95,7 @@ export const POST: APIRoute = async ({ request }) => {
     const joinUrl1 = zoom1?.join_url ?? "https://zoom.us";
     const joinUrl2 = zoom2?.join_url ?? joinUrl1;
     const joinUrl = joinUrl1;
+    const flowStatus = zoom1 && zoom2 ? "zoom_registered" : "zoom_failed";
 
     await Promise.allSettled([
       sendReceiptEmail({
@@ -110,6 +114,22 @@ export const POST: APIRoute = async ({ request }) => {
         classTitle: classTitle ?? "",
         classDate: classDate ?? "",
         paypalOrderId: orderId,
+      }),
+      submitHubSpotBookingForm({
+        submissionDateIso: new Date().toISOString(),
+        chosenClass: classTitle ?? "",
+        classSessionLabel: classDate ?? "",
+        firstName,
+        lastName,
+        email,
+        phone: phone || "",
+        mailingAddress: mailingAddress || "",
+        paypalOrderId: orderId,
+        zoomSession1Time: session1_time,
+        zoomSession2Time: session2_time,
+        zoomJoinUrl1: joinUrl1,
+        zoomJoinUrl2: joinUrl2,
+        flowStatus,
       }),
     ]);
 

@@ -1,0 +1,115 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+
+<BaseLayout
+  title="Class Rules | Alert Training Services"
+  description="Cancellation, rescheduling, and Zoom class rules for Alert Training Services."
+>
+  <SiteHeader />
+  <style>
+    .rules-shell section {
+      padding: 0;
+    }
+  </style>
+  <main class="rules-shell" style="background:#f5f5f7; padding: 50px 24px;">
+    <section style="max-width:920px; margin:0 auto; display:grid; gap:16px;">
+      <div style="text-align:center; margin-bottom:8px;">
+        <div
+          style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E02B2B;margin-bottom:10px;"
+        >
+          Policies
+        </div>
+        <h1 style="font-size:2.2rem;font-weight:700;color:#1B3A5C;letter-spacing:-0.03em;margin-bottom:10px;">
+          Cancellation, Rescheduling, and Class Rules
+        </h1>
+        <p style="max-width:760px;margin:0 auto;color:#515154;font-size:1rem;line-height:1.7;">
+          By enrolling, you acknowledge that you have read and agreed to the
+          following terms.
+        </p>
+      </div>
+
+      <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+        <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Cancellation and rescheduling policy</h2>
+        <ul style="margin:0;padding-left:20px;color:#515154;line-height:1.8;">
+          <li>Late arrivals will not be permitted to join class.</li>
+          <li>
+            No translators are provided. If you do not speak English, you must
+            arrange your own translator to accompany you throughout the course.
+          </li>
+          <li>
+            Cancellation and rescheduling requests must be submitted by email
+            with at least 2 business days notice (Monday to Friday, 9:00 AM to
+            4:00 PM).
+          </li>
+        </ul>
+      </article>
+
+      <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+        <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Zoom class rules</h2>
+        <ul style="margin:0;padding-left:20px;color:#515154;line-height:1.8;">
+          <li>Punctuality is mandatory. You must attend both sessions.</li>
+          <li>
+            You are responsible for having the proper technology and knowing
+            how to use Zoom before class.
+          </li>
+          <li>A maximum of two participants per device is allowed.</li>
+          <li>
+            Your camera must stay on, with your face visible, for the full
+            class.
+          </li>
+          <li>Active participation is required when prompted by the instructor.</li>
+          <li>
+            You may not attend from a bed, vehicle, noisy area, or other
+            unsuitable environment.
+          </li>
+          <li>No multitasking is allowed during class.</li>
+          <li>Children must not appear on video or audio at any time.</li>
+          <li>The class may be recorded. Attendance implies your consent.</li>
+          <li>You are not allowed to leave class at any point.</li>
+          <li>Keep your device charged or plugged in during session.</li>
+        </ul>
+      </article>
+
+      <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+        <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Important notes</h2>
+        <ul style="margin:0;padding-left:20px;color:#515154;line-height:1.8;">
+          <li>It is your responsibility to fully understand and follow these rules.</li>
+          <li>If you need clarification, contact us before your class date.</li>
+          <li>
+            Students who do not comply may be removed from class, will not
+            receive certification, and are not eligible for refunds.
+          </li>
+          <li>
+            Final certificates are mailed to the address provided during
+            registration, typically within 7 to 10 business days.
+          </li>
+        </ul>
+      </article>
+
+      <div
+        style="margin-top:6px;background:#1B3A5C;border-radius:16px;padding:24px;text-align:center;"
+      >
+        <h2 style="font-size:1.35rem;font-weight:700;color:white;margin-bottom:10px;">
+          Have questions?
+        </h2>
+        <p style="color:rgba(255,255,255,0.8);margin-bottom:18px;">
+          Call <a href="tel:3239216244" style="color:white;">323-921-6244</a> or
+          email
+          <a href="mailto:info@alerttrainingservices.com" style="color:white;">
+            info@alerttrainingservices.com
+          </a>.
+        </p>
+        <a
+          href="/preventative-health-and-safety-training"
+          style="display:inline-block;background:#E02B2B;color:white;text-decoration:none;padding:12px 28px;border-radius:999px;font-weight:700;"
+        >
+          Enroll Now
+        </a>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
