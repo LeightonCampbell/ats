@@ -2,11 +2,13 @@
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
 }
 
 const {
   title = "Alert Training Services | Safety Training | Los Angeles, CA",
   description = "EMSA-approved safety training in Los Angeles. Get certified for $80. Evening classes for daycares, schools, and businesses.",
+  canonical,
 } = Astro.props;
 ---
 
@@ -15,6 +17,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1307,7 +1310,7 @@ const {
   </head>
   <body>
     <slot />
-    <script>
+    <script is:inline>
       function toggleMenu() {
         document.getElementById("mobileMenu")?.classList.toggle("open");
       }

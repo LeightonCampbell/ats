@@ -498,9 +498,9 @@ export default function BookingWidget({
           }}
         >
           {[
-            { id: "calendar", label: "Step 1: Calendar" },
-            { id: "info", label: "Step 2: Personal Info" },
-            { id: "pay", label: "Step 3: Payment" },
+            { id: "calendar", label: "Choose Date" },
+            { id: "info", label: "Personal Info" },
+            { id: "pay", label: "Payment" },
           ].map((s) => {
             const active = step === s.id;
             return (
@@ -513,7 +513,7 @@ export default function BookingWidget({
                   fontSize: 12,
                   fontWeight: 700,
                   color: active ? "white" : "#1B3A5C",
-                  background: active ? "#1B3A5C" : "#EEF2F7",
+                  background: active ? "#E02B2B" : "#EEF2F7",
                   border: "1px solid #C8D8E8",
                 }}
               >
@@ -895,7 +895,7 @@ const summaryBoxStyle: CSSProperties = {
 const primaryBtn: CSSProperties = {
   display: "block",
   width: "100%",
-  background: "#1B3A5C",
+  background: "#E02B2B",
   color: "white",
   border: "none",
   padding: "15px 32px",

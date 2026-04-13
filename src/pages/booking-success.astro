@@ -1,45 +1,38 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Booking Confirmed | Alert Training Services</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body
-    style="font-family:Poppins,-apple-system,BlinkMacSystemFont,sans-serif;"
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Booking Confirmed | Alert Training Services"
+  description="Your enrollment is confirmed. Check your email for your receipt and Zoom meeting links."
+  canonical="https://www.alerttrainingservices.com/booking-success"
+>
+  <main
+    style="min-height:100vh; background:#f5f5f7; padding: 80px 24px; display:flex; align-items:center; justify-content:center;"
   >
-    <main
-      style="min-height:100vh; background:#f5f5f7; padding: 80px 24px; display:flex; align-items:center; justify-content:center;"
-    >
-      <div style="max-width:520px; text-align:center;">
-        <div style="font-size:52px; margin-bottom:16px; color:#E02B2B;">✓</div>
-        <h1
-          style="font-size:1.75rem; font-weight:700; color:#1B3A5C; margin-bottom:12px;"
-        >
-          You're enrolled
-        </h1>
-        <p style="color:#515154; font-size:1rem; line-height:1.6; margin-bottom:24px;">
-          Thank you for your payment.<br />
-          Please check your inbox for your receipt and your Zoom Meeting Link.
-        </p>
-        <a
-          href="/preventative-health-and-safety-training"
-          style="display:inline-block; background:#1B3A5C; color:white; padding:14px 28px; border-radius:980px; font-weight:700; text-decoration:none;"
-        >
-          Back to booking
-        </a>
-        <p style="margin-top:28px; font-size:14px; color:#86868b;">
-          Questions? <a href="tel:3239216244" style="color:#1B3A5C">323-921-6244</a>
-          · <a
-            href="mailto:info@alerttrainingservices.com"
-            style="color:#1B3A5C">info@alerttrainingservices.com</a>
-        </p>
-      </div>
-    </main>
-  </body>
-</html>
+    <div style="max-width:520px; text-align:center;">
+      <div style="font-size:52px; margin-bottom:16px; color:#E02B2B;">✓</div>
+      <h1
+        style="font-size:1.75rem; font-weight:700; color:#1B3A5C; margin-bottom:12px;"
+      >
+        You're enrolled
+      </h1>
+      <p style="color:#515154; font-size:1rem; line-height:1.6; margin-bottom:24px;">
+        Thank you for your payment.<br />
+        Please check your inbox for your receipt and your Zoom Meeting Link.
+      </p>
+      <a
+        href="/preventative-health-and-safety-training"
+        style="display:inline-block; background:#1B3A5C; color:white; padding:14px 28px; border-radius:980px; font-weight:700; text-decoration:none;"
+      >
+        Back to booking
+      </a>
+      <p style="margin-top:28px; font-size:14px; color:#86868b;">
+        Questions? <a href="tel:3239216244" style="color:#1B3A5C">323-921-6244</a>
+        · <a
+          href="mailto:info@alerttrainingservices.com"
+          style="color:#1B3A5C">info@alerttrainingservices.com</a>
+      </p>
+    </div>
+  </main>
+</BaseLayout>
