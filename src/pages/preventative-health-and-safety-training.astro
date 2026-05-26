@@ -3,8 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { getPublicPayPalClientId } from "../lib/public-env";
 
-const paypalClientId = import.meta.env.PUBLIC_PAYPAL_CLIENT_ID ?? "";
+const paypalClientId = getPublicPayPalClientId();
 ---
 
 <BaseLayout

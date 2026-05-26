@@ -474,9 +474,10 @@ export default function BookingWidget({
 
   if (!paypalClientId) {
     return (
-      <p style={{ color: "#86868b", fontSize: 14 }}>
-        PayPal is not configured. Add{" "}
-        <code>PUBLIC_PAYPAL_CLIENT_ID</code> to your environment.
+      <p style={{ color: "#86868b", fontSize: 14, lineHeight: 1.6 }}>
+        PayPal is not configured on the server. Add{" "}
+        <code>PUBLIC_PAYPAL_CLIENT_ID</code> (or <code>PAYPAL_CLIENT_ID</code> as
+        a fallback) in your hosting environment variables, then redeploy.
       </p>
     );
   }
