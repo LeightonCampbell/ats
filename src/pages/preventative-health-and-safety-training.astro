@@ -39,7 +39,7 @@ const paypalClientId = import.meta.env.PUBLIC_PAYPAL_CLIENT_ID ?? "";
         <div
           style="background:white;border-radius:16px;border:1px solid rgba(0,0,0,0.08);padding:40px;"
         >
-          <BookingWidget client:load paypalClientId={paypalClientId} />
+          <BookingWidget client:only="react" paypalClientId={paypalClientId} />
         </div>
 
         <p style="text-align:center;margin-top:20px;font-size:13px;color:#86868b;font-weight:300;">

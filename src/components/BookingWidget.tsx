@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import type { CSSProperties } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
+const PayPalCheckout = lazy(() => import("./PayPalCheckout"));
 
 const MEETING_ID = "88312217147";
 const COURSE_TITLE = "Preventive Health & Safety Training";
@@ -716,68 +717,38 @@ export default function BookingWidget({
             </div>
           </div>
 
-          <PayPalScriptProvider
-            options={{ clientId: paypalClientId, currency: "USD" }}
+          <Suspense
+            fallback={
+              <p style={{ color: "#86868b", fontSize: 14, textAlign: "center" }}>
+                Loading PayPal…
+              </p>
+            }
           >
-            <PayPalButtons
-              style={{
-                layout: "vertical",
-                color: "blue",
-                shape: "pill",
-                label: "pay",
+            <PayPalCheckout
+              paypalClientId={paypalClientId}
+              classTitle={selectedWeek.title}
+              classDate={
+                selectedWeek.label ?? classDateSummary(selectedWeek)
+              }
+              meetingId={MEETING_ID}
+              courseTitle={COURSE_TITLE}
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              phone={phone}
+              mailingAddress={mailingAddress}
+              session1Time={selectedWeek.session1_time}
+              session2Time={selectedWeek.session2_time}
+              onSuccess={(url) => {
+                setJoinUrl(url);
+                setStep("success");
               }}
-              createOrder={async () => {
-                const res = await fetch("/api/paypal/create-order", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    classTitle: selectedWeek.title,
-                    classDate: classDateSummary(selectedWeek),
-                  }),
-                });
-                const data = (await res.json()) as { id?: string };
-                if (!data.id) throw new Error("Could not create order");
-                return data.id;
-              }}
-              onApprove={async (data) => {
-                const res = await fetch("/api/paypal/capture-order", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    orderId: data.orderID,
-                    meetingId: MEETING_ID,
-                    firstName,
-                    lastName,
-                    email,
-                    phone,
-                    mailingAddress,
-                    classTitle: COURSE_TITLE,
-                    classDate:
-                      selectedWeek.label ?? classDateSummary(selectedWeek),
-                    session1_time: selectedWeek.session1_time,
-                    session2_time: selectedWeek.session2_time,
-                  }),
-                });
-                const result = (await res.json()) as {
-                  success?: boolean;
-                  joinUrl?: string;
-                  error?: string;
-                };
-                if (result.success) {
-                  setJoinUrl(result.joinUrl ?? "");
-                  setStep("success");
-                } else {
-                  setErrorMsg(result.error ?? "Something went wrong.");
-                  setStep("error");
-                }
-              }}
-              onError={(err) => {
-                setErrorMsg("PayPal encountered an error. Please try again.");
+              onError={(message) => {
+                setErrorMsg(message);
                 setStep("error");
-                console.error(err);
               }}
             />
-          </PayPalScriptProvider>
+          </Suspense>
 
           <button type="button" onClick={() => setStep("info")} style={backBtn}>
             ← Back to Personal Info

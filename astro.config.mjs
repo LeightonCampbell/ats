@@ -9,4 +9,9 @@ export default defineConfig({
   output: "server",
   adapter: node({ mode: "standalone" }),
   integrations: [react()],
+  vite: {
+    optimizeDeps: {
+      include: ["@paypal/react-paypal-js"],
+    },
+  },
 });
