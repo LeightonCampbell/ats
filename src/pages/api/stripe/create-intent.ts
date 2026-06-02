@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro";
 import { createPaymentIntent } from "../../../lib/stripe";
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const env = (locals as any).runtime?.env ?? {};
+  if (env.STRIPE_SECRET_KEY) process.env.STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY;
   const { classTitle, classDate } = await request.json();
   try {
     const intent = await createPaymentIntent(classTitle, classDate);

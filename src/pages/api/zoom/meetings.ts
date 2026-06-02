@@ -17,8 +17,12 @@ function getPTDateKey(iso: string): string {
   });
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request, locals }) => {
   try {
+    const env = (locals as any).runtime?.env ?? {};
+    if (env.ZOOM_ACCOUNT_ID) process.env.ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID;
+    if (env.ZOOM_CLIENT_ID) process.env.ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID;
+    if (env.ZOOM_CLIENT_SECRET) process.env.ZOOM_CLIENT_SECRET = env.ZOOM_CLIENT_SECRET;
     const token = await getZoomToken();
 
     const res = await fetch(
