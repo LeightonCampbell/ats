@@ -3,9 +3,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getPublicStripePublishableKey } from "../lib/public-env";
-
-const publishableKey = getPublicStripePublishableKey();
+const publishableKey = String(
+  import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
+    process.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
+    ""
+).trim();
 ---
 
 <BaseLayout

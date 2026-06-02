@@ -8,8 +8,6 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
 const MEETING_ID = "88312217147";
 const COURSE_TITLE = "Preventive Health & Safety Training";
 const COURSE_PRICE = "$80.00";
@@ -546,6 +544,11 @@ export default function BookingWidget({
 
   const personalInfoReady = Boolean(
     firstName && lastName && email && mailingAddress
+  );
+
+  const stripePromise = useMemo(
+    () => (publishableKey ? loadStripe(publishableKey) : null),
+    [publishableKey]
   );
 
   if (!publishableKey) {
