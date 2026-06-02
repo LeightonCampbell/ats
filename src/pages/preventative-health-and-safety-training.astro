@@ -3,9 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getPublicPayPalClientId } from "../lib/public-env";
+import { getPublicStripePublishableKey } from "../lib/public-env";
 
-const paypalClientId = getPublicPayPalClientId();
+const publishableKey = getPublicStripePublishableKey();
 ---
 
 <BaseLayout
@@ -40,11 +40,11 @@ const paypalClientId = getPublicPayPalClientId();
         <div
           style="background:white;border-radius:16px;border:1px solid rgba(0,0,0,0.08);padding:40px;"
         >
-          <BookingWidget client:only="react" paypalClientId={paypalClientId} />
+          <BookingWidget client:only="react" publishableKey={publishableKey} />
         </div>
 
         <p style="text-align:center;margin-top:20px;font-size:13px;color:#86868b;font-weight:300;">
-          Payments secured by PayPal. Questions? Call <a
+          Payments secured by Stripe. Questions? Call <a
             href="tel:3239216244"
             style="color:#1B3A5C;">323-921-6244</a>
         </p>

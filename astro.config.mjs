@@ -11,7 +11,7 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     optimizeDeps: {
-      include: ["@paypal/react-paypal-js"],
+      include: ["@stripe/stripe-js", "@stripe/react-stripe-js"],
     },
   },
 });

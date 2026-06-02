@@ -1,7 +1,14 @@
-import { useState, useEffect, useMemo, lazy, Suspense } from "react";
-import type { CSSProperties } from "react";
+import { useState, useEffect, useMemo } from "react";
+import type { CSSProperties, FormEvent } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
-const PayPalCheckout = lazy(() => import("./PayPalCheckout"));
+const stripePromise = loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const MEETING_ID = "88312217147";
 const COURSE_TITLE = "Preventive Health & Safety Training";
@@ -349,10 +356,78 @@ function toLocaleDateStr(iso: string): string {
   }); // en-CA gives YYYY-MM-DD format
 }
 
-export default function BookingWidget({
-  paypalClientId,
+function CheckoutForm({
+  onSuccess,
+  onError,
+  bookingData,
 }: {
-  paypalClientId: string;
+  onSuccess: (data: any) => void;
+  onError: (msg: string) => void;
+  bookingData: any;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    setLoading(true);
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      redirect: "if_required",
+    });
+    if (error) {
+      onError(error.message ?? "Payment failed");
+      setLoading(false);
+      return;
+    }
+    if (paymentIntent?.status === "succeeded") {
+      const res = await fetch("/api/stripe/confirm-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId: paymentIntent.id,
+          ...bookingData,
+        }),
+      });
+      const result = await res.json();
+      if (result.success) onSuccess(result);
+      else onError(result.error ?? "Something went wrong");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+      <button
+        type="submit"
+        disabled={!stripe || loading}
+        style={{
+          width: "100%",
+          background: "#1B3A5C",
+          color: "white",
+          border: "none",
+          padding: "14px",
+          borderRadius: 980,
+          fontWeight: 700,
+          fontSize: "0.95rem",
+          cursor: loading ? "not-allowed" : "pointer",
+          marginTop: 16,
+          opacity: loading ? 0.6 : 1,
+        }}
+      >
+        {loading ? "Processing..." : "Pay $65.00"}
+      </button>
+    </form>
+  );
+}
+
+export default function BookingWidget({
+  publishableKey,
+}: {
+  publishableKey: string;
 }) {
   const [weeks, setWeeks] = useState<BookableWeek[]>([]);
   const [apiTz, setApiTz] = useState("America/Los_Angeles");
@@ -371,6 +446,7 @@ export default function BookingWidget({
   const [errorMsg, setErrorMsg] = useState("");
   const [classesLoadError, setClassesLoadError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
     fetch("/api/zoom/meetings")
@@ -472,12 +548,12 @@ export default function BookingWidget({
     firstName && lastName && email && mailingAddress
   );
 
-  if (!paypalClientId) {
+  if (!publishableKey) {
     return (
       <p style={{ color: "#86868b", fontSize: 14, lineHeight: 1.6 }}>
-        PayPal is not configured on the server. Add{" "}
-        <code>PUBLIC_PAYPAL_CLIENT_ID</code> (or <code>PAYPAL_CLIENT_ID</code> as
-        a fallback) in your hosting environment variables, then redeploy.
+        Stripe is not configured on the server. Add{" "}
+        <code>PUBLIC_STRIPE_PUBLISHABLE_KEY</code> in your hosting environment
+        variables, then redeploy.
       </p>
     );
   }
@@ -662,13 +738,33 @@ export default function BookingWidget({
             </button>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 if (!personalInfoReady || !selectedWeek) {
                   setShowInfoValidation(true);
                   return;
                 }
                 setShowInfoValidation(false);
-                setStep("pay");
+                try {
+                  const res = await fetch("/api/stripe/create-intent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      classTitle: COURSE_TITLE,
+                      classDate: selectedClass?.label,
+                    }),
+                  });
+                  const data = await res.json();
+                  if (!data.clientSecret) {
+                    setErrorMsg(data.error ?? "Could not start payment.");
+                    setStep("error");
+                    return;
+                  }
+                  setClientSecret(data.clientSecret);
+                  setStep("pay");
+                } catch {
+                  setErrorMsg("Could not reach the payment server.");
+                  setStep("error");
+                }
               }}
               disabled={!selectedWeek}
               style={{
@@ -718,38 +814,37 @@ export default function BookingWidget({
             </div>
           </div>
 
-          <Suspense
-            fallback={
-              <p style={{ color: "#86868b", fontSize: 14, textAlign: "center" }}>
-                Loading PayPal…
-              </p>
-            }
-          >
-            <PayPalCheckout
-              paypalClientId={paypalClientId}
-              classTitle={selectedWeek.title}
-              classDate={
-                selectedWeek.label ?? classDateSummary(selectedWeek)
-              }
-              meetingId={MEETING_ID}
-              courseTitle={COURSE_TITLE}
-              firstName={firstName}
-              lastName={lastName}
-              email={email}
-              phone={phone}
-              mailingAddress={mailingAddress}
-              session1Time={selectedWeek.session1_time}
-              session2Time={selectedWeek.session2_time}
-              onSuccess={(url) => {
-                setJoinUrl(url);
-                setStep("success");
-              }}
-              onError={(message) => {
-                setErrorMsg(message);
-                setStep("error");
-              }}
-            />
-          </Suspense>
+          {clientSecret ? (
+            <Elements
+              stripe={stripePromise}
+              options={{ clientSecret, appearance: { theme: "stripe" } }}
+            >
+              <CheckoutForm
+                onSuccess={(result) => {
+                  setJoinUrl(result.joinUrl1 || result.joinUrl2 || "");
+                  setStep("success");
+                }}
+                onError={(msg) => {
+                  setErrorMsg(msg);
+                  setStep("error");
+                }}
+                bookingData={{
+                  firstName,
+                  lastName,
+                  email,
+                  phone,
+                  classTitle: COURSE_TITLE,
+                  classDate: selectedWeek.label,
+                  session1_time: selectedWeek.session1_time,
+                  session2_time: selectedWeek.session2_time,
+                }}
+              />
+            </Elements>
+          ) : (
+            <p style={{ color: "#86868b", fontSize: 14, textAlign: "center" }}>
+              Loading secure payment…
+            </p>
+          )}
 
           <button type="button" onClick={() => setStep("info")} style={backBtn}>
             ← Back to Personal Info
