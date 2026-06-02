@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
-import { stripe } from "../../../lib/stripe";
+import { env } from "cloudflare:workers";
+import { getStripe } from "../../../lib/stripe";
 import { registerForOccurrence } from "../../../lib/zoom";
 import { sendReceiptEmail, sendAdminNotification } from "../../../lib/email";
 
 export const POST: APIRoute = async ({ request, locals }) => {
-  const env = (locals as any).runtime?.env ?? {};
   if (env.STRIPE_SECRET_KEY) process.env.STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY;
   if (env.ZOOM_ACCOUNT_ID) process.env.ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID;
   if (env.ZOOM_CLIENT_ID) process.env.ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID;
@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     session2_time,
   } = await request.json();
   try {
-    const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    const intent = await getStripe().paymentIntents.retrieve(paymentIntentId);
     if (intent.status !== "succeeded") {
       return new Response(JSON.stringify({ error: "Payment not completed" }), {
         status: 402,

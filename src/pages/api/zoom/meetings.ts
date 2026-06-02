@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 import { getZoomToken } from "../../../lib/zoom";
 
 const MEETING_ID = "88312217147";
@@ -19,7 +20,6 @@ function getPTDateKey(iso: string): string {
 
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
-    const env = (locals as any).runtime?.env ?? {};
     if (env.ZOOM_ACCOUNT_ID) process.env.ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID;
     if (env.ZOOM_CLIENT_ID) process.env.ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID;
     if (env.ZOOM_CLIENT_SECRET) process.env.ZOOM_CLIENT_SECRET = env.ZOOM_CLIENT_SECRET;

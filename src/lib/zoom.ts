@@ -1,3 +1,5 @@
+import { env as cfEnv } from "cloudflare:workers";
+
 const btoaFn =
   typeof btoa !== "undefined"
     ? btoa
@@ -85,12 +87,14 @@ function meetingsUserPath(): string {
 
 // Fetches a fresh Server-to-Server OAuth token (valid 1 hour)
 export async function getZoomToken(): Promise<string> {
-  const accountId = process.env.ZOOM_ACCOUNT_ID ?? import.meta.env.ZOOM_ACCOUNT_ID;
-  const clientId = process.env.ZOOM_CLIENT_ID ?? import.meta.env.ZOOM_CLIENT_ID;
-  const clientSecret = process.env.ZOOM_CLIENT_SECRET ?? import.meta.env.ZOOM_CLIENT_SECRET;
+  const accountId = (cfEnv as any).ZOOM_ACCOUNT_ID;
+  const clientId = (cfEnv as any).ZOOM_CLIENT_ID;
+  const clientSecret = (cfEnv as any).ZOOM_CLIENT_SECRET;
 
   if (!accountId || !clientId || !clientSecret) {
-    throw new Error(`Missing Zoom credentials. accountId: ${!!accountId}, clientId: ${!!clientId}, clientSecret: ${!!clientSecret}`);
+    throw new Error(
+      `Missing Zoom credentials. accountId: ${!!accountId}, clientId: ${!!clientId}, clientSecret: ${!!clientSecret}`
+    );
   }
 
   const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -111,7 +115,7 @@ export async function getZoomToken(): Promise<string> {
     throw new Error(`Zoom token error: ${text}`);
   }
 
-  const data = await res.json();
+  const data = (await res.json()) as { access_token: string };
   return data.access_token;
 }
 
