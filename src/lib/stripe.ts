@@ -7,7 +7,7 @@ export const getStripe = () =>
 
 export async function createPaymentIntent(classTitle: string, classDate: string) {
   return await getStripe().paymentIntents.create({
-    amount: 6500,
+    amount: 8000,
     currency: "usd",
     metadata: { classTitle, classDate },
     description: classTitle,

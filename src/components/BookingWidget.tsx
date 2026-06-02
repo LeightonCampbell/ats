@@ -416,7 +416,7 @@ function CheckoutForm({
           opacity: loading ? 0.6 : 1,
         }}
       >
-        {loading ? "Processing..." : "Pay $65.00"}
+        {loading ? "Processing..." : "Pay $80.00"}
       </button>
     </form>
   );
