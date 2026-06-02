@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
 import { getZoomToken } from "../../../lib/zoom";
 
 const MEETING_ID = "88312217147";

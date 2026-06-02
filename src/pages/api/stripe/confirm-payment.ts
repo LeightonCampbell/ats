@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
 import { getStripe } from "../../../lib/stripe";
 import { registerForOccurrence } from "../../../lib/zoom";
 import { sendReceiptEmail, sendAdminNotification } from "../../../lib/email";

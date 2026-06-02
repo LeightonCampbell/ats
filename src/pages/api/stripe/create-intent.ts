@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
 import { createPaymentIntent } from "../../../lib/stripe";
 
 export const POST: APIRoute = async ({ request }) => {

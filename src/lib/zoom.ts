@@ -1,5 +1,3 @@
-import { env as cfEnv } from "cloudflare:workers";
-
 const btoaFn =
   typeof btoa !== "undefined"
     ? btoa
@@ -87,9 +85,10 @@ function meetingsUserPath(): string {
 
 // Fetches a fresh Server-to-Server OAuth token (valid 1 hour)
 export async function getZoomToken(): Promise<string> {
-  const accountId = (cfEnv as any).ZOOM_ACCOUNT_ID;
-  const clientId = (cfEnv as any).ZOOM_CLIENT_ID;
-  const clientSecret = (cfEnv as any).ZOOM_CLIENT_SECRET;
+  const accountId = process.env.ZOOM_ACCOUNT_ID ?? import.meta.env.ZOOM_ACCOUNT_ID;
+  const clientId = process.env.ZOOM_CLIENT_ID ?? import.meta.env.ZOOM_CLIENT_ID;
+  const clientSecret =
+    process.env.ZOOM_CLIENT_SECRET ?? import.meta.env.ZOOM_CLIENT_SECRET;
 
   if (!accountId || !clientId || !clientSecret) {
     throw new Error(
