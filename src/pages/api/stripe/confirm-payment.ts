@@ -4,11 +4,7 @@ import { getStripe } from "../../../lib/stripe";
 import { registerForOccurrence } from "../../../lib/zoom";
 import { sendReceiptEmail, sendAdminNotification } from "../../../lib/email";
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  if (env.STRIPE_SECRET_KEY) process.env.STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY;
-  if (env.ZOOM_ACCOUNT_ID) process.env.ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID;
-  if (env.ZOOM_CLIENT_ID) process.env.ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID;
-  if (env.ZOOM_CLIENT_SECRET) process.env.ZOOM_CLIENT_SECRET = env.ZOOM_CLIENT_SECRET;
+export const POST: APIRoute = async ({ request }) => {
   const {
     paymentIntentId,
     firstName,

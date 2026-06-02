@@ -2,8 +2,7 @@ import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { createPaymentIntent } from "../../../lib/stripe";
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  if (env.STRIPE_SECRET_KEY) process.env.STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY;
+export const POST: APIRoute = async ({ request }) => {
   const { classTitle, classDate } = await request.json();
   try {
     const intent = await createPaymentIntent(classTitle, classDate);
