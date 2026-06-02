@@ -85,20 +85,33 @@ function meetingsUserPath(): string {
 
 // Fetches a fresh Server-to-Server OAuth token (valid 1 hour)
 export async function getZoomToken(): Promise<string> {
-  const credentials = encodeBasic(
-    import.meta.env.ZOOM_CLIENT_ID ?? "",
-    import.meta.env.ZOOM_CLIENT_SECRET ?? ""
-  );
-  const accountId = import.meta.env.ZOOM_ACCOUNT_ID ?? "";
+  const accountId = process.env.ZOOM_ACCOUNT_ID ?? import.meta.env.ZOOM_ACCOUNT_ID;
+  const clientId = process.env.ZOOM_CLIENT_ID ?? import.meta.env.ZOOM_CLIENT_ID;
+  const clientSecret = process.env.ZOOM_CLIENT_SECRET ?? import.meta.env.ZOOM_CLIENT_SECRET;
+
+  if (!accountId || !clientId || !clientSecret) {
+    throw new Error(`Missing Zoom credentials. accountId: ${!!accountId}, clientId: ${!!clientId}, clientSecret: ${!!clientSecret}`);
+  }
+
+  const credentials = btoa(`${clientId}:${clientSecret}`);
+
   const res = await fetch(
-    `${ZOOM_TOKEN_URL}?grant_type=account_credentials&account_id=${accountId}`,
+    `https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${accountId}`,
     {
       method: "POST",
-      headers: { Authorization: `Basic ${credentials}` },
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     }
   );
-  if (!res.ok) throw new Error(`Zoom token error: ${await res.text()}`);
-  const data = (await res.json()) as { access_token: string };
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Zoom token error: ${text}`);
+  }
+
+  const data = await res.json();
   return data.access_token;
 }
 
