@@ -1,3 +1,8 @@
+const btoaFn =
+  typeof btoa !== "undefined"
+    ? btoa
+    : (str: string) => Buffer.from(str).toString("base64");
+
 const ZOOM_TOKEN_URL = "https://zoom.us/oauth/token";
 const ZOOM_API_BASE = "https://api.zoom.us/v2";
 
@@ -29,7 +34,7 @@ export async function registerForOccurrence(
 }
 
 function encodeBasic(user: string, pass: string): string {
-  return Buffer.from(`${user}:${pass}`).toString("base64");
+  return btoaFn(`${user}:${pass}`);
 }
 
 function classTimeZone(): string {
