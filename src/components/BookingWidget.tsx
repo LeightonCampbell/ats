@@ -137,6 +137,7 @@ function CalendarPicker({
 
   return (
     <div
+      className="calendar-picker"
       style={{
         border: "1px solid #e0e0e0",
         borderRadius: 12,
@@ -144,9 +145,32 @@ function CalendarPicker({
         marginBottom: 24,
       }}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-        {/* Left: Calendar */}
-        <div style={{ padding: "20px 16px", borderRight: "1px solid #e0e0e0" }}>
+      <style>{`
+        .calendar-picker-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .calendar-picker-calendar {
+          padding: 20px 16px;
+          border-right: 1px solid #e0e0e0;
+        }
+        .calendar-picker-sessions {
+          padding: 20px 16px;
+          background: #fafafa;
+        }
+        @media (max-width: 639px) {
+          .calendar-picker-grid {
+            grid-template-columns: 1fr;
+          }
+          .calendar-picker-calendar {
+            border-right: none;
+            border-bottom: 1px solid #e0e0e0;
+          }
+        }
+      `}</style>
+      <div className="calendar-picker-grid">
+        {/* Calendar */}
+        <div className="calendar-picker-calendar">
           {/* Date input display */}
           <div
             style={{
@@ -293,8 +317,8 @@ function CalendarPicker({
           </div>
         </div>
 
-        {/* Right: Selected session info */}
-        <div style={{ padding: "20px 16px", background: "#fafafa" }}>
+        {/* Selected session info — below calendar on mobile */}
+        <div className="calendar-picker-sessions">
           <div
             style={{
               fontWeight: 700,
@@ -642,39 +666,75 @@ export default function BookingWidget({
       }}
     >
       {step !== "success" && step !== "error" && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 8,
-            marginBottom: 18,
-          }}
-        >
-          {[
-            { id: "calendar", label: "Choose Date" },
-            { id: "info", label: "Personal Info" },
-            { id: "pay", label: "Payment" },
-          ].map((s) => {
-            const active = step === s.id;
-            return (
-              <div
-                key={s.id}
-                style={{
-                  borderRadius: 999,
-                  padding: "8px 10px",
-                  textAlign: "center",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: active ? "white" : "#1B3A5C",
-                  background: active ? "#E02B2B" : "#EEF2F7",
-                  border: "1px solid #C8D8E8",
-                }}
-              >
-                {s.label}
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <style>{`
+            .booking-steps {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 8;
+              margin-bottom: 18px;
+            }
+            .booking-step {
+              border-radius: 999px;
+              padding: 8px 10px;
+              text-align: center;
+              font-size: 12px;
+              font-weight: 700;
+              border: 1px solid #c8d8e8;
+            }
+            .booking-step-num {
+              display: none;
+            }
+            @media (max-width: 639px) {
+              .booking-steps {
+                display: flex;
+                align-items: stretch;
+              }
+              .booking-step {
+                flex: 0 0 auto;
+                padding: 8px 12px;
+              }
+              .booking-step-active {
+                flex: 1 1 0;
+                min-width: 0;
+              }
+              .booking-step:not(.booking-step-active) {
+                padding: 8px 10px;
+                min-width: 2rem;
+              }
+              .booking-step:not(.booking-step-active) .booking-step-label {
+                display: none;
+              }
+              .booking-step:not(.booking-step-active) .booking-step-num {
+                display: inline;
+              }
+            }
+          `}</style>
+          <div className="booking-steps">
+            {[
+              { id: "calendar", label: "Choose Date", num: "1" },
+              { id: "info", label: "Personal Info", num: "2" },
+              { id: "pay", label: "Payment", num: "3" },
+            ].map((s) => {
+              const active = step === s.id;
+              return (
+                <div
+                  key={s.id}
+                  className={
+                    active ? "booking-step booking-step-active" : "booking-step"
+                  }
+                  style={{
+                    color: active ? "white" : "#1B3A5C",
+                    background: active ? "#E02B2B" : "#EEF2F7",
+                  }}
+                >
+                  <span className="booking-step-label">{s.label}</span>
+                  <span className="booking-step-num">{s.num}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {step === "calendar" && (
