@@ -119,13 +119,29 @@ function CalendarPicker({
 
   const formatSelectedLabel = () => {
     if (!selectedClass) return null;
-    const d = new Date(selectedClass.session1_time);
-    return d.toLocaleDateString("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      timeZone: "America/Los_Angeles",
-    });
+    const tz = "America/Los_Angeles";
+    const monday = new Date(selectedClass.session1_time);
+    const tuesday = new Date(selectedClass.session2_time);
+    const month = monday.toLocaleDateString("en-US", { month: "short", timeZone: tz });
+    const month2 = tuesday.toLocaleDateString("en-US", { month: "short", timeZone: tz });
+    const day1 = Number(
+      monday.toLocaleDateString("en-US", { day: "numeric", timeZone: tz })
+    );
+    const day2 = Number(
+      tuesday.toLocaleDateString("en-US", { day: "numeric", timeZone: tz })
+    );
+    const ord = (n: number) => {
+      if (n >= 11 && n <= 13) return `${n}th`;
+      const r = n % 10;
+      if (r === 1) return `${n}st`;
+      if (r === 2) return `${n}nd`;
+      if (r === 3) return `${n}rd`;
+      return `${n}th`;
+    };
+    if (month === month2) {
+      return `${month} ${ord(day1)}, ${ord(day2)}`;
+    }
+    return `${month} ${ord(day1)}, ${month2} ${ord(day2)}`;
   };
 
   const formatTime = (iso: string) =>
@@ -165,6 +181,10 @@ function CalendarPicker({
           .calendar-picker-calendar {
             border-right: none;
             border-bottom: 1px solid #e0e0e0;
+          }
+          .calendar-picker-sessions-heading,
+          .calendar-picker-sessions-note {
+            text-align: center;
           }
         }
       `}</style>
@@ -320,6 +340,7 @@ function CalendarPicker({
         {/* Selected session info — below calendar on mobile */}
         <div className="calendar-picker-sessions">
           <div
+            className="calendar-picker-sessions-heading"
             style={{
               fontWeight: 700,
               fontSize: 15,
@@ -361,6 +382,7 @@ function CalendarPicker({
                 Tue · {formatTime(selectedClass.session2_time)}
               </div>
               <div
+                className="calendar-picker-sessions-note"
                 style={{
                   fontSize: 12,
                   color: "#86868b",
