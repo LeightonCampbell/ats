@@ -12,9 +12,10 @@ const MEETING_ID = "88312217147";
 export async function registerForOccurrence(
   creds: ZoomCredentials,
   startTime: string, // ISO start_time of the specific session
-  registrant: { first_name: string; last_name: string; email: string; phone?: string }
+  registrant: { first_name: string; last_name: string; email: string; phone?: string },
+  token?: string
 ): Promise<{ join_url: string; registrant_id: string }> {
-  const token = await getZoomToken(creds);
+  const accessToken = token ?? (await getZoomToken(creds));
 
   // Convert ISO start_time to occurrence_id format Zoom expects: YYYYMMDDTHHmmssZ
   const occurrenceId = startTime.replace(/[-:]/g, "").replace(".000", "");
@@ -24,7 +25,7 @@ export async function registerForOccurrence(
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(registrant),

@@ -24,6 +24,7 @@ export async function createPaymentIntent(
     amount: String(amountCents),
     currency: "usd",
     description: classTitle,
+    "payment_method_types[]": "card",
     "metadata[classTitle]": classTitle,
     "metadata[classDate]": classDate,
   });

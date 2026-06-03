@@ -410,19 +410,26 @@ function CheckoutForm({
     }
 
     setLoading(true);
-    const stripe = window.Stripe(publishableKey);
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
-      clientSecret,
-      { payment_method: { card: cardElementRef.current } }
-    );
+    try {
+      const stripe = window.Stripe(publishableKey);
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        { payment_method: { card: cardElementRef.current } }
+      );
 
-    if (error) {
-      onError(error.message ?? "Payment failed");
-      setLoading(false);
-      return;
-    }
+      if (error) {
+        onError(error.message ?? "Payment failed");
+        return;
+      }
 
-    if (paymentIntent?.status === "succeeded") {
+      if (
+        paymentIntent?.status !== "succeeded" &&
+        paymentIntent?.status !== "processing"
+      ) {
+        onError(`Payment status: ${paymentIntent?.status ?? "unknown"}`);
+        return;
+      }
+
       const res = await fetch("/api/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -431,11 +438,28 @@ function CheckoutForm({
           ...bookingData,
         }),
       });
-      const result = await res.json();
-      if (result.success) onSuccess(result);
-      else onError(result.error ?? "Something went wrong");
+
+      let result: { success?: boolean; error?: string; joinUrl1?: string; joinUrl2?: string };
+      try {
+        result = await res.json();
+      } catch {
+        onError(
+          "Could not read the server response. If you were charged, call 323-921-6244."
+        );
+        return;
+      }
+
+      if (!res.ok || !result.success) {
+        onError(result.error ?? `Enrollment failed (HTTP ${res.status})`);
+        return;
+      }
+
+      onSuccess(result);
+    } catch (err: any) {
+      onError(err.message ?? "Payment failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

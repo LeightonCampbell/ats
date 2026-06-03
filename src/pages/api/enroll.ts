@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { getEnv, getZoomCredentials } from "../../lib/env";
 import { submitEnrollmentToFormspree } from "../../lib/formspree";
 import { retrievePaymentIntent } from "../../lib/stripe-api";
-import { registerForOccurrence } from "../../lib/zoom";
+import { getZoomToken, registerForOccurrence } from "../../lib/zoom";
 
 const COURSE_TITLE = "Preventive Health & Safety Training";
 
@@ -44,37 +44,45 @@ export const POST: APIRoute = async ({ request }) => {
     let joinUrl2 = "";
 
     try {
-      const zoom1 = await registerForOccurrence(zoomCreds, session1_time, {
+      const zoomToken = await getZoomToken(zoomCreds);
+      const registrant = {
         first_name: firstName,
         last_name: lastName,
         email,
         phone,
-      });
-      const zoom2 = await registerForOccurrence(zoomCreds, session2_time, {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        phone,
-      });
-      joinUrl1 = zoom1.join_url;
-      joinUrl2 = zoom2.join_url;
+      };
+
+      const [zoom1, zoom2] = await Promise.allSettled([
+        registerForOccurrence(zoomCreds, session1_time, registrant, zoomToken),
+        registerForOccurrence(zoomCreds, session2_time, registrant, zoomToken),
+      ]);
+
+      if (zoom1.status === "fulfilled") joinUrl1 = zoom1.value.join_url;
+      else console.error("Zoom session 1 failed:", zoom1.reason);
+
+      if (zoom2.status === "fulfilled") joinUrl2 = zoom2.value.join_url;
+      else console.error("Zoom session 2 failed:", zoom2.reason);
     } catch (zoomErr: any) {
       console.error("Zoom registration failed:", zoomErr.message);
     }
 
     const formspreeFormId = getEnv("FORMSPREE_FORM_ID");
-    await submitEnrollmentToFormspree(formspreeFormId, {
-      firstName,
-      lastName,
-      email,
-      phone,
-      mailingAddress,
-      classTitle,
-      classDate,
-      paymentIntentId: intent.id,
-      zoomJoinUrl1: joinUrl1,
-      zoomJoinUrl2: joinUrl2,
-    });
+    try {
+      await submitEnrollmentToFormspree(formspreeFormId, {
+        firstName,
+        lastName,
+        email,
+        phone,
+        mailingAddress,
+        classTitle,
+        classDate,
+        paymentIntentId: intent.id,
+        zoomJoinUrl1: joinUrl1,
+        zoomJoinUrl2: joinUrl2,
+      });
+    } catch (formspreeErr: any) {
+      console.error("Formspree notification failed:", formspreeErr.message);
+    }
 
     return new Response(
       JSON.stringify({ success: true, joinUrl1, joinUrl2 }),
