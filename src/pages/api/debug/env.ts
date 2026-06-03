@@ -11,6 +11,9 @@ export const GET: APIRoute = async () => {
       hasZoomClientSecret: Boolean(getEnv("ZOOM_CLIENT_SECRET")),
       hasFormspreeFormId: Boolean(getEnv("FORMSPREE_FORM_ID")),
       hasFormspreeContactFormId: Boolean(getEnv("FORMSPREE_CONTACT_FORM_ID")),
+      hasContactFormFallback: Boolean(
+        getEnv("FORMSPREE_CONTACT_FORM_ID") || getEnv("FORMSPREE_FORM_ID")
+      ),
     }),
     {
       status: 200,

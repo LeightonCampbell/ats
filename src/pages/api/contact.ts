@@ -3,7 +3,8 @@ import { submitContactToFormspree } from "../../lib/formspree";
 import { getEnv } from "../../lib/worker-env";
 
 export const POST: APIRoute = async ({ request }) => {
-  const formId = getEnv("FORMSPREE_CONTACT_FORM_ID");
+  const formId =
+    getEnv("FORMSPREE_CONTACT_FORM_ID") || getEnv("FORMSPREE_FORM_ID");
 
   if (!formId) {
     return new Response(JSON.stringify({ error: "Contact form is not configured" }), {
