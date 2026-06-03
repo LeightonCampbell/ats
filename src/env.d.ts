@@ -9,6 +9,7 @@ type RuntimeEnv = {
   ZOOM_HOST_EMAIL?: string;
   ZOOM_HOST_USER_ID?: string;
   FORMSPREE_FORM_ID?: string;
+  FORMSPREE_CONTACT_FORM_ID?: string;
 };
 
 declare namespace App {

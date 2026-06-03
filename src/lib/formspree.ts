@@ -46,3 +46,40 @@ export async function submitEnrollmentToFormspree(
     throw new Error(`Formspree error: ${text}`);
   }
 }
+
+export type ContactSubmission = {
+  fullName: string;
+  email: string;
+  phone?: string;
+  message: string;
+};
+
+/** Send Contact Us page submissions to Formspree. */
+export async function submitContactToFormspree(
+  formId: string,
+  data: ContactSubmission
+): Promise<void> {
+  if (!formId) {
+    throw new Error("FORMSPREE_CONTACT_FORM_ID is not set");
+  }
+
+  const res = await fetch(`https://formspree.io/f/${formId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      name: data.fullName,
+      email: data.email,
+      phone: data.phone ?? "",
+      message: data.message,
+      _subject: `Contact form: ${data.fullName}`,
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Formspree error: ${text}`);
+  }
+}

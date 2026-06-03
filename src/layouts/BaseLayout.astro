@@ -1318,19 +1318,51 @@ const {
         document.getElementById("mobileMenu")?.classList.remove("open");
       }
 
-      function handleSubmit(e) {
+      async function handleSubmit(e) {
         e.preventDefault();
+        const form = e.target;
         const btn = document.getElementById("submitBtn");
-        if (!btn) return;
-        btn.textContent = "Message Sent ✓";
-        btn.style.background = "#1a6b3a";
+        const status = document.getElementById("contactFormStatus");
+        if (!btn || !(form instanceof HTMLFormElement)) return;
+
+        const fullName = document.getElementById("fullName")?.value?.trim() ?? "";
+        const phone = document.getElementById("phone")?.value?.trim() ?? "";
+        const email = document.getElementById("email")?.value?.trim() ?? "";
+        const message = document.getElementById("message")?.value?.trim() ?? "";
+
+        if (!fullName || !email || !message) return;
+
+        const defaultLabel = btn.textContent || "Send Message";
         btn.disabled = true;
-        setTimeout(() => {
-          btn.textContent = "Send Message →";
-          btn.style.background = "";
+        btn.textContent = "Sending…";
+        if (status) status.textContent = "";
+
+        try {
+          const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fullName, phone, email, message }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Failed to send message");
+
+          btn.textContent = "Message Sent ✓";
+          btn.style.background = "#1a6b3a";
+          form.reset();
+          setTimeout(() => {
+            btn.textContent = defaultLabel;
+            btn.style.background = "";
+            btn.disabled = false;
+          }, 3500);
+        } catch (err) {
+          btn.textContent = defaultLabel;
           btn.disabled = false;
-          e.target.reset();
-        }, 3500);
+          if (status) {
+            status.textContent =
+              err?.message ||
+              "Could not send your message. Please call 323-921-6244.";
+          }
+        }
       }
 
       window.toggleMenu = toggleMenu;
