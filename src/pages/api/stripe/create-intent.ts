@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getEnv } from "../../../lib/env";
+import { getEnv } from "../../../lib/worker-env";
 import { createPaymentIntent } from "../../../lib/stripe-api";
 
 const COURSE_AMOUNT_CENTS = 8000;

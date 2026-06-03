@@ -1,10 +1,5 @@
-import { env as cfEnv } from "cloudflare:workers";
-
-/** Cloudflare Workers env bindings, with import.meta.env fallback for local dev. */
+/** Safe env access from .env / import.meta.env (works in local dev and Astro pages). */
 export function getEnv(key: keyof RuntimeEnv): string {
-  const fromCf = (cfEnv as Record<string, string | undefined>)[key];
-  if (fromCf) return String(fromCf);
-
   const fromMeta = (import.meta.env as Record<string, string | undefined>)[key];
   return fromMeta ? String(fromMeta) : "";
 }

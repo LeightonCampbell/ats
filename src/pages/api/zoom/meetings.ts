@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getZoomCredentials } from "../../../lib/env";
+import { getZoomCredentials } from "../../../lib/worker-env";
 import { getZoomToken } from "../../../lib/zoom";
 
 const MEETING_ID = "88312217147";

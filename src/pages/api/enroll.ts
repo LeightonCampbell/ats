@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getEnv, getZoomCredentials } from "../../lib/env";
+import { getEnv, getZoomCredentials } from "../../lib/worker-env";
 import { submitEnrollmentToFormspree } from "../../lib/formspree";
 import { retrievePaymentIntent } from "../../lib/stripe-api";
 import { getZoomToken, registerForOccurrence } from "../../lib/zoom";

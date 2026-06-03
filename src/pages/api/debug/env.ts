@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getEnv } from "../../../lib/env";
+import { getEnv } from "../../../lib/worker-env";
 
 export const GET: APIRoute = async () => {
   return new Response(
