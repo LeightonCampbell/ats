@@ -383,6 +383,7 @@ function CheckoutForm({
   bookingData: any;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const stripeRef = useRef<StripeInstance | null>(null);
   const cardElementRef = useRef<StripeCardElement | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -392,6 +393,7 @@ function CheckoutForm({
     }
 
     const stripe = window.Stripe(publishableKey);
+    stripeRef.current = stripe;
     const card = stripe.elements().create("card");
     card.mount(cardRef.current);
     cardElementRef.current = card;
@@ -399,20 +401,20 @@ function CheckoutForm({
     return () => {
       card.unmount();
       cardElementRef.current = null;
+      stripeRef.current = null;
     };
   }, [clientSecret, publishableKey]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!window.Stripe || !cardElementRef.current) {
+    if (!stripeRef.current || !cardElementRef.current) {
       onError("Payment form is not ready. Please refresh and try again.");
       return;
     }
 
     setLoading(true);
     try {
-      const stripe = window.Stripe(publishableKey);
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
+      const { error, paymentIntent } = await stripeRef.current.confirmCardPayment(
         clientSecret,
         { payment_method: { card: cardElementRef.current } }
       );
