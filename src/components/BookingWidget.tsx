@@ -558,7 +558,9 @@ export default function BookingWidget({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [mailingAddress, setMailingAddress] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [showInfoValidation, setShowInfoValidation] = useState(false);
   const [step, setStep] = useState<
     "calendar" | "info" | "pay" | "success" | "error"
@@ -666,8 +668,18 @@ export default function BookingWidget({
   const setSelectedClass = setSelectedWeek;
 
   const personalInfoReady = Boolean(
-    firstName && lastName && email && mailingAddress
+    firstName &&
+      lastName &&
+      email &&
+      phone &&
+      address &&
+      city &&
+      zipCode
   );
+
+  const formattedMailingAddress = [address.trim(), `${city.trim()} ${zipCode.trim()}`]
+    .filter(Boolean)
+    .join(", ");
 
   if (!publishableKey) {
     return (
@@ -863,24 +875,56 @@ export default function BookingWidget({
               placeholder="jane@email.com"
             />
           </div>
-          <div style={{ marginBottom: 24 }}>
-            <label style={labelStyle}>Phone (optional)</label>
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle}>Phone *</label>
             <input
               style={inputStyle}
               type="tel"
+              required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(323) 000-0000"
             />
           </div>
-          <div style={{ marginBottom: 24 }}>
-            <label style={labelStyle}>Mailing Address *</label>
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle}>Address *</label>
             <input
               style={inputStyle}
-              value={mailingAddress}
-              onChange={(e) => setMailingAddress(e.target.value)}
-              placeholder="123 Main St, Los Angeles, CA 90000"
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="123 Main St"
             />
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 12,
+              marginBottom: 24,
+            }}
+          >
+            <div>
+              <label style={labelStyle}>City *</label>
+              <input
+                style={inputStyle}
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Los Angeles"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Zip Code *</label>
+              <input
+                style={inputStyle}
+                required
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                placeholder="90000"
+                inputMode="numeric"
+              />
+            </div>
           </div>
           {showInfoValidation && !personalInfoReady && (
             <p
@@ -892,7 +936,7 @@ export default function BookingWidget({
               }}
             >
               Please complete all required fields (First Name, Last Name, Email,
-              and Mailing Address) to continue.
+              Phone, Address, City, and Zip Code) to continue.
             </p>
           )}
 
@@ -999,7 +1043,7 @@ export default function BookingWidget({
                 lastName,
                 email,
                 phone,
-                mailingAddress,
+                mailingAddress: formattedMailingAddress,
                 classTitle: COURSE_TITLE,
                 classDate: selectedWeek.label,
                 session1_time: selectedWeek.session1_time,
