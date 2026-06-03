@@ -1,7 +1,8 @@
-const btoaFn =
-  typeof btoa !== "undefined"
-    ? btoa
-    : (str: string) => Buffer.from(str).toString("base64");
+export type ZoomCredentials = {
+  accountId: string;
+  clientId: string;
+  clientSecret: string;
+};
 
 const ZOOM_TOKEN_URL = "https://zoom.us/oauth/token";
 const ZOOM_API_BASE = "https://api.zoom.us/v2";
@@ -9,10 +10,11 @@ const ZOOM_API_BASE = "https://api.zoom.us/v2";
 const MEETING_ID = "88312217147";
 
 export async function registerForOccurrence(
+  creds: ZoomCredentials,
   startTime: string, // ISO start_time of the specific session
   registrant: { first_name: string; last_name: string; email: string; phone?: string }
 ): Promise<{ join_url: string; registrant_id: string }> {
-  const token = await getZoomToken();
+  const token = await getZoomToken(creds);
 
   // Convert ISO start_time to occurrence_id format Zoom expects: YYYYMMDDTHHmmssZ
   const occurrenceId = startTime.replace(/[-:]/g, "").replace(".000", "");
@@ -31,10 +33,6 @@ export async function registerForOccurrence(
 
   if (!res.ok) throw new Error(`Zoom registration error: ${await res.text()}`);
   return (await res.json()) as { join_url: string; registrant_id: string };
-}
-
-function encodeBasic(user: string, pass: string): string {
-  return btoaFn(`${user}:${pass}`);
 }
 
 function classTimeZone(): string {
@@ -84,11 +82,8 @@ function meetingsUserPath(): string {
 }
 
 // Fetches a fresh Server-to-Server OAuth token (valid 1 hour)
-export async function getZoomToken(): Promise<string> {
-  const accountId = process.env.ZOOM_ACCOUNT_ID ?? import.meta.env.ZOOM_ACCOUNT_ID;
-  const clientId = process.env.ZOOM_CLIENT_ID ?? import.meta.env.ZOOM_CLIENT_ID;
-  const clientSecret =
-    process.env.ZOOM_CLIENT_SECRET ?? import.meta.env.ZOOM_CLIENT_SECRET;
+export async function getZoomToken(creds: ZoomCredentials): Promise<string> {
+  const { accountId, clientId, clientSecret } = creds;
 
   if (!accountId || !clientId || !clientSecret) {
     throw new Error(
@@ -122,10 +117,11 @@ export async function getZoomToken(): Promise<string> {
  * Lists host meetings. Prefer `upcoming` so recurring series aren't anchored on old dates.
  */
 export async function listHostMeetings(
+  creds: ZoomCredentials,
   meetingType: "upcoming" | "scheduled" = "upcoming",
   opts?: { from?: string; to?: string }
 ): Promise<Record<string, unknown>[]> {
-  const token = await getZoomToken();
+  const token = await getZoomToken(creds);
   const collected: Record<string, unknown>[] = [];
   let nextPageToken: string | undefined;
 
@@ -168,9 +164,10 @@ export type ZoomMeetingDetails = {
 };
 
 export async function getMeetingDetails(
+  creds: ZoomCredentials,
   meetingId: string
 ): Promise<ZoomMeetingDetails> {
-  const token = await getZoomToken();
+  const token = await getZoomToken(creds);
   const res = await fetch(
     `${ZOOM_API_BASE}/meetings/${encodeURIComponent(meetingId)}`,
     { headers: { Authorization: `Bearer ${token}` } }
@@ -182,6 +179,7 @@ export async function getMeetingDetails(
 
 // Registers a user for a meeting (recurring: pass occurrence_ids for Mon+Tue same week)
 export async function registerForMeeting(
+  creds: ZoomCredentials,
   meetingId: string,
   registrant: {
     first_name: string;
@@ -191,7 +189,7 @@ export async function registerForMeeting(
   },
   occurrenceIds?: string[]
 ): Promise<{ join_url: string; registrant_id: string }> {
-  const token = await getZoomToken();
+  const token = await getZoomToken(creds);
   const body: Record<string, unknown> = { ...registrant };
   const ids = (occurrenceIds ?? []).filter(Boolean);
   if (ids.length > 0) body.occurrence_ids = ids;

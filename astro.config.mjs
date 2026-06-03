@@ -1,17 +1,12 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.alerttrainingservices.com",
   output: "server",
-  adapter: node({ mode: "standalone" }),
+  adapter: cloudflare(),
   integrations: [react()],
-  vite: {
-    optimizeDeps: {
-      include: ["@stripe/stripe-js", "@stripe/react-stripe-js"],
-    },
-  },
 });

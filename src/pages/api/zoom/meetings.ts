@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { getZoomCredentials } from "../../../lib/env";
 import { getZoomToken } from "../../../lib/zoom";
 
 const MEETING_ID = "88312217147";
@@ -17,9 +18,11 @@ function getPTDateKey(iso: string): string {
   });
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async (context) => {
+  const { locals } = context;
+
   try {
-    const token = await getZoomToken();
+    const token = await getZoomToken(getZoomCredentials(locals));
 
     const res = await fetch(
       `https://api.zoom.us/v2/users/me/meetings?type=upcoming&page_size=50`,
@@ -31,7 +34,6 @@ export const GET: APIRoute = async () => {
 
     const now = new Date();
 
-    // Filter to only this meeting's future sessions, sorted ascending
     const sessions = (data.meetings ?? [])
       .filter((m: any) => String(m.id) === MEETING_ID && new Date(m.start_time) > now)
       .sort((a: any, b: any) =>
@@ -66,7 +68,7 @@ export const GET: APIRoute = async () => {
           })()
       );
 
-      if (!tuesday) continue; // skip if no matching Tuesday found
+      if (!tuesday) continue;
 
       weeks.push({
         id: `${monday.start_time}|${tuesday.start_time}`,
@@ -84,6 +86,9 @@ export const GET: APIRoute = async () => {
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };

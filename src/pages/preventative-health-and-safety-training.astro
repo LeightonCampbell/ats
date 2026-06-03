@@ -3,9 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+
 const publishableKey = String(
-  import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
-    process.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
+  Astro.locals.runtime?.env?.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
+    import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
     ""
 ).trim();
 ---
@@ -53,4 +54,5 @@ const publishableKey = String(
       </div>
   </main>
   <SiteFooter />
+  <script src="https://js.stripe.com/v3/" is:inline></script>
 </BaseLayout>

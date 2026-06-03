@@ -1,12 +1,27 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import type { CSSProperties, FormEvent } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+
+type StripeCardElement = {
+  mount: (el: string | HTMLElement) => void;
+  unmount: () => void;
+};
+
+type StripeInstance = {
+  elements: () => { create: (type: string) => StripeCardElement };
+  confirmCardPayment: (
+    secret: string,
+    data: { payment_method: { card: StripeCardElement } }
+  ) => Promise<{
+    error?: { message?: string };
+    paymentIntent?: { id: string; status: string };
+  }>;
+};
+
+declare global {
+  interface Window {
+    Stripe?: (key: string) => StripeInstance;
+  }
+}
 
 const MEETING_ID = "88312217147";
 const COURSE_TITLE = "Preventive Health & Safety Training";
@@ -355,33 +370,60 @@ function toLocaleDateStr(iso: string): string {
 }
 
 function CheckoutForm({
+  publishableKey,
+  clientSecret,
   onSuccess,
   onError,
   bookingData,
 }: {
+  publishableKey: string;
+  clientSecret: string;
   onSuccess: (data: any) => void;
   onError: (msg: string) => void;
   bookingData: any;
 }) {
-  const stripe = useStripe();
-  const elements = useElements();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const cardElementRef = useRef<StripeCardElement | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!clientSecret || !publishableKey || !cardRef.current || !window.Stripe) {
+      return;
+    }
+
+    const stripe = window.Stripe(publishableKey);
+    const card = stripe.elements().create("card");
+    card.mount(cardRef.current);
+    cardElementRef.current = card;
+
+    return () => {
+      card.unmount();
+      cardElementRef.current = null;
+    };
+  }, [clientSecret, publishableKey]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
+    if (!window.Stripe || !cardElementRef.current) {
+      onError("Payment form is not ready. Please refresh and try again.");
+      return;
+    }
+
     setLoading(true);
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
+    const stripe = window.Stripe(publishableKey);
+    const { error, paymentIntent } = await stripe.confirmCardPayment(
+      clientSecret,
+      { payment_method: { card: cardElementRef.current } }
+    );
+
     if (error) {
       onError(error.message ?? "Payment failed");
       setLoading(false);
       return;
     }
+
     if (paymentIntent?.status === "succeeded") {
-      const res = await fetch("/api/stripe/confirm-payment", {
+      const res = await fetch("/api/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -398,10 +440,19 @@ function CheckoutForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <PaymentElement />
+      <div
+        ref={cardRef}
+        id="card-element"
+        style={{
+          padding: "12px 14px",
+          border: "1px solid rgba(0,0,0,0.12)",
+          borderRadius: 10,
+          background: "#fff",
+        }}
+      />
       <button
         type="submit"
-        disabled={!stripe || loading}
+        disabled={loading}
         style={{
           width: "100%",
           background: "#1B3A5C",
@@ -544,11 +595,6 @@ export default function BookingWidget({
 
   const personalInfoReady = Boolean(
     firstName && lastName && email && mailingAddress
-  );
-
-  const stripePromise = useMemo(
-    () => (publishableKey ? loadStripe(publishableKey) : null),
-    [publishableKey]
   );
 
   if (!publishableKey) {
@@ -818,31 +864,29 @@ export default function BookingWidget({
           </div>
 
           {clientSecret ? (
-            <Elements
-              stripe={stripePromise}
-              options={{ clientSecret, appearance: { theme: "stripe" } }}
-            >
-              <CheckoutForm
-                onSuccess={(result) => {
-                  setJoinUrl(result.joinUrl1 || result.joinUrl2 || "");
-                  setStep("success");
-                }}
-                onError={(msg) => {
-                  setErrorMsg(msg);
-                  setStep("error");
-                }}
-                bookingData={{
-                  firstName,
-                  lastName,
-                  email,
-                  phone,
-                  classTitle: COURSE_TITLE,
-                  classDate: selectedWeek.label,
-                  session1_time: selectedWeek.session1_time,
-                  session2_time: selectedWeek.session2_time,
-                }}
-              />
-            </Elements>
+            <CheckoutForm
+              publishableKey={publishableKey}
+              clientSecret={clientSecret}
+              onSuccess={(result) => {
+                setJoinUrl(result.joinUrl1 || result.joinUrl2 || "");
+                setStep("success");
+              }}
+              onError={(msg) => {
+                setErrorMsg(msg);
+                setStep("error");
+              }}
+              bookingData={{
+                firstName,
+                lastName,
+                email,
+                phone,
+                mailingAddress,
+                classTitle: COURSE_TITLE,
+                classDate: selectedWeek.label,
+                session1_time: selectedWeek.session1_time,
+                session2_time: selectedWeek.session2_time,
+              }}
+            />
           ) : (
             <p style={{ color: "#86868b", fontSize: 14, textAlign: "center" }}>
               Loading secure payment…
