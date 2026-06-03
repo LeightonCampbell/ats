@@ -707,7 +707,18 @@ export default function BookingWidget({
             .booking-step-num {
               display: none;
             }
+            .booking-action-row {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 10px;
+            }
+            .booking-action-row button {
+              width: 100%;
+            }
             @media (max-width: 639px) {
+              .booking-action-row {
+                grid-template-columns: 1fr;
+              }
               .booking-steps {
                 display: flex;
                 align-items: stretch;
@@ -885,7 +896,7 @@ export default function BookingWidget({
             </p>
           )}
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div className="booking-action-row">
             <button
               type="button"
               onClick={() => setStep("calendar")}
