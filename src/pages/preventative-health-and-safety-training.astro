@@ -4,9 +4,9 @@ import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
-const publishableKey = String(
-  import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
-).trim();
+import { getEnvAtRuntime } from "../lib/env";
+
+const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
 ---
 
 <BaseLayout
