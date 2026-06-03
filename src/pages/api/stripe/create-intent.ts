@@ -1,13 +1,11 @@
 import type { APIRoute } from "astro";
+import { getEnv } from "../../../lib/env";
 import { createPaymentIntent } from "../../../lib/stripe-api";
 
 const COURSE_AMOUNT_CENTS = 8000;
 
-export const POST: APIRoute = async (context) => {
-  const { request, locals } = context;
-  const stripeSecretKey =
-    locals.runtime?.env?.STRIPE_SECRET_KEY ||
-    import.meta.env.STRIPE_SECRET_KEY;
+export const POST: APIRoute = async ({ request }) => {
+  const stripeSecretKey = getEnv("STRIPE_SECRET_KEY");
 
   if (!stripeSecretKey) {
     return new Response(JSON.stringify({ error: "Stripe is not configured" }), {

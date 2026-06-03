@@ -3,9 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { env } from "cloudflare:workers";
 
 const publishableKey = String(
-  Astro.locals.runtime?.env?.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
+  env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
     import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ??
     ""
 ).trim();

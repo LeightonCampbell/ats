@@ -6,11 +6,8 @@ import { registerForOccurrence } from "../../lib/zoom";
 
 const COURSE_TITLE = "Preventive Health & Safety Training";
 
-export const POST: APIRoute = async (context) => {
-  const { request, locals } = context;
-  const stripeSecretKey =
-    locals.runtime?.env?.STRIPE_SECRET_KEY ||
-    import.meta.env.STRIPE_SECRET_KEY;
+export const POST: APIRoute = async ({ request }) => {
+  const stripeSecretKey = getEnv("STRIPE_SECRET_KEY");
 
   if (!stripeSecretKey) {
     return new Response(JSON.stringify({ error: "Stripe is not configured" }), {
@@ -42,7 +39,7 @@ export const POST: APIRoute = async (context) => {
       });
     }
 
-    const zoomCreds = getZoomCredentials(locals);
+    const zoomCreds = getZoomCredentials();
     let joinUrl1 = "";
     let joinUrl2 = "";
 
@@ -65,7 +62,7 @@ export const POST: APIRoute = async (context) => {
       console.error("Zoom registration failed:", zoomErr.message);
     }
 
-    const formspreeFormId = getEnv(locals, "FORMSPREE_FORM_ID");
+    const formspreeFormId = getEnv("FORMSPREE_FORM_ID");
     await submitEnrollmentToFormspree(formspreeFormId, {
       firstName,
       lastName,

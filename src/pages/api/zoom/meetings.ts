@@ -18,11 +18,9 @@ function getPTDateKey(iso: string): string {
   });
 }
 
-export const GET: APIRoute = async (context) => {
-  const { locals } = context;
-
+export const GET: APIRoute = async () => {
   try {
-    const token = await getZoomToken(getZoomCredentials(locals));
+    const token = await getZoomToken(getZoomCredentials());
 
     const res = await fetch(
       `https://api.zoom.us/v2/users/me/meetings?type=upcoming&page_size=50`,

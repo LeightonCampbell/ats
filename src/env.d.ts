@@ -13,8 +13,6 @@ type RuntimeEnv = {
 
 declare namespace App {
   interface Locals {
-    runtime?: {
-      env?: RuntimeEnv;
-    };
+    cfContext?: ExecutionContext;
   }
 }

@@ -1,26 +1,15 @@
 import type { APIRoute } from "astro";
+import { getEnv } from "../../../lib/env";
 
-export const GET: APIRoute = async (context) => {
-  const { locals } = context;
-  const runtime = locals.runtime?.env;
-
-  const publicKey =
-    runtime?.PUBLIC_STRIPE_PUBLISHABLE_KEY ||
-    import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ||
-    "";
-  const secretKey =
-    runtime?.STRIPE_SECRET_KEY || import.meta.env.STRIPE_SECRET_KEY || "";
-  const zoomAccount =
-    runtime?.ZOOM_ACCOUNT_ID || import.meta.env.ZOOM_ACCOUNT_ID || "";
-  const formspree =
-    runtime?.FORMSPREE_FORM_ID || import.meta.env.FORMSPREE_FORM_ID || "";
-
+export const GET: APIRoute = async () => {
   return new Response(
     JSON.stringify({
-      hasPublicKey: Boolean(publicKey),
-      hasSecretKey: Boolean(secretKey),
-      hasZoomAccountId: Boolean(zoomAccount),
-      hasFormspreeFormId: Boolean(formspree),
+      hasPublicKey: Boolean(getEnv("PUBLIC_STRIPE_PUBLISHABLE_KEY")),
+      hasSecretKey: Boolean(getEnv("STRIPE_SECRET_KEY")),
+      hasZoomAccountId: Boolean(getEnv("ZOOM_ACCOUNT_ID")),
+      hasZoomClientId: Boolean(getEnv("ZOOM_CLIENT_ID")),
+      hasZoomClientSecret: Boolean(getEnv("ZOOM_CLIENT_SECRET")),
+      hasFormspreeFormId: Boolean(getEnv("FORMSPREE_FORM_ID")),
     }),
     {
       status: 200,
