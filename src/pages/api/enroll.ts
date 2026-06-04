@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { getEnv, getZoomCredentials } from "../../lib/worker-env";
 import { submitEnrollmentToFormspree } from "../../lib/formspree";
-import { retrievePaymentIntent } from "../../lib/stripe-api";
+import { retrievePaymentIntent, waitForPaymentIntentSucceeded } from "../../lib/stripe-api";
 import { getZoomToken, registerForOccurrence } from "../../lib/zoom";
 
 const COURSE_TITLE = "Preventive Health & Safety Training";
@@ -31,7 +31,20 @@ export const POST: APIRoute = async ({ request }) => {
   } = body;
 
   try {
-    const intent = await retrievePaymentIntent(stripeSecretKey, paymentIntentId);
+    let intent = await retrievePaymentIntent(stripeSecretKey, paymentIntentId);
+    if (intent.status === "processing") {
+      try {
+        intent = await waitForPaymentIntentSucceeded(
+          stripeSecretKey,
+          paymentIntentId
+        );
+      } catch (pollErr: any) {
+        return new Response(
+          JSON.stringify({ error: pollErr.message ?? "Payment not completed" }),
+          { status: 402, headers: { "Content-Type": "application/json" } }
+        );
+      }
+    }
     if (intent.status !== "succeeded") {
       return new Response(JSON.stringify({ error: "Payment not completed" }), {
         status: 402,

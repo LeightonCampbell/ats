@@ -58,3 +58,28 @@ export async function retrievePaymentIntent(
 
   return (await res.json()) as PaymentIntentResult;
 }
+
+const ENROLLABLE_STATUSES = new Set(["succeeded", "processing"]);
+
+/** Poll until PaymentIntent succeeds (handles async card processing). */
+export async function waitForPaymentIntentSucceeded(
+  secretKey: string,
+  paymentIntentId: string,
+  opts?: { maxAttempts?: number; delayMs?: number }
+): Promise<PaymentIntentResult> {
+  const maxAttempts = opts?.maxAttempts ?? 10;
+  const delayMs = opts?.delayMs ?? 1500;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const intent = await retrievePaymentIntent(secretKey, paymentIntentId);
+    if (intent.status === "succeeded") return intent;
+    if (!ENROLLABLE_STATUSES.has(intent.status)) {
+      throw new Error(`Payment status: ${intent.status}`);
+    }
+    if (attempt < maxAttempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+
+  throw new Error("Payment still processing");
+}

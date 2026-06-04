@@ -4,6 +4,14 @@ import type { CSSProperties, FormEvent } from "react";
 type StripeCardElement = {
   mount: (el: string | HTMLElement) => void;
   unmount: () => void;
+  on: (
+    event: "change",
+    handler: (event: { error?: { message?: string } }) => void
+  ) => void;
+  off: (
+    event: "change",
+    handler: (event: { error?: { message?: string } }) => void
+  ) => void;
 };
 
 type StripeInstance = {
@@ -13,6 +21,9 @@ type StripeInstance = {
     data: { payment_method: { card: StripeCardElement } }
   ) => Promise<{
     error?: { message?: string };
+    paymentIntent?: { id: string; status: string };
+  }>;
+  retrievePaymentIntent: (clientSecret: string) => Promise<{
     paymentIntent?: { id: string; status: string };
   }>;
 };
@@ -26,6 +37,7 @@ declare global {
 const MEETING_ID = "88312217147";
 const COURSE_TITLE = "Preventive Health & Safety Training";
 const COURSE_PRICE = "$80.00";
+const CLASS_TIMEZONE = "America/Los_Angeles";
 
 interface WeekSlot {
   start_time: string;
@@ -93,6 +105,8 @@ function CalendarPicker({
         toLocaleDateStr(selectedClass.session2_time),
       ])
     : new Set<string>();
+
+  const todayPt = todayDateStrInTz(CLASS_TIMEZONE);
 
   // Build calendar grid
   const firstDay = new Date(viewYear, viewMonth, 1).getDay();
@@ -295,7 +309,7 @@ function CalendarPicker({
               )}-${String(day).padStart(2, "0")}`;
               const hasSession = sessionDateMap.has(dateStr);
               const isSelected = selectedDates.has(dateStr);
-              const isPast = new Date(dateStr) < new Date(today.toDateString());
+              const isPast = dateStr < todayPt;
               const sessionForDay = sessionDateMap.get(dateStr);
               // Only make Mondays clickable (clicking Monday selects the pair)
               const isMonday =
@@ -411,8 +425,42 @@ function CalendarPicker({
 // Helper: convert ISO string to YYYY-MM-DD in PT
 function toLocaleDateStr(iso: string): string {
   return new Date(iso).toLocaleDateString("en-CA", {
-    timeZone: "America/Los_Angeles",
+    timeZone: CLASS_TIMEZONE,
   }); // en-CA gives YYYY-MM-DD format
+}
+
+function todayDateStrInTz(timeZone: string): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
+async function waitForPaymentSucceeded(
+  stripe: StripeInstance,
+  clientSecret: string
+): Promise<{ id: string; status: string }> {
+  const maxAttempts = 10;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+    if (paymentIntent?.status === "succeeded") {
+      return paymentIntent;
+    }
+    if (
+      paymentIntent?.status === "canceled" ||
+      paymentIntent?.status === "requires_payment_method"
+    ) {
+      throw new Error("Payment could not be completed. Please try another card.");
+    }
+    if (attempt < maxAttempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
+  }
+  throw new Error(
+    "Payment is still processing. Please wait a moment and try again."
+  );
 }
 
 function CheckoutForm({
@@ -432,29 +480,70 @@ function CheckoutForm({
   const stripeRef = useRef<StripeInstance | null>(null);
   const cardElementRef = useRef<StripeCardElement | null>(null);
   const [loading, setLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [stripeReady, setStripeReady] = useState(() => Boolean(window.Stripe));
 
   useEffect(() => {
-    if (!clientSecret || !publishableKey || !cardRef.current || !window.Stripe) {
+    if (window.Stripe) {
+      setStripeReady(true);
       return;
     }
 
-    const stripe = window.Stripe(publishableKey);
+    let attempts = 0;
+    const intervalId = window.setInterval(() => {
+      attempts += 1;
+      if (window.Stripe) {
+        setStripeReady(true);
+        window.clearInterval(intervalId);
+      } else if (attempts >= 75) {
+        window.clearInterval(intervalId);
+      }
+    }, 200);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (!stripeReady || !clientSecret || !publishableKey || !cardRef.current) {
+      return;
+    }
+
+    const stripe = window.Stripe!(publishableKey);
     stripeRef.current = stripe;
     const card = stripe.elements().create("card");
     card.mount(cardRef.current);
     cardElementRef.current = card;
 
+    const onCardChange = (event: { error?: { message?: string } }) => {
+      if (event.error?.message) {
+        setPaymentError(event.error.message);
+      } else {
+        setPaymentError("");
+      }
+    };
+    card.on("change", onCardChange);
+
     return () => {
+      card.off("change", onCardChange);
       card.unmount();
       cardElementRef.current = null;
       stripeRef.current = null;
     };
-  }, [clientSecret, publishableKey]);
+  }, [stripeReady, clientSecret, publishableKey]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setPaymentError("");
+
+    if (!stripeReady || !window.Stripe) {
+      setPaymentError(
+        "Payment form could not load. Disable ad blockers for this site and refresh."
+      );
+      return;
+    }
+
     if (!stripeRef.current || !cardElementRef.current) {
-      onError("Payment form is not ready. Please refresh and try again.");
+      setPaymentError("Payment form is not ready. Please refresh and try again.");
       return;
     }
 
@@ -466,15 +555,25 @@ function CheckoutForm({
       );
 
       if (error) {
-        onError(error.message ?? "Payment failed");
+        setPaymentError(
+          error.message ?? "Please enter your card details to continue."
+        );
         return;
       }
 
-      if (
-        paymentIntent?.status !== "succeeded" &&
-        paymentIntent?.status !== "processing"
-      ) {
-        onError(`Payment status: ${paymentIntent?.status ?? "unknown"}`);
+      if (!paymentIntent?.id) {
+        setPaymentError("Payment could not be started. Please try again.");
+        return;
+      }
+
+      let confirmedIntent = paymentIntent;
+      if (paymentIntent.status === "processing") {
+        confirmedIntent = await waitForPaymentSucceeded(
+          stripeRef.current,
+          clientSecret
+        );
+      } else if (paymentIntent.status !== "succeeded") {
+        setPaymentError(`Payment status: ${paymentIntent.status}`);
         return;
       }
 
@@ -482,7 +581,7 @@ function CheckoutForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          paymentIntentId: paymentIntent.id,
+          paymentIntentId: confirmedIntent.id,
           ...bookingData,
         }),
       });
@@ -504,7 +603,7 @@ function CheckoutForm({
 
       onSuccess(result);
     } catch (err: any) {
-      onError(err.message ?? "Payment failed. Please try again.");
+      setPaymentError(err.message ?? "Payment failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -517,11 +616,25 @@ function CheckoutForm({
         id="card-element"
         style={{
           padding: "12px 14px",
-          border: "1px solid rgba(0,0,0,0.12)",
+          border: paymentError
+            ? "1px solid #b42318"
+            : "1px solid rgba(0,0,0,0.12)",
           borderRadius: 10,
           background: "#fff",
         }}
       />
+      {paymentError ? (
+        <p
+          role="alert"
+          style={{ color: "#b42318", fontSize: 13, marginTop: 10, lineHeight: 1.5 }}
+        >
+          {paymentError}
+        </p>
+      ) : !stripeReady ? (
+        <p style={{ color: "#86868b", fontSize: 13, marginTop: 10, lineHeight: 1.5 }}>
+          Loading secure payment…
+        </p>
+      ) : null}
       <button
         type="submit"
         disabled={loading}
