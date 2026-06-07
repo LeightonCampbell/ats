@@ -1,0 +1,134 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import DaycareGuideCheckout from "../components/DaycareGuideCheckout.tsx";
+import { getEnvAtRuntime } from "../lib/env";
+
+const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
+---
+
+<BaseLayout
+  title="How to Start a Home Daycare in California (Guide + Checklist) | Alert Training Services"
+  description="Step-by-step California home daycare startup guide and licensing checklist. PDF download for $29 — licensing, EMSA training, and opening your family childcare home."
+  canonical="https://www.alerttrainingservices.com/how-to-start-a-home-daycare-in-california"
+>
+  <SiteHeader />
+  <style>
+    .daycare-shell section {
+      padding: 0;
+    }
+    .daycare-shell h2 {
+      font-size: 1.25rem;
+      color: #1b3a5c;
+      margin: 0 0 10px;
+    }
+    .daycare-grid {
+      display: grid;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .daycare-grid {
+        grid-template-columns: 1fr 380px;
+      }
+    }
+    .bundle-list {
+      margin: 0;
+      padding-left: 20px;
+      color: #515154;
+      line-height: 1.8;
+    }
+  </style>
+  <main class="daycare-shell" style="background:#f5f5f7; padding: 50px 24px;">
+    <section style="max-width:1080px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:34px;">
+        <div
+          style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E02B2B;margin-bottom:10px;"
+        >
+          Resources for Providers
+        </div>
+        <h1
+          style="font-size:2.4rem;font-weight:700;color:#1B3A5C;letter-spacing:-0.03em;margin-bottom:12px;"
+        >
+          How to Start a Home Daycare in California
+        </h1>
+        <p
+          style="max-width:760px;margin:0 auto;color:#515154;font-size:1rem;line-height:1.7;"
+        >
+          A practical PDF guide and printable checklist to help you navigate
+          licensing, safety requirements, and the steps to open a home or family
+          childcare program in California.
+        </p>
+      </div>
+
+      <div class="daycare-grid">
+        <div>
+          <article
+            style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;margin-bottom:16px;"
+          >
+            <h2>What's included — $29 bundle</h2>
+            <ul class="bundle-list">
+              <li>
+                <strong>Startup guide (PDF)</strong> — licensing overview, EMSA
+                training requirements, facility readiness, business basics, and
+                enrollment tips for California providers
+              </li>
+              <li>
+                <strong>Licensing readiness checklist (PDF)</strong> — printable
+                step-by-step list to track orientation, background checks,
+                inspections, and policy setup
+              </li>
+            </ul>
+            <p style="color:#515154;line-height:1.7;margin:16px 0 0;">
+              Instant download after purchase. Read our free overview in
+              <a href="/ats-news/how-to-start-a-successful-daycare-in-california" style="color:#E02B2B;font-weight:600;"
+                >How to Start a Successful Daycare in California</a
+              >.
+            </p>
+          </article>
+
+          <article
+            style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;margin-bottom:16px;"
+          >
+            <h2>Also required: EMSA Preventive Health & Safety training</h2>
+            <p style="color:#515154;line-height:1.7;margin:0;">
+              California childcare providers must complete EMSA-approved
+              Preventive Health and Safety training before licensing. Alert
+              Training Services offers convenient online evening classes for $80.
+              <a href="/preventative-health-and-safety-training" style="color:#E02B2B;font-weight:600;"
+                >View class schedule →</a
+              >
+            </p>
+          </article>
+
+          <p style="font-size:0.85rem;color:#86868b;line-height:1.6;margin:0;">
+            This guide is for educational purposes and does not constitute legal
+            or licensing advice. Always confirm current requirements with
+            Community Care Licensing and qualified professionals.
+          </p>
+        </div>
+
+        <div>
+          {
+            publishableKey ? (
+              <DaycareGuideCheckout client:only="react" publishableKey={publishableKey} />
+            ) : (
+              <div
+                style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;color:#515154;"
+              >
+                Online checkout is temporarily unavailable. Email{" "}
+                <a href="mailto:info@alerttrainingservices.com" style="color:#E02B2B;"
+                  >info@alerttrainingservices.com</a
+                >{" "}
+                to purchase the guide.
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+  <script src="https://js.stripe.com/v3/" is:inline></script>
+</BaseLayout>

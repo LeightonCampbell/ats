@@ -83,3 +83,41 @@ export async function submitContactToFormspree(
     throw new Error(`Formspree error: ${text}`);
   }
 }
+
+export type GuidePurchaseNotification = {
+  email: string;
+  firstName?: string;
+  paymentIntentId: string;
+  productTitle: string;
+};
+
+/** Notify admin when a daycare guide bundle is purchased. */
+export async function submitGuidePurchaseToFormspree(
+  formId: string,
+  data: GuidePurchaseNotification
+): Promise<void> {
+  if (!formId) {
+    console.warn("FORMSPREE_FORM_ID is not set; skipping guide purchase notification.");
+    return;
+  }
+
+  const res = await fetch(`https://formspree.io/f/${formId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      name: data.firstName ? data.firstName : data.email,
+      email: data.email,
+      product: data.productTitle,
+      payment_intent_id: data.paymentIntentId,
+      _subject: `Guide purchase: ${data.productTitle}`,
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Formspree error: ${text}`);
+  }
+}

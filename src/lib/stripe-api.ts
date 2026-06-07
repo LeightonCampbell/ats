@@ -4,6 +4,8 @@ export type PaymentIntentResult = {
   id: string;
   client_secret: string;
   status: string;
+  amount?: number;
+  metadata?: Record<string, string>;
 };
 
 function stripeHeaders(secretKey: string): HeadersInit {
@@ -29,6 +31,34 @@ export async function createPaymentIntent(
     "metadata[classDate]": classDate,
   });
 
+  return createPaymentIntentRequest(secretKey, body);
+}
+
+/** Create a PaymentIntent for a digital product (e.g. daycare guide bundle). */
+export async function createProductPaymentIntent(
+  secretKey: string,
+  amountCents: number,
+  description: string,
+  metadata: Record<string, string> = {}
+): Promise<PaymentIntentResult> {
+  const body = new URLSearchParams({
+    amount: String(amountCents),
+    currency: "usd",
+    description,
+    "payment_method_types[]": "card",
+  });
+
+  for (const [key, value] of Object.entries(metadata)) {
+    body.set(`metadata[${key}]`, value);
+  }
+
+  return createPaymentIntentRequest(secretKey, body);
+}
+
+async function createPaymentIntentRequest(
+  secretKey: string,
+  body: URLSearchParams
+): Promise<PaymentIntentResult> {
   const res = await fetch(`${STRIPE_API}/payment_intents`, {
     method: "POST",
     headers: stripeHeaders(secretKey),

@@ -10,6 +10,8 @@ const routes = [
   "/class-rules",
   "/booking-success",
   "/ats-news",
+  "/ats-news/how-to-start-a-successful-daycare-in-california",
+  "/how-to-start-a-home-daycare-in-california",
 ];
 
 export const GET: APIRoute = async () => {
