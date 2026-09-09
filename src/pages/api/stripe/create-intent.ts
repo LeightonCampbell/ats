@@ -14,14 +14,32 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const { classTitle, classDate } = await request.json();
+  const { classTitle, classDate, email, firstName, lastName, phone } =
+    await request.json();
+
+  if (!email || typeof email !== "string" || !email.trim()) {
+    return new Response(JSON.stringify({ error: "Email is required" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const name = [firstName, lastName]
+    .filter((part) => typeof part === "string" && part.trim())
+    .map((part: string) => part.trim())
+    .join(" ");
 
   try {
     const intent = await createPaymentIntent(
       stripeSecretKey,
       COURSE_AMOUNT_CENTS,
       classTitle,
-      classDate
+      classDate,
+      {
+        email: email.trim(),
+        name: name || undefined,
+        phone: typeof phone === "string" ? phone.trim() : undefined,
+      }
     );
     return new Response(JSON.stringify({ clientSecret: intent.client_secret }), {
       status: 200,

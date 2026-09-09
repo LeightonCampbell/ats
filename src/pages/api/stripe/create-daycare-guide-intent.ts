@@ -26,6 +26,10 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  const trimmedEmail = email.trim();
+  const trimmedName =
+    typeof firstName === "string" && firstName.trim() ? firstName.trim() : "";
+
   try {
     const intent = await createProductPaymentIntent(
       stripeSecretKey,
@@ -33,8 +37,12 @@ export const POST: APIRoute = async ({ request }) => {
       DAYCARE_GUIDE_TITLE,
       {
         productId: DAYCARE_GUIDE_PRODUCT_ID,
-        email: email.trim(),
-        firstName: typeof firstName === "string" ? firstName.trim() : "",
+        email: trimmedEmail,
+        firstName: trimmedName,
+      },
+      {
+        email: trimmedEmail,
+        name: trimmedName || undefined,
       }
     );
     return new Response(JSON.stringify({ clientSecret: intent.client_secret }), {

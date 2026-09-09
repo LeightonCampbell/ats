@@ -18,7 +18,23 @@ type StripeInstance = {
   elements: () => { create: (type: string) => StripeCardElement };
   confirmCardPayment: (
     secret: string,
-    data: { payment_method: { card: StripeCardElement } }
+    data: {
+      payment_method: {
+        card: StripeCardElement;
+        billing_details?: {
+          name?: string;
+          email?: string;
+          phone?: string;
+          address?: {
+            line1?: string;
+            city?: string;
+            postal_code?: string;
+            country?: string;
+          };
+        };
+      };
+      receipt_email?: string;
+    }
   ) => Promise<{
     error?: { message?: string };
     paymentIntent?: { id: string; status: string };
@@ -551,7 +567,19 @@ function CheckoutForm({
     try {
       const { error, paymentIntent } = await stripeRef.current.confirmCardPayment(
         clientSecret,
-        { payment_method: { card: cardElementRef.current } }
+        {
+          payment_method: {
+            card: cardElementRef.current,
+            billing_details: {
+              name: [bookingData.firstName, bookingData.lastName]
+                .filter(Boolean)
+                .join(" "),
+              email: bookingData.email,
+              phone: bookingData.phone || undefined,
+            },
+          },
+          receipt_email: bookingData.email,
+        }
       );
 
       if (error) {
@@ -1076,6 +1104,10 @@ export default function BookingWidget({
                     body: JSON.stringify({
                       classTitle: COURSE_TITLE,
                       classDate: selectedClass?.label,
+                      email,
+                      firstName,
+                      lastName,
+                      phone,
                     }),
                   });
                   const data = await res.json();
@@ -1196,7 +1228,7 @@ export default function BookingWidget({
               marginBottom: 24,
             }}
           >
-            Check your email for your receipt and Zoom link. See you in class!
+            Check your email for your Stripe receipt and Zoom link. See you in class!
           </p>
           {joinUrl && (
             <a
@@ -1209,7 +1241,7 @@ export default function BookingWidget({
             </a>
           )}
           <p style={{ color: "#86868b", fontSize: 13, marginTop: 16 }}>
-            A receipt has been sent to <strong>{email}</strong>
+            A Stripe receipt has been sent to <strong>{email}</strong>
           </p>
         </div>
       )}

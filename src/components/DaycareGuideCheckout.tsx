@@ -18,7 +18,16 @@ type StripeInstance = {
   elements: () => { create: (type: string) => StripeCardElement };
   confirmCardPayment: (
     secret: string,
-    data: { payment_method: { card: StripeCardElement } }
+    data: {
+      payment_method: {
+        card: StripeCardElement;
+        billing_details?: {
+          name?: string;
+          email?: string;
+        };
+      };
+      receipt_email?: string;
+    }
   ) => Promise<{
     error?: { message?: string };
     paymentIntent?: { id: string; status: string };
@@ -191,7 +200,14 @@ export default function DaycareGuideCheckout({
 
       const { error, paymentIntent } =
         await stripeRef.current.confirmCardPayment(intentData.clientSecret, {
-          payment_method: { card: cardElementRef.current },
+          payment_method: {
+            card: cardElementRef.current,
+            billing_details: {
+              name: firstName.trim() || undefined,
+              email: email.trim(),
+            },
+          },
+          receipt_email: email.trim(),
         });
 
       if (error) {
@@ -264,8 +280,8 @@ export default function DaycareGuideCheckout({
           Thank you — your download is ready
         </h3>
         <p style={{ color: "#515154", lineHeight: 1.6, marginBottom: 20 }}>
-          We also sent a copy to <strong>{email}</strong>. Save these links for
-          future access.
+          Your downloads are ready below. Stripe has also emailed a payment
+          receipt to <strong>{email}</strong>.
         </p>
         <div style={{ display: "grid", gap: 12 }}>
           <a

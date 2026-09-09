@@ -15,12 +15,19 @@ function stripeHeaders(secretKey: string): HeadersInit {
   };
 }
 
+export type PaymentCustomerDetails = {
+  email: string;
+  name?: string;
+  phone?: string;
+};
+
 /** Create a PaymentIntent via Stripe REST API (no Node SDK). */
 export async function createPaymentIntent(
   secretKey: string,
   amountCents: number,
   classTitle: string,
-  classDate: string
+  classDate: string,
+  customer?: PaymentCustomerDetails
 ): Promise<PaymentIntentResult> {
   const body = new URLSearchParams({
     amount: String(amountCents),
@@ -31,6 +38,8 @@ export async function createPaymentIntent(
     "metadata[classDate]": classDate,
   });
 
+  applyCustomerToPaymentIntent(body, customer);
+
   return createPaymentIntentRequest(secretKey, body);
 }
 
@@ -39,7 +48,8 @@ export async function createProductPaymentIntent(
   secretKey: string,
   amountCents: number,
   description: string,
-  metadata: Record<string, string> = {}
+  metadata: Record<string, string> = {},
+  customer?: PaymentCustomerDetails
 ): Promise<PaymentIntentResult> {
   const body = new URLSearchParams({
     amount: String(amountCents),
@@ -52,7 +62,28 @@ export async function createProductPaymentIntent(
     body.set(`metadata[${key}]`, value);
   }
 
+  applyCustomerToPaymentIntent(body, customer);
+
   return createPaymentIntentRequest(secretKey, body);
+}
+
+/** Attach email/name so Stripe Dashboard + automatic receipts work. */
+function applyCustomerToPaymentIntent(
+  body: URLSearchParams,
+  customer?: PaymentCustomerDetails
+): void {
+  if (!customer?.email) return;
+
+  const email = customer.email.trim();
+  body.set("receipt_email", email);
+  body.set("metadata[customerEmail]", email);
+
+  if (customer.name?.trim()) {
+    body.set("metadata[customerName]", customer.name.trim());
+  }
+  if (customer.phone?.trim()) {
+    body.set("metadata[customerPhone]", customer.phone.trim());
+  }
 }
 
 async function createPaymentIntentRequest(
