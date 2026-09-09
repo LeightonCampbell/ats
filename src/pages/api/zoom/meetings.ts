@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
 import { getZoomCredentials } from "../../../lib/worker-env";
-import { getZoomToken } from "../../../lib/zoom";
+import { getUpcomingMeetings } from "../../../lib/zoom";
 
-const MEETING_ID = "88312217147";
 const PT_TIME_ZONE = "America/Los_Angeles";
 
+/** PT weekday for display labels only — never use for pairing/matching. */
 function getPTWeekday(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     timeZone: PT_TIME_ZONE,
@@ -12,35 +12,12 @@ function getPTWeekday(iso: string): string {
   });
 }
 
-function getPTDateKey(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-CA", {
-    timeZone: PT_TIME_ZONE,
-  });
-}
-
 export const GET: APIRoute = async () => {
   try {
-    const token = await getZoomToken(getZoomCredentials());
+    const sessions = await getUpcomingMeetings(getZoomCredentials());
 
-    const res = await fetch(
-      `https://api.zoom.us/v2/users/me/meetings?type=upcoming&page_size=50`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (!res.ok) throw new Error(`Zoom API error: ${await res.text()}`);
-    const data = await res.json();
-
-    const now = new Date();
-
-    const sessions = (data.meetings ?? [])
-      .filter((m: any) => String(m.id) === MEETING_ID && new Date(m.start_time) > now)
-      .sort((a: any, b: any) =>
-        new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
-      );
-
-    const fmt = (iso: string) =>
-      new Date(iso).toLocaleDateString("en-US", {
-        weekday: "long",
+    const fmt = (iso: string) => {
+      const dateTime = new Date(iso).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         hour: "numeric",
@@ -48,25 +25,28 @@ export const GET: APIRoute = async () => {
         timeZone: PT_TIME_ZONE,
         timeZoneName: "short",
       });
+      return `${getPTWeekday(iso)}, ${dateTime}`;
+    };
 
-    const mondays = sessions.filter((s: any) => getPTWeekday(s.start_time) === "Monday");
+    // Monday 6PM PT is stored as Tuesday 01:00 UTC (getUTCDay() === 2)
+    const mondays = sessions.filter(
+      (s: any) => new Date(s.start_time).getUTCDay() === 2
+    );
 
     const weeks: any[] = [];
 
     for (const monday of mondays) {
-      const mondayPT = getPTDateKey(monday.start_time);
+      const mondayMs = new Date(monday.start_time).getTime();
       const tuesday = sessions.find(
         (s: any) =>
-          getPTWeekday(s.start_time) === "Tuesday" &&
-          (() => {
-            const tuesdayPtDate = new Date(getPTDateKey(s.start_time));
-            const mondayPtDate = new Date(mondayPT);
-            const diffMs = tuesdayPtDate.getTime() - mondayPtDate.getTime();
-            return diffMs === 24 * 60 * 60 * 1000;
-          })()
+          new Date(s.start_time).getTime() === mondayMs + 24 * 60 * 60 * 1000
       );
 
       if (!tuesday) continue;
+      const gap =
+        new Date(tuesday.start_time).getTime() -
+        new Date(monday.start_time).getTime();
+      if (gap !== 24 * 60 * 60 * 1000) continue; // must be exactly 24 hours apart
 
       weeks.push({
         id: `${monday.start_time}|${tuesday.start_time}`,

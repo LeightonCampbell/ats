@@ -2,7 +2,11 @@ import type { APIRoute } from "astro";
 import { getEnv, getZoomCredentials } from "../../lib/worker-env";
 import { submitEnrollmentToFormspree } from "../../lib/formspree";
 import { retrievePaymentIntent, waitForPaymentIntentSucceeded } from "../../lib/stripe-api";
-import { getZoomToken, registerForOccurrence } from "../../lib/zoom";
+import {
+  getUpcomingMeetings,
+  getZoomToken,
+  registerForOccurrence,
+} from "../../lib/zoom";
 
 const COURSE_TITLE = "Preventive Health & Safety Training";
 
@@ -52,7 +56,30 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    if (!session1_time || !session2_time) {
+      return new Response(
+        JSON.stringify({
+          error:
+            "Invalid session times selected. Please go back and select your class again.",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const zoomCreds = getZoomCredentials();
+
+    const validSessions = await getUpcomingMeetings(zoomCreds);
+    const validTimes = new Set(validSessions.map((s: any) => s.start_time));
+    if (!validTimes.has(session1_time) || !validTimes.has(session2_time)) {
+      return new Response(
+        JSON.stringify({
+          error:
+            "Invalid session times selected. Please go back and select your class again.",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     let joinUrl1 = "";
     let joinUrl2 = "";
 

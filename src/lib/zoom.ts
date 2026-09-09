@@ -164,6 +164,44 @@ export type ZoomMeetingDetails = {
   }>;
 };
 
+/** Upcoming host sessions for the ATS class meeting (raw Zoom start_times). */
+export async function getUpcomingMeetings(
+  creds: ZoomCredentials
+): Promise<
+  Array<{
+    id: string | number;
+    start_time: string;
+    uuid?: string;
+    join_url?: string;
+  }>
+> {
+  const token = await getZoomToken(creds);
+  const res = await fetch(
+    `${ZOOM_API_BASE}${meetingsUserPath()}?type=upcoming&page_size=50`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  if (!res.ok) throw new Error(`Zoom API error: ${await res.text()}`);
+  const data = (await res.json()) as {
+    meetings?: Array<{
+      id: string | number;
+      start_time: string;
+      uuid?: string;
+      join_url?: string;
+    }>;
+  };
+
+  const now = new Date();
+  return (data.meetings ?? [])
+    .filter(
+      (m) => String(m.id) === MEETING_ID && new Date(m.start_time) > now
+    )
+    .sort(
+      (a, b) =>
+        new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+    );
+}
+
 export async function getMeetingDetails(
   creds: ZoomCredentials,
   meetingId: string
