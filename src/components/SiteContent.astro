@@ -1,313 +1,279 @@
-<nav>
-  <a class="nav-brand" href="#">
-    <img src="/brand/alert-training-services-logo.jpg" alt="Alert Training Services logo" />
-  </a>
-  <ul class="nav-links">
-    <li class="nav-item-dropdown">
-      <a href="/preventative-health-and-safety-training">Courses</a>
-      <ul class="nav-submenu">
-        <li>
-          <a href="/preventative-health-and-safety-training"
-            >Preventive Health & Safety with Nutrition and Lead Poisoning Prevention</a
-          >
-        </li>
-      </ul>
-    </li>
-    <li><a href="/how-to-start-a-home-daycare-in-california">Home Daycare Guide</a></li>
-    <li><a href="#faq">FAQs</a></li>
-    <li><a href="/ats-news">Blog</a></li>
-  </ul>
-  <a href="/preventative-health-and-safety-training" class="nav-btn nav-cta">Enroll Now</a>
-  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+---
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+---
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="/preventative-health-and-safety-training" onclick="closeMenu()">Courses</a>
-  <a href="/how-to-start-a-home-daycare-in-california" onclick="closeMenu()">Home Daycare Guide</a>
-  <a href="#faq" onclick="closeMenu()">FAQs</a>
-  <a href="/ats-news" onclick="closeMenu()">Blog</a>
-  <a href="tel:3239216244" class="mob-phone">📞 323-921-6244</a>
-  <a href="/preventative-health-and-safety-training" class="mob-enroll" onclick="closeMenu()">Enroll Now</a>
-</div>
+<SiteHeader />
 
 <section class="hero">
-  <div class="eyebrow-pill">
-    <span class="dot"></span>
-    EMSA Approved · California
-  </div>
-  <h1>Be Prepared for<br />Any <em>Emergency</em></h1>
-  <p class="hero-sub">Get the skills to act quickly and confidently when it matters most. Convenient evening classes for daycares, schools, and other caregivers.</p>
-  <div class="hero-actions">
-    <a href="/preventative-health-and-safety-training" class="btn-primary">Enroll Now</a>
-    <a href="#courses" class="btn-ghost">View Courses</a>
-  </div>
-  <div class="hero-proof">
-    <div class="proof-item">
-      <div class="proof-num">5.0<sup>★</sup></div>
-      <div class="proof-label">Instructor Rating</div>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>EMSA-Approved · California</div>
+    <h1>Preventive Health &amp; Safety training, built for your schedule.</h1>
+    <p class="sub">
+      Two evening sessions. Fully online. One certificate that gets you licensed.
+    </p>
+    <div class="hero-ctas">
+      <a href="/preventative-health-and-safety-training" class="btn btn-accent"
+        >Register Now</a
+      >
+      <a href="/preventative-health-and-safety-training" class="btn btn-outline"
+        >View Upcoming Dates</a
+      >
     </div>
-    <div class="proof-item">
-      <div class="proof-num">8 hr</div>
-      <div class="proof-label">Full Certification</div>
-    </div>
-    <div class="proof-item">
-      <div class="proof-num">$80</div>
-      <div class="proof-label">Per Person</div>
-    </div>
-    <div class="proof-item">
-      <div class="proof-num">100%</div>
-      <div class="proof-label">EMSA Approved</div>
-    </div>
+    <p class="hero-note">
+      Certificate provided upon completion — printed &amp; mailed, or digital on request.
+    </p>
   </div>
 </section>
 
-<section class="benefits">
-  <div class="container">
-    <div class="eyebrow">Why It Matters</div>
-    <h2>Training that saves lives</h2>
-    <div class="benefit-grid reveal">
-      <div class="benefit-card">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+<div class="mockup-band">
+  <div class="wrap">
+    <div class="device">
+      <div class="device-screen">
+        <div class="device-head">
+          <h3>Preventive Health &amp; Safety — Next Session</h3>
+          <span>8 hours total</span>
         </div>
-        <h3>Saves Lives</h3>
-        <p>Learn the critical skills that can mean the difference between life and death. Trained people make the difference when emergencies strike.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        </div>
-        <h3>Builds Confidence</h3>
-        <p>Gain the confidence to respond quickly and effectively when emergencies arise in your workplace, school, or community.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        </div>
-        <h3>Improves Safety Awareness</h3>
-        <p>Develop a heightened awareness of potential hazards and learn how to prevent accidents before they happen.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="courses">
-  <div class="container">
-    <div class="eyebrow">Certification Programs</div>
-    <h2>Choose your training</h2>
-    <p class="section-lead">Professional certification courses designed for healthcare workers, educators, and community members throughout LA.</p>
-    <div class="course-card reveal">
-      <div class="course-visual">
-        <svg class="shield" viewBox="0 0 96 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M48 4L8 20V52C8 75 26 95 48 100C70 95 88 75 88 52V20L48 4Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.22)" stroke-width="2.5"></path>
-          <path d="M36 52c0-6.63 5.37-12 12-12s12 5.37 12 12c0 9-12 18-12 18s-12-9-12-18z" fill="#E02B2B"></path>
-          <path d="M22 56h12l5-10 10 19 5-12 5 8h15" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-        </svg>
-        <div class="emsa-pill">✓ EMSA Approved</div>
-        <div class="stars-visual">★★★★★<span>5.0 rating</span></div>
-      </div>
-      <div class="course-info">
-        <h3>Preventive Health &amp; Safety Training</h3>
-        <p class="course-desc">8-hour EMSA-approved course covering essential health and safety protocols. Delivered in two convenient evening sessions for working professionals.</p>
-        <div class="meta-grid">
-          <div class="meta-pill"><div class="ml">Duration</div><div class="mv">8 hours · 2 sessions</div></div>
-          <div class="meta-pill"><div class="ml">Schedule</div><div class="mv">Mon &amp; Tue · 6–10 PM</div></div>
-          <div class="meta-pill"><div class="ml">Format</div><div class="mv">Online</div></div>
-          <div class="meta-pill"><div class="ml">Certification</div><div class="mv">EMSA Approved</div></div>
-        </div>
-        <div class="price-row">
-          <div class="price">$80</div>
-          <div class="price-note">per person<br />all materials included</div>
-        </div>
-        <a href="/preventative-health-and-safety-training" class="btn-primary">Enroll Now →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="audience">
-  <div class="container">
-    <div class="eyebrow">Who We Serve</div>
-    <h2>Built for anyone<br />who cares for others</h2>
-    <p class="section-lead">Our courses are designed for anyone responsible for the safety and well-being of people around them.</p>
-    <div class="chips reveal">
-      <div class="chip"><span class="chip-dot"></span>Daycares &amp; Childcare Centers</div>
-      <div class="chip"><span class="chip-dot"></span>Schools &amp; Educators</div>
-      <div class="chip"><span class="chip-dot"></span>Parents &amp; Caregivers</div>
-      <div class="chip"><span class="chip-dot"></span>Coaches &amp; Youth Leaders</div>
-      <div class="chip"><span class="chip-dot"></span>Businesses &amp; Workplaces</div>
-      <div class="chip"><span class="chip-dot"></span>Community Organizations</div>
-    </div>
-  </div>
-</section>
-
-<section class="why" id="why">
-  <div class="container">
-    <div class="eyebrow">Why Alert Training</div>
-    <h2>What sets us apart</h2>
-    <div class="why-grid">
-      <div>
-        <div class="why-item reveal">
-          <div class="why-num">01</div>
-          <div class="why-text">
-            <h4>Convenient &amp; Affordable</h4>
-            <p>Evening classes that fit around your schedule at $80 per person — one of the most competitive rates for EMSA-approved training in Los Angeles.</p>
+        <div class="cal-grid">
+          <div class="cal-cell active">
+            <div class="day">MON</div><div class="time">6–10 PM</div>
           </div>
-        </div>
-        <div class="why-item reveal">
-          <div class="why-num">02</div>
-          <div class="why-text">
-            <h4>Modern, Relevant Content</h4>
-            <p>Our programs incorporate the latest industry standards and best practices so you're fully prepared to respond confidently in real-world situations.</p>
+          <div class="cal-cell active">
+            <div class="day">TUE</div><div class="time">6–10 PM</div>
           </div>
+          <div class="cal-cell"><div class="day">WED</div><div class="time">—</div></div>
+          <div class="cal-cell"><div class="day">THU</div><div class="time">—</div></div>
+          <div class="cal-cell"><div class="day">FRI</div><div class="time">—</div></div>
+          <div class="cal-cell"><div class="day">SAT</div><div class="time">—</div></div>
+          <div class="cal-cell"><div class="day">SUN</div><div class="time">—</div></div>
         </div>
-        <div class="why-item reveal">
-          <div class="why-num">03</div>
-          <div class="why-text">
-            <h4>Expert, Personalized Instruction</h4>
-            <p>Miss Judith delivers every course with hands-on real-world scenarios and personal attention — earning a 5-star rating from every student she's trained.</p>
+        <div class="device-foot">
+          <div>
+            <div class="label">Format</div>
+            <div class="value">Online, live</div>
+          </div>
+          <div>
+            <div class="label">Tuition</div>
+            <div class="value">$80</div>
+          </div>
+          <div>
+            <div class="label">Certificate</div>
+            <div class="value">Included</div>
           </div>
         </div>
       </div>
-      <div>
-        <div class="instructor-card reveal">
-          <div class="i-avatar">
-            <svg viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="18" r="9" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"></circle>
-              <path d="M6 44c0-9.94 8.06-18 18-18s18 8.06 18 18" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <div class="i-name">Miss Judith</div>
-          <div class="i-title">Lead Safety Instructor · Los Angeles, CA</div>
-          <div class="i-stars">★★★★★</div>
-          <p class="i-quote">"Knowledgeable, patient, and made the material easy to understand. Her hands-on approach helped us feel truly confident."</p>
-          <div class="i-source">— Dean B., verified student</div>
-          <div class="i-badge">EMSA Certified Trainer</div>
-        </div>
-      </div>
     </div>
   </div>
-</section>
-
-<section id="reviews">
-  <div class="container">
-    <div class="eyebrow">Reviews</div>
-    <h2>What students say</h2>
-    <div class="t-grid">
-      <div class="t-card reveal">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-body">Thanks to Alert Training Services, I was equipped with the skills and confidence to assist people in crisis situations, long before I joined the fire department.</p>
-        <div class="t-author">
-          <div class="t-av">MC</div>
-          <div class="t-name">Martina C.</div>
-        </div>
-      </div>
-      <div class="t-card reveal">
-        <div class="t-stars">★★★★★</div>
-        <p class="t-body">Miss Judith was a fantastic instructor for our Preventive Health and Safety training. She was knowledgeable, patient, and made EMSA requirements easy to understand. Her hands-on approach helped us feel confident running a safe childcare program. Highly recommend Alert Training Services to any California provider.</p>
-        <div class="t-author">
-          <div class="t-av">DB</div>
-          <div class="t-name">Dean B.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="cta-strip">
-  <h2>Ready to get certified?</h2>
-  <p>Join the next class and be prepared for any emergency. Only $80 per person — all materials included.</p>
-  <a href="/preventative-health-and-safety-training" class="btn-light">Enroll Today →</a>
 </div>
 
-<section class="contact" id="faq">
-  <div class="container">
-    <div class="eyebrow">FAQs</div>
-    <h2>Frequently asked questions</h2>
-    <div class="faq-grid">
-      <div class="faq-item reveal">
-        <h3>How long is the course?</h3>
-        <p>
-          The full certification is 8 hours total, held over two sessions:
-          Monday and Tuesday evenings from 6:00 PM to 10:00 PM.
-        </p>
+<section class="feature" id="why">
+  <div class="wrap feature-grid">
+    <div>
+      <h2>Two evenings. Not one long day.</h2>
+      <p>
+        The full 8-hour requirement, split into two 4-hour sessions — Monday and Tuesday, 6 to
+        10 PM — so it fits around a working schedule instead of taking over a whole Saturday.
+      </p>
+    </div>
+    <div class="feature-visual">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="34" stroke-width="2.5"></circle>
+        <line x1="50" y1="50" x2="50" y2="30" stroke-width="2.5" stroke-linecap="round"></line>
+        <line x1="50" y1="50" x2="64" y2="58" stroke-width="2.5" stroke-linecap="round"></line>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="feature gray">
+  <div class="wrap feature-grid reverse">
+    <div class="feature-visual">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="24" width="60" height="42" rx="4" stroke-width="2.5"></rect>
+        <path d="M20 60h60" stroke-width="2.5"></path>
+        <path d="M42 76h16" stroke-width="2.5" stroke-linecap="round"></path>
+        <path d="M50 66v10" stroke-width="2.5"></path>
+      </svg>
+    </div>
+    <div>
+      <h2>Fully virtual, built for California providers</h2>
+      <p>
+        Attend from home over Zoom — no commute, no classroom to find. Every detail of the
+        course, from pacing to content, is built specifically around California child care
+        licensing requirements.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="feature">
+  <div class="wrap feature-grid">
+    <div>
+      <h2>Taught by someone who's done the work</h2>
+      <p>
+        Miss Judith is a Registered Nurse with real-world health and safety experience — not a
+        script. Every class includes hands-on scenarios and personal attention.
+      </p>
+    </div>
+    <div class="feature-visual">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="38" r="16" stroke-width="2.5"></circle>
+        <path d="M22 82c0-16 12-26 28-26s28 10 28 26" stroke-width="2.5"></path>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="checklist-section">
+  <div class="wrap">
+    <div class="checklist-head">
+      <h2>Everything else you get</h2>
+      <p>The rest of what's included with every class.</p>
+    </div>
+    <div class="checklist-grid">
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>EMSA-approved Preventive Health &amp; Safety training</span>
       </div>
-      <div class="faq-item reveal">
-        <h3>How much does training cost?</h3>
-        <p>
-          Tuition is $80 per person and includes all required training content.
-        </p>
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>Convenient evening schedule</span>
       </div>
-      <div class="faq-item reveal">
-        <h3>Is this EMSA-approved?</h3>
-        <p>
-          Yes. This Preventive Health and Safety class is EMSA-approved and
-          accepted for qualifying childcare providers in California.
-        </p>
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>Certificate provided upon completion</span>
       </div>
-      <div class="faq-item reveal">
-        <h3>How do I get my Zoom class links?</h3>
-        <p>
-          After payment, your Zoom links are emailed instantly for both session
-          nights. If you do not see it, check your spam folder.
-        </p>
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>Printed certificate mailed directly to you</span>
       </div>
-      <div class="faq-item reveal">
-        <h3>Do I need to attend both sessions?</h3>
-        <p>
-          Yes. Monday and Tuesday are a paired class week and both sessions are
-          required to complete the full 8-hour training.
-        </p>
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>Digital certificate available upon request</span>
       </div>
-      <div class="faq-item reveal">
-        <h3>Who do I contact for help?</h3>
-        <p>
-          Call <a href="tel:3239216244">323-921-6244</a> or email
-          <a href="mailto:info@alerttrainingservices.com"> info@alerttrainingservices.com</a>.
-        </p>
+      <div class="check-item">
+        <svg viewBox="0 0 20 20"
+          ><path d="M8 13.5 4.5 10l-1.4 1.4L8 16.3l9-9-1.4-1.4z"></path></svg
+        >
+        <span>Practical information for your child care program</span>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="footer-top">
-    <div>
-      <div class="f-logo">
-        <img src="/brand/alert-training-services-logo.jpg" alt="Alert Training Services logo" />
-      </div>
-      <div class="f-desc">Empowering communities with life-saving skills. EMSA-approved safety training in Los Angeles, CA.</div>
-      <div class="f-contact">
-        <a href="tel:3239216244">323-921-6244</a>
-        <a href="mailto:info@alerttrainingservices.com">info@alerttrainingservices.com</a>
-      </div>
+<section class="serve" id="courses">
+  <div class="wrap">
+    <div class="serve-head">
+      <h2>Built for anyone who cares for others</h2>
+      <p>
+        Designed for anyone responsible for the safety and well-being of the people around them.
+      </p>
     </div>
-    <div class="f-col">
-      <h5>Navigate</h5>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#courses">Courses</a></li>
-        <li><a href="#faq">FAQs</a></li>
-        <li><a href="/preventative-health-and-safety-training">Enroll</a></li>
-      </ul>
-    </div>
-    <div class="f-col">
-      <h5>Training For</h5>
-      <ul>
-        <li><a href="#courses">Daycares</a></li>
-        <li><a href="#courses">Schools</a></li>
-        <li><a href="#courses">Parents</a></li>
-        <li><a href="#courses">Coaches</a></li>
-        <li><a href="#courses">Businesses</a></li>
-        <li><a href="#courses">Communities</a></li>
-      </ul>
+    <div class="serve-row">
+      <span class="serve-chip">Daycares &amp; Childcare Centers</span>
+      <span class="serve-chip">Schools &amp; Educators</span>
+      <span class="serve-chip">Parents &amp; Caregivers</span>
+      <span class="serve-chip">Coaches &amp; Youth Leaders</span>
+      <span class="serve-chip">Businesses &amp; Workplaces</span>
+      <span class="serve-chip">Community Organizations</span>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 Alert Training Services · Los Angeles, CA</span>
-    <span>All Rights Reserved</span>
-  </div>
-</footer>
+</section>
 
+<section class="instructor">
+  <div class="wrap">
+    <div class="avatar">MJ</div>
+    <h3>Miss Judith</h3>
+    <div class="role">Lead Safety Instructor · Los Angeles, CA</div>
+    <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+
+    <div class="quotes">
+      <div class="quote">
+        <p>
+          "Miss Judith was a fantastic instructor for our Preventive Health and Safety training.
+          She was knowledgeable, patient, and made EMSA requirements easy to understand. Her
+          hands-on approach helped us feel confident running a safe childcare program."
+        </p>
+        <div class="attr">— Dean B., verified student</div>
+      </div>
+      <div class="quote">
+        <p>
+          "Knowledgeable, patient, and made the material easy to understand. Her hands-on
+          approach helped us feel truly confident."
+        </p>
+        <div class="attr">— Verified student review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <h2>Ready to get licensed and certified?</h2>
+    <p>
+      Join the next class and get the training California child care providers need. Only $80 per
+      person — all materials included.
+    </p>
+    <div class="hero-ctas">
+      <a href="/preventative-health-and-safety-training" class="btn btn-accent"
+        >Register Now</a
+      >
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="faq-head"><h2>Frequently asked questions</h2></div>
+    <div class="faq-list">
+      <details open>
+        <summary>How long is the course?<span class="plus">+</span></summary>
+        <p>
+          The full certification is 8 hours total, held over two sessions: Monday and Tuesday
+          evenings from 6:00 PM to 10:00 PM.
+        </p>
+      </details>
+      <details>
+        <summary>How much does training cost?<span class="plus">+</span></summary>
+        <p>Tuition is $80 per person and includes all required training content.</p>
+      </details>
+      <details>
+        <summary>Is this EMSA-approved?<span class="plus">+</span></summary>
+        <p>
+          Yes. This Preventive Health and Safety class is EMSA-approved and accepted for
+          qualifying childcare providers in California.
+        </p>
+      </details>
+      <details>
+        <summary>How do I get my Zoom class links?<span class="plus">+</span></summary>
+        <p>
+          After payment, your Zoom links are emailed instantly for both session nights. If you
+          don't see it, check your spam folder.
+        </p>
+      </details>
+      <details>
+        <summary>Do I need to attend both sessions?<span class="plus">+</span></summary>
+        <p>
+          Yes. Monday and Tuesday are a paired class week, and both sessions are required to
+          complete the full 8-hour training.
+        </p>
+      </details>
+      <details>
+        <summary>Who do I contact for help?<span class="plus">+</span></summary>
+        <p>Call 323-921-6244 or email info@alerttrainingservices.com.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<SiteFooter />
