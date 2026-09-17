@@ -911,7 +911,7 @@ export default function BookingWidget({
                   }
                   style={{
                     color: active ? "white" : "#1B3A5C",
-                    background: active ? "#E02B2B" : "#EEF2F7",
+                    background: active ? "#7a1d2e" : "#EEF2F7",
                   }}
                 >
                   <span className="booking-step-label">{s.label}</span>
@@ -1266,7 +1266,7 @@ export default function BookingWidget({
           </p>
           <p style={{ color: "#515154", fontSize: 13 }}>
             Please call us at{" "}
-            <a href="tel:3239216244" style={{ color: "#E02B2B" }}>
+            <a href="tel:3239216244" style={{ color: "#7a1d2e" }}>
               323-921-6244
             </a>{" "}
             and we'll get you sorted immediately.
@@ -1317,7 +1317,7 @@ const summaryBoxStyle: CSSProperties = {
 const primaryBtn: CSSProperties = {
   display: "block",
   width: "100%",
-  background: "#E02B2B",
+  background: "#7a1d2e",
   color: "white",
   border: "none",
   padding: "15px 32px",
