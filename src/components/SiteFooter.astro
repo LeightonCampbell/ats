@@ -1,51 +1,54 @@
+---
+import { site, routes, footerQuickLinks, copyrightNotice } from "../lib/site";
+---
+
 <footer>
   <div class="footer-top">
     <div>
-      <div class="f-logo">
-        <img
-          src="/brand/alert-training-services-logo.jpg"
-          alt="Alert Training Services logo"
-        />
-      </div>
-      <div class="f-desc">
-        Empowering communities with life-saving skills. EMSA-approved safety
-        training in Los Angeles, CA.
-      </div>
+      <div class="f-brand-name">{site.legalName}</div>
+      <div class="f-desc">{site.tagline}</div>
       <div class="f-contact">
-        <a href="tel:3239216244">323-921-6244</a>
-        <a href="mailto:info@alerttrainingservices.com"
-          >info@alerttrainingservices.com</a
-        >
+        <a href={site.phoneHref}>{site.phone}</a>
+        <a href={site.emailHref}>{site.email}</a>
+        <span>{site.domain}</span>
       </div>
     </div>
     <div class="f-col">
-      <h5>Navigate</h5>
+      <h5>Quick Links</h5>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/#courses">Courses</a></li>
-        <li><a href="/how-to-start-a-home-daycare-in-california">Home Daycare Guide</a></li>
-        <li><a href="/about-us">About Us</a></li>
-        <li><a href="/contact-us">Contact Us</a></li>
-        <li><a href="/#faq">FAQs</a></li>
-        <li><a href="/ats-news">Blog</a></li>
-        <li><a href="/class-rules">Class Rules</a></li>
-        <li><a href="/preventative-health-and-safety-training">Enroll</a></li>
+        {
+          footerQuickLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+        <li><a href={routes.about}>About Judith</a></li>
+        <li><a href={routes.blog}>Blog</a></li>
+        <li><a href={routes.classRules}>Class Rules</a></li>
       </ul>
     </div>
     <div class="f-col">
-      <h5>Training For</h5>
+      <h5>Training Paths</h5>
       <ul>
-        <li><a href="/#courses">Daycares</a></li>
-        <li><a href="/#courses">Schools</a></li>
-        <li><a href="/#courses">Parents</a></li>
-        <li><a href="/#courses">Coaches</a></li>
-        <li><a href="/#courses">Businesses</a></li>
-        <li><a href="/#courses">Communities</a></li>
+        <li><a href={routes.bls}>Healthcare Providers (BLS)</a></li>
+        <li><a href={routes.pediatric}>Caregivers (Pediatric CPR)</a></li>
+        <li><a href={routes.emsa}>Childcare (EMSA Preventive)</a></li>
+        <li><a href={routes.onsite}>Workplace Groups</a></li>
+        <li><a href={routes.speaking}>Speaking &amp; Keynotes</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Alert Training Services · Los Angeles, CA</span>
-    <span>All Rights Reserved</span>
+    <span>{copyrightNotice()}</span>
   </div>
 </footer>
+
+<style is:inline>
+  .f-brand-name {
+    margin-top: 10px;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,767 @@
+---
+import { site, routes, courseCatalog, footerQuickLinks, copyrightNotice } from "../lib/site";
+
+const audiences = [
+  {
+    title: "Healthcare Providers & First Responders",
+    body: "Get your AHA BLS Provider certification with hands-on, in-person instruction.",
+    href: routes.bls,
+    cta: "View BLS Provider Course",
+  },
+  {
+    title: "Teachers, Babysitters & Caregivers",
+    body: "Pediatric First Aid CPR AED training built for people who care for children.",
+    href: routes.pediatric,
+    cta: "View Pediatric Course",
+  },
+  {
+    title: "Event Planners & Corporate Leaders",
+    body: "Book Judith Morgan for keynotes, wellness events, and workplace safety presentations.",
+    href: routes.speaking,
+    cta: "Explore Speaking",
+  },
+];
+
+const courses = courseCatalog;
+
+const socials = [
+  {
+    label: "LinkedIn",
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>`,
+  },
+  {
+    label: "Instagram",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>`,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61581917453842",
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8z"/></svg>`,
+  },
+  {
+    label: "TikTok",
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>`,
+  },
+];
+---
+
+<div class="home">
+  <section class="h-section h-audience" aria-labelledby="audience-heading">
+    <div class="h-wrap">
+      <div class="h-section-head">
+        <div class="h-eyebrow">Start Here</div>
+        <h2 id="audience-heading" class="h-heading">Who Are You Training For?</h2>
+        <p class="h-lead">
+          Choose your path — certification classes for lifesavers, or speaking
+          engagements that strengthen safety culture.
+        </p>
+      </div>
+      <div class="h-grid-3">
+        {
+          audiences.map((card) => (
+            <a class="h-route-card" href={card.href}>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+              <span class="h-card-cta">{card.cta} →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="h-section h-courses" id="courses" aria-labelledby="courses-heading">
+    <div class="h-wrap">
+      <div class="h-section-head">
+        <div class="h-eyebrow">Course Offerings</div>
+        <h2 id="courses-heading" class="h-heading">Certification Training That Saves Lives</h2>
+        <p class="h-lead">
+          Official AHA CPR &amp; emergency response courses, plus EMSA-approved
+          Preventive Health &amp; Safety for California childcare providers.
+        </p>
+      </div>
+      <div class="h-grid-3">
+        {
+          courses.map((course) => (
+            <article class="h-course-card">
+              <div class="h-course-badge">{course.badge}</div>
+              <h3>{course.title}</h3>
+              <p class="h-course-format">{course.format}</p>
+              <p>{course.body}</p>
+              {"note" in course && course.note && <p class="h-course-note">{course.note}</p>}
+              <div class="h-course-actions">
+                <a class="h-btn h-btn-primary" href={course.registerHref}>
+                  Register
+                </a>
+                <a class="h-btn h-btn-outline" href={course.href}>
+                  Learn More
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="h-onsite" id="onsite" aria-labelledby="onsite-heading">
+    <div class="h-wrap h-onsite-inner">
+      <div>
+        <div class="h-eyebrow h-eyebrow--light">Workplace &amp; Groups</div>
+        <h2 id="onsite-heading">We Bring Certified Training to Your Workplace or Organization</h2>
+        <p>
+          Eliminate scheduling headaches. Alert Training Services delivers
+          comprehensive, AHA-compliant hands-on training directly to your
+          hospital, clinic, school, or corporate office.
+        </p>
+      </div>
+      <a class="h-btn h-btn-amber" href={`${routes.contact}?intent=group`}>
+        Schedule a Private Group Session
+      </a>
+    </div>
+  </section>
+
+  <section class="h-section h-speaking" aria-labelledby="speaking-heading">
+    <div class="h-wrap h-speaking-grid">
+      <div>
+        <div class="h-eyebrow">Keynote &amp; Presentations</div>
+        <h2 id="speaking-heading" class="h-heading">
+          Book {site.founder} for Your Next Event
+        </h2>
+        <p class="h-lead">
+          Empowering organizations with critical safety culture, emergency
+          preparedness, and life-saving readiness through interactive keynotes
+          and workplace safety presentations.
+        </p>
+        <ul class="h-bullets">
+          <li>Interactive, memorable safety demonstrations and keynotes</li>
+          <li>Tailored talks for corporate retreats, healthcare summits, and education conferences</li>
+          <li>Direct booking with {site.founder} — {site.phone}</li>
+        </ul>
+        <a class="h-btn h-btn-primary" href={routes.speakingInquiry}>
+          Inquire About Judith&apos;s Availability
+        </a>
+      </div>
+      <aside class="h-speak-card">
+        <h3>Meeting Planner Quick Info</h3>
+        <dl>
+          <dt>Presenter</dt>
+          <dd>{site.founder}</dd>
+          <dt>Phone</dt>
+          <dd><a href={site.phoneHref}>{site.phone}</a></dd>
+          <dt>Email</dt>
+          <dd><a href={site.emailHref}>{site.email}</a></dd>
+        </dl>
+        <a class="h-btn h-btn-outline" href={routes.speaking}>View Speaking Page</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="h-newsletter" aria-labelledby="news-heading">
+    <div class="h-wrap">
+      <h2 id="news-heading">Stay Informed</h2>
+      <p>Class openings, workplace training tips, and speaking updates — no spam.</p>
+      <form class="h-news-form" onsubmit="handleNewsletterSubmit(event)">
+        <label class="visually-hidden" for="news-email">Email</label>
+        <input id="news-email" type="email" name="email" required placeholder="Your email address" />
+        <div class="hp" aria-hidden="true">
+          <label for="news-website">Website</label>
+          <input id="news-website" type="text" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <button id="news-submit" type="submit">Subscribe</button>
+        <p id="news-status" class="h-news-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="h-footer">
+    <div class="h-wrap h-footer-grid">
+      <div>
+        <div class="h-footer-brand">{site.legalName}</div>
+        <p class="h-footer-tagline">{site.tagline}</p>
+        <div class="h-footer-contact-inline">
+          <a href={site.phoneHref}>{site.phone}</a>
+          <a href={site.emailHref}>{site.email}</a>
+          <span>{site.domain}</span>
+        </div>
+        <div class="h-socials">
+          {
+            socials.map((s) => (
+              <a
+                href={s.href ?? "#"}
+                class="h-social"
+                aria-label={s.label}
+                target={s.href ? "_blank" : undefined}
+                rel={s.href ? "noopener noreferrer" : undefined}
+                set:html={s.icon}
+              />
+            ))
+          }
+        </div>
+      </div>
+      <div>
+        <h3 class="h-footer-heading">Quick Links</h3>
+        <ul class="h-footer-links">
+          {
+            footerQuickLinks.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="h-footer-heading">Contact Info</h3>
+        <dl class="h-footer-contact">
+          <dt>Phone</dt>
+          <dd><a href={site.phoneHref}>{site.phone}</a></dd>
+          <dt>Email</dt>
+          <dd><a href={site.emailHref}>{site.email}</a></dd>
+          <dt>Website</dt>
+          <dd>{site.domain}</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="h-footer-bottom">
+      <div class="h-wrap">{copyrightNotice()}</div>
+    </div>
+  </footer>
+</div>
+
+<style is:inline>
+  .home {
+    --navy: #0f2744;
+    --slate: #1b3a5c;
+    --accent: #c8102e;
+    --accent-dark: #a00d25;
+    --amber: #f5a623;
+    --white: #ffffff;
+    --text: #1d1d1f;
+    --text2: #515154;
+    --border: rgba(0, 0, 0, 0.08);
+    --heading-font: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+  }
+
+  .h-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .h-section {
+    padding: 88px 0;
+  }
+
+  .h-section-head {
+    max-width: 640px;
+    margin-bottom: 40px;
+  }
+
+  .h-eyebrow {
+    margin-bottom: 12px;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .h-eyebrow--light {
+    color: var(--amber);
+  }
+
+  .h-heading {
+    margin: 0;
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .h-lead {
+    margin: 14px 0 0;
+    color: var(--text2);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .h-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .h-route-card,
+  .h-course-card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .h-route-card:hover,
+  .h-course-card:hover {
+    border-color: rgba(15, 39, 68, 0.22);
+    box-shadow: 0 10px 28px rgba(15, 39, 68, 0.08);
+  }
+
+  .h-route-card h3,
+  .h-course-card h3 {
+    margin: 0 0 10px;
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+
+  .h-route-card p,
+  .h-course-card p {
+    margin: 0;
+    color: var(--text2);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .h-card-cta {
+    margin-top: 20px;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .h-audience {
+    background: #f7f9fc;
+  }
+
+  .h-courses {
+    background: var(--white);
+  }
+
+  .h-course-badge {
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #eef2f7;
+    color: var(--slate);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .h-course-format {
+    margin: 0 0 12px !important;
+    color: var(--slate) !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .h-course-note {
+    margin: 14px 0 0 !important;
+    padding: 10px 12px;
+    border-left: 3px solid var(--amber);
+    background: #fff8eb;
+    color: #6a4a10 !important;
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .h-course-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .h-course-card .h-btn-outline {
+    border-color: var(--slate);
+    color: var(--slate);
+  }
+
+  .h-course-card .h-btn-outline:hover {
+    background: var(--slate);
+    color: var(--white);
+  }
+
+  .h-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: var(--heading-font);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .h-btn-primary {
+    background: var(--accent);
+    color: var(--white);
+  }
+
+  .h-btn-primary:hover {
+    background: var(--accent-dark);
+  }
+
+  .h-btn-amber {
+    background: var(--amber);
+    color: #1d1d1f;
+  }
+
+  .h-btn-amber:hover {
+    filter: brightness(0.95);
+  }
+
+  .h-btn-outline {
+    border: 2px solid var(--slate);
+    color: var(--slate);
+    background: transparent;
+  }
+
+  .h-btn-outline:hover {
+    background: var(--slate);
+    color: var(--white);
+  }
+
+  .h-onsite {
+    padding: 72px 0;
+    background: linear-gradient(100deg, var(--navy), var(--slate));
+    color: var(--white);
+  }
+
+  .h-onsite-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .h-onsite h2 {
+    margin: 0 0 14px;
+    max-width: 640px;
+    color: var(--white);
+    font-family: var(--heading-font);
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1.25;
+  }
+
+  .h-onsite p {
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+  }
+
+  .h-speaking {
+    background: #f7f9fc;
+  }
+
+  .h-speaking-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  .h-bullets {
+    margin: 22px 0 28px;
+    padding-left: 20px;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+
+  .h-speak-card {
+    padding: 28px 24px;
+    border-radius: 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+
+  .h-speak-card h3 {
+    margin: 0 0 16px;
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 1.15rem;
+  }
+
+  .h-speak-card dl {
+    margin: 0 0 22px;
+  }
+
+  .h-speak-card dt {
+    margin-top: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #86868b;
+  }
+
+  .h-speak-card dd {
+    margin: 4px 0 0;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .h-speak-card a {
+    color: var(--slate);
+  }
+
+  .h-newsletter {
+    padding: 64px 0;
+    background: var(--slate);
+    color: var(--white);
+    text-align: center;
+  }
+
+  .h-newsletter h2 {
+    margin: 0 0 10px;
+    color: var(--white);
+    font-family: var(--heading-font);
+    font-size: 2rem;
+  }
+
+  .h-newsletter p {
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .h-news-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .h-news-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 4px;
+    font: inherit;
+  }
+
+  .h-news-form button {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    background: var(--amber);
+    color: #1d1d1f;
+    font-family: var(--heading-font);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .h-news-form .hp {
+    position: absolute;
+    left: -9999px;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .h-news-status {
+    flex: 1 0 100%;
+    margin: 8px 0 0;
+    min-height: 1.25rem;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .h-footer {
+    background: var(--navy);
+    color: rgba(255, 255, 255, 0.78);
+    padding-top: 56px;
+  }
+
+  .h-footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 36px;
+    padding-bottom: 40px;
+  }
+
+  .h-footer-brand {
+    color: var(--white);
+    font-family: var(--heading-font);
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .h-footer-tagline {
+    margin: 10px 0 18px;
+    max-width: 320px;
+    line-height: 1.6;
+  }
+
+  .h-footer-contact-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .h-footer a {
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+  }
+
+  .h-footer a:hover {
+    color: var(--white);
+  }
+
+  .h-footer-heading {
+    margin: 0 0 14px;
+    color: var(--white);
+    font-family: var(--heading-font);
+    font-size: 0.95rem;
+  }
+
+  .h-footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .h-footer-links li + li {
+    margin-top: 10px;
+  }
+
+  .h-footer-contact dt {
+    margin-top: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .h-footer-contact dd {
+    margin: 4px 0 0;
+  }
+
+  .h-socials {
+    display: flex;
+    gap: 10px;
+  }
+
+  .h-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    color: var(--white);
+  }
+
+  .h-social svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .h-social:hover {
+    border-color: var(--amber);
+    background: var(--amber);
+    color: #1d1d1f;
+  }
+
+  .h-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 18px 0 28px;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media (max-width: 900px) {
+    .h-grid-3,
+    .h-speaking-grid,
+    .h-footer-grid,
+    .h-onsite-inner {
+      grid-template-columns: 1fr;
+      display: grid;
+    }
+
+    .h-onsite-inner {
+      gap: 24px;
+    }
+
+    .h-section {
+      padding: 64px 0;
+    }
+
+    .h-news-form {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script is:inline>
+  async function handleNewsletterSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email?.value?.trim() ?? "";
+    const website = form.website?.value?.trim() ?? "";
+    const btn = document.getElementById("news-submit");
+    const status = document.getElementById("news-status");
+    if (!email || !btn) return;
+
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    if (status) status.textContent = "";
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not subscribe");
+      if (status) status.textContent = "Thanks — you're subscribed.";
+      form.reset();
+    } catch (err) {
+      if (status) {
+        status.textContent =
+          err?.message || "Could not subscribe. Please call 323-921-6244.";
+      }
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+  window.handleNewsletterSubmit = handleNewsletterSubmit;
+</script>

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getEnv, getZoomCredentials } from "../../lib/worker-env";
-import { submitEnrollmentToFormspree } from "../../lib/formspree";
+import { sendAdminNotification, sendReceiptEmail } from "../../lib/email";
 import { retrievePaymentIntent, waitForPaymentIntentSucceeded } from "../../lib/stripe-api";
 import {
   getUpcomingMeetings,
@@ -106,22 +106,33 @@ export const POST: APIRoute = async ({ request }) => {
       console.error("Zoom registration failed:", zoomErr.message);
     }
 
-    const formspreeFormId = getEnv("FORMSPREE_FORM_ID");
+    const studentName = `${firstName} ${lastName}`.trim();
     try {
-      await submitEnrollmentToFormspree(formspreeFormId, {
-        firstName,
-        lastName,
-        email,
-        phone,
-        mailingAddress,
+      await sendReceiptEmail({
+        to: email,
+        name: studentName || firstName || "Student",
         classTitle,
         classDate,
         paymentIntentId: intent.id,
         zoomJoinUrl1: joinUrl1,
         zoomJoinUrl2: joinUrl2,
       });
-    } catch (formspreeErr: any) {
-      console.error("Formspree notification failed:", formspreeErr.message);
+    } catch (mailErr: any) {
+      console.error("Student confirmation email failed:", mailErr?.message ?? mailErr);
+    }
+
+    try {
+      await sendAdminNotification({
+        studentName: studentName || firstName || "Student",
+        studentEmail: email,
+        studentPhone: phone ?? "",
+        mailingAddress: mailingAddress ?? "",
+        classTitle,
+        classDate,
+        paymentIntentId: intent.id,
+      });
+    } catch (mailErr: any) {
+      console.error("Admin enrollment email failed:", mailErr?.message ?? mailErr);
     }
 
     return new Response(

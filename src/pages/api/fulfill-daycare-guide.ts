@@ -1,6 +1,9 @@
 import type { APIRoute } from "astro";
 import { getEnv } from "../../lib/worker-env";
-import { submitGuidePurchaseToFormspree } from "../../lib/formspree";
+import {
+  sendGuidePurchaseConfirmation,
+  sendGuidePurchaseToAdmin,
+} from "../../lib/email";
 import {
   retrievePaymentIntent,
   waitForPaymentIntentSucceeded,
@@ -70,18 +73,28 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const formspreeFormId = getEnv("FORMSPREE_FORM_ID");
-    if (formspreeFormId) {
-      try {
-        await submitGuidePurchaseToFormspree(formspreeFormId, {
-          email: String(email).trim(),
-          firstName: typeof firstName === "string" ? firstName.trim() : "",
-          paymentIntentId,
-          productTitle: DAYCARE_GUIDE_TITLE,
-        });
-      } catch (err) {
-        console.error("Formspree guide purchase notification failed:", err);
-      }
+    const buyerEmail = String(email).trim();
+    const buyerFirstName = typeof firstName === "string" ? firstName.trim() : "";
+
+    try {
+      await sendGuidePurchaseToAdmin({
+        email: buyerEmail,
+        firstName: buyerFirstName,
+        paymentIntentId,
+        productTitle: DAYCARE_GUIDE_TITLE,
+      });
+    } catch (err) {
+      console.error("Guide purchase admin email failed:", err);
+    }
+
+    try {
+      await sendGuidePurchaseConfirmation({
+        to: buyerEmail,
+        firstName: buyerFirstName,
+        productTitle: DAYCARE_GUIDE_TITLE,
+      });
+    } catch (err) {
+      console.error("Guide purchase confirmation email failed:", err);
     }
 
     return new Response(

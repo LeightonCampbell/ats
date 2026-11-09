@@ -1,9 +1,22 @@
 import { Resend } from "resend";
+import { getEnv } from "./worker-env";
 
 function getResend() {
-  const key = import.meta.env.RESEND_API_KEY;
+  const key = getEnv("RESEND_API_KEY");
   if (!key) throw new Error("RESEND_API_KEY is not configured");
   return new Resend(key);
+}
+
+function requireFromEmail(): string {
+  const fromEmail = getEnv("FROM_EMAIL");
+  if (!fromEmail) throw new Error("FROM_EMAIL is not configured");
+  return fromEmail;
+}
+
+function requireAdminEmail(): string {
+  const adminEmail = getEnv("ADMIN_EMAIL");
+  if (!adminEmail) throw new Error("ADMIN_EMAIL is not configured");
+  return adminEmail;
 }
 
 function escapeHtml(s: string): string {
@@ -14,13 +27,162 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-// Receipt email sent to the student
+/** Contact / speaking / course inquiry → admin inbox */
+export async function sendInquiryToAdmin({
+  fullName,
+  email,
+  phone,
+  message,
+  subject = "Website inquiry",
+}: {
+  fullName: string;
+  email: string;
+  phone?: string;
+  message: string;
+  subject?: string;
+}) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+  const adminEmail = requireAdminEmail();
+
+  await resend.emails.send({
+    from: `ATS Inquiries <${fromEmail}>`,
+    to: adminEmail,
+    replyTo: email,
+    subject,
+    html: `
+      <h2>${escapeHtml(subject)}</h2>
+      <p><strong>Name:</strong> ${escapeHtml(fullName)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Phone:</strong> ${escapeHtml(phone || "Not provided")}</p>
+      <p><strong>Message:</strong></p>
+      <pre style="white-space:pre-wrap;font-family:inherit;background:#f5f5f7;padding:16px;border-radius:8px;">${escapeHtml(message)}</pre>
+    `,
+  });
+}
+
+/** Auto-reply to the person who submitted an inquiry */
+export async function sendInquiryAutoReply({
+  to,
+  fullName,
+}: {
+  to: string;
+  fullName: string;
+}) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+
+  await resend.emails.send({
+    from: `Alert Training Services <${fromEmail}>`,
+    to,
+    subject: "We received your inquiry — Alert Training Services",
+    html: `
+      <p>Hi ${escapeHtml(fullName)},</p>
+      <p>Thanks for contacting Alert Training Services. We received your message and will get back to you soon.</p>
+      <p>If you need help right away, call us at <strong>323-921-6244</strong> or email <strong>info@alerttrainingservices.com</strong>.</p>
+      <p>— Alert Training Services, LLC</p>
+    `,
+  });
+}
+
+/** Newsletter signup → admin */
+export async function sendNewsletterSignupToAdmin({ email }: { email: string }) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+  const adminEmail = requireAdminEmail();
+
+  await resend.emails.send({
+    from: `ATS Newsletter <${fromEmail}>`,
+    to: adminEmail,
+    subject: `Newsletter signup: ${email}`,
+    html: `
+      <h2>Newsletter signup</h2>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+    `,
+  });
+}
+
+/** Newsletter confirmation → subscriber */
+export async function sendNewsletterConfirmation({ email }: { email: string }) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+
+  await resend.emails.send({
+    from: `Alert Training Services <${fromEmail}>`,
+    to: email,
+    subject: "You're on the list — Alert Training Services",
+    html: `
+      <p>Thanks for subscribing.</p>
+      <p>We'll share class openings, workplace training tips, and speaking updates. No spam.</p>
+      <p>— Alert Training Services, LLC</p>
+    `,
+  });
+}
+
+/** Daycare guide purchase → admin */
+export async function sendGuidePurchaseToAdmin({
+  email,
+  firstName,
+  paymentIntentId,
+  productTitle,
+}: {
+  email: string;
+  firstName?: string;
+  paymentIntentId: string;
+  productTitle: string;
+}) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+  const adminEmail = requireAdminEmail();
+
+  await resend.emails.send({
+    from: `ATS Sales <${fromEmail}>`,
+    to: adminEmail,
+    subject: `Guide purchase: ${productTitle}`,
+    html: `
+      <h2>Guide purchase</h2>
+      <p><strong>Name:</strong> ${escapeHtml(firstName || "Not provided")}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Product:</strong> ${escapeHtml(productTitle)}</p>
+      <p><strong>Payment ID:</strong> ${escapeHtml(paymentIntentId)}</p>
+    `,
+  });
+}
+
+/** Optional buyer confirmation for daycare guide */
+export async function sendGuidePurchaseConfirmation({
+  to,
+  firstName,
+  productTitle,
+}: {
+  to: string;
+  firstName?: string;
+  productTitle: string;
+}) {
+  const resend = getResend();
+  const fromEmail = requireFromEmail();
+  const greeting = firstName?.trim() ? escapeHtml(firstName.trim()) : "there";
+
+  await resend.emails.send({
+    from: `Alert Training Services <${fromEmail}>`,
+    to,
+    subject: `Your download — ${productTitle}`,
+    html: `
+      <p>Hi ${greeting},</p>
+      <p>Thanks for purchasing <strong>${escapeHtml(productTitle)}</strong>. Your downloads should appear on the confirmation page.</p>
+      <p>Questions? Call <strong>323-921-6244</strong> or email <strong>info@alerttrainingservices.com</strong>.</p>
+      <p>— Alert Training Services, LLC</p>
+    `,
+  });
+}
+
+/** Receipt email sent to the student after EMSA enrollment */
 export async function sendReceiptEmail({
   to,
   name,
   classTitle,
   classDate,
-  paypalOrderId,
+  paymentIntentId,
   zoomJoinUrl1,
   zoomJoinUrl2,
 }: {
@@ -28,12 +190,12 @@ export async function sendReceiptEmail({
   name: string;
   classTitle: string;
   classDate: string;
-  paypalOrderId: string;
+  paymentIntentId: string;
   zoomJoinUrl1: string;
   zoomJoinUrl2: string;
 }) {
   const resend = getResend();
-  const fromEmail = import.meta.env.FROM_EMAIL;
+  const fromEmail = requireFromEmail();
   await resend.emails.send({
     from: `Alert Training Services <${fromEmail}>`,
     to,
@@ -42,32 +204,34 @@ export async function sendReceiptEmail({
       name,
       classTitle,
       classDate,
-      paypalOrderId,
+      paymentIntentId,
       zoomJoinUrl1,
       zoomJoinUrl2,
     }),
   });
 }
 
-// Notification email sent to the admin
+/** Notification email sent to the admin after enrollment */
 export async function sendAdminNotification({
   studentName,
   studentEmail,
   studentPhone,
+  mailingAddress,
   classTitle,
   classDate,
-  paypalOrderId,
+  paymentIntentId,
 }: {
   studentName: string;
   studentEmail: string;
   studentPhone: string;
+  mailingAddress?: string;
   classTitle: string;
   classDate: string;
-  paypalOrderId: string;
+  paymentIntentId: string;
 }) {
   const resend = getResend();
-  const fromEmail = import.meta.env.FROM_EMAIL;
-  const adminEmail = import.meta.env.ADMIN_EMAIL;
+  const fromEmail = requireFromEmail();
+  const adminEmail = requireAdminEmail();
   await resend.emails.send({
     from: `ATS Bookings <${fromEmail}>`,
     to: adminEmail,
@@ -77,9 +241,10 @@ export async function sendAdminNotification({
       <p><strong>Name:</strong> ${escapeHtml(studentName)}</p>
       <p><strong>Email:</strong> ${escapeHtml(studentEmail)}</p>
       <p><strong>Phone:</strong> ${escapeHtml(studentPhone || "Not provided")}</p>
+      <p><strong>Mailing address:</strong> ${escapeHtml(mailingAddress || "Not provided")}</p>
       <p><strong>Class:</strong> ${escapeHtml(classTitle)}</p>
       <p><strong>Date:</strong> ${escapeHtml(classDate)}</p>
-      <p><strong>PayPal Order ID:</strong> ${escapeHtml(paypalOrderId)}</p>
+      <p><strong>Payment ID:</strong> ${escapeHtml(paymentIntentId)}</p>
     `,
   });
 }
@@ -88,14 +253,14 @@ function receiptTemplate({
   name,
   classTitle,
   classDate,
-  paypalOrderId,
+  paymentIntentId,
   zoomJoinUrl1,
   zoomJoinUrl2,
 }: {
   name: string;
   classTitle: string;
   classDate: string;
-  paypalOrderId: string;
+  paymentIntentId: string;
   zoomJoinUrl1: string;
   zoomJoinUrl2: string;
 }) {
@@ -103,7 +268,7 @@ function receiptTemplate({
     name: escapeHtml(name),
     classTitle: escapeHtml(classTitle),
     classDate: escapeHtml(classDate),
-    paypalOrderId: escapeHtml(paypalOrderId),
+    paymentIntentId: escapeHtml(paymentIntentId),
     zoomJoinUrl1,
     zoomJoinUrl2,
   };
@@ -115,7 +280,7 @@ function receiptTemplate({
   <style>
     body { font-family: -apple-system, Arial, sans-serif; background: #f5f5f7; margin: 0; padding: 40px 16px; }
     .card { background: white; max-width: 560px; margin: 0 auto; border-radius: 16px; overflow: hidden; }
-    .header { background: #1B3A5C; padding: 32px; text-align: center; }
+    .header { background: #0F2744; padding: 32px; text-align: center; }
     .header h1 { color: white; font-size: 22px; margin: 0; }
     .header p { color: rgba(255,255,255,0.6); margin: 6px 0 0; font-size: 14px; }
     .body { padding: 32px; }
@@ -124,11 +289,11 @@ function receiptTemplate({
     .label { color: #86868b; }
     .value { font-weight: 600; color: #1d1d1f; }
     .total-row { background: #eef2f7; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; margin: 20px 0; }
-    .total-label { color: #1B3A5C; font-weight: 600; }
-    .total-value { color: #1B3A5C; font-weight: 700; font-size: 20px; }
+    .total-label { color: #0F2744; font-weight: 600; }
+    .total-value { color: #0F2744; font-weight: 700; font-size: 20px; }
     .zoom-box { background: #eef2f7; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; }
     .zoom-box p { color: #515154; font-size: 14px; margin: 0 0 14px; }
-    .zoom-btn { display: inline-block; background: #1B3A5C; color: white; padding: 12px 28px; border-radius: 980px; text-decoration: none; font-weight: 700; font-size: 14px; }
+    .zoom-btn { display: inline-block; background: #0F2744; color: white; padding: 12px 28px; border-radius: 980px; text-decoration: none; font-weight: 700; font-size: 14px; }
     .footer { padding: 20px 32px; background: #f5f5f7; text-align: center; font-size: 12px; color: #86868b; }
   </style>
 </head>
@@ -148,7 +313,7 @@ function receiptTemplate({
         <div class="row"><span class="label">Course</span><span class="value">${safe.classTitle}</span></div>
         <div class="row"><span class="label">Date</span><span class="value">${safe.classDate}</span></div>
         <div class="row"><span class="label">Format</span><span class="value">Online (Zoom)</span></div>
-        <div class="row"><span class="label">Order ID</span><span class="value">${safe.paypalOrderId}</span></div>
+        <div class="row"><span class="label">Payment ID</span><span class="value">${safe.paymentIntentId}</span></div>
       </div>
 
       <div class="total-row">
@@ -172,8 +337,8 @@ function receiptTemplate({
       </p>
     </div>
     <div class="footer">
-      © 2026 Alert Training Services · Los Angeles, CA<br>
-      This is an automated receipt — please keep it for your records.
+      © ${new Date().getFullYear()} Alert Training Services, LLC · Los Angeles, CA<br>
+      This is an automated confirmation — please keep it for your records.
     </div>
   </div>
 </body>

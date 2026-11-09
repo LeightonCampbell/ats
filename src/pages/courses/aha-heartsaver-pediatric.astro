@@ -1,0 +1,203 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import CourseInquiryForm from "../../components/CourseInquiryForm.astro";
+import { site, routes } from "../../lib/site";
+
+const skills = [
+  "Pediatric First Aid for common childhood injuries and illnesses",
+  "Infant and Child CPR (including Adult CPR modules)",
+  "AED use for children and adults",
+  "Relief of choking emergencies in infants and children",
+  "Recognition and rapid response to serious pediatric medical emergencies",
+];
+
+const courseName = "AHA Heartsaver Pediatric First Aid CPR AED";
+---
+
+<BaseLayout
+  title="AHA Heartsaver Pediatric First Aid CPR AED | Alert Training Services"
+  description="Hands-on American Heart Association Heartsaver Pediatric First Aid CPR AED training for teachers, babysitters, and caregivers. Not an EMSA childcare licensing course."
+  canonical={`${site.siteUrl}/courses/aha-heartsaver-pediatric`}
+>
+  <main class="course-page">
+    <section class="course-hero">
+      <div class="wrap">
+        <div class="badge">American Heart Association (AHA)</div>
+        <h1>AHA Heartsaver Pediatric First Aid CPR AED</h1>
+        <p class="format">
+          Hands-On, In-Person Class · Group and on-site options available
+        </p>
+        <p class="intro">
+          Practical pediatric emergency skills for people who care for children
+          every day — at school, at home, and in youth programs.
+        </p>
+        <div class="actions">
+          <a class="btn-primary" href="#register">Enroll in Pediatric CPR/AED</a>
+          <a class="btn-secondary" href="#register">Bring This Training to Your School or Organization</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="course-body">
+      <div class="wrap">
+        <aside class="callout" role="note">
+          <strong>Important Note:</strong> This course is designed for teachers,
+          babysitters, and child caregivers. It is <em>NOT</em> offered as an
+          EMSA-approved child care licensing course.
+        </aside>
+
+        <div class="grid">
+          <article>
+            <h2>Core Skills Covered</h2>
+            <ul>
+              {skills.map((item) => <li>{item}</li>)}
+            </ul>
+          </article>
+          <article>
+            <h2>Target Audience</h2>
+            <p>
+              Teachers, daycare and preschool staff, babysitters, nannies,
+              parents, and youth group leaders.
+            </p>
+            <p class="emsa-link">
+              Need EMSA childcare licensing training instead?
+              <a href={routes.emsa}>View Preventive Health &amp; Safety →</a>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <CourseInquiryForm
+      courseName={courseName}
+      heading="Register for Pediatric First Aid CPR AED"
+      intro="Submit your enrollment or school/organization training request below. We will confirm available dates and next steps."
+    />
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .course-page {
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f7;
+  }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .course-hero {
+    padding: 56px 0 48px;
+    background: linear-gradient(105deg, #0f2744, #1b3a5c);
+    color: #fff;
+  }
+  .badge {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(245, 166, 35, 0.18);
+    color: #f5a623;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    line-height: 1.15;
+    color: #fff;
+  }
+  .format {
+    margin: 0 0 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+  }
+  .intro {
+    margin: 0;
+    max-width: 680px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.7;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: #c8102e;
+    color: #fff;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+  }
+  .course-body {
+    padding: 40px 0 48px;
+  }
+  .callout {
+    margin-bottom: 22px;
+    padding: 18px 20px;
+    border-left: 4px solid #f5a623;
+    border-radius: 8px;
+    background: #fff8eb;
+    color: #5c430f;
+    line-height: 1.65;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  article {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  h2 {
+    margin: 0 0 14px;
+    color: #0f2744;
+    font-size: 1.35rem;
+  }
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #515154;
+    line-height: 1.8;
+  }
+  article p {
+    margin: 0;
+    color: #515154;
+    line-height: 1.7;
+  }
+  .emsa-link {
+    margin-top: 16px !important;
+  }
+  .emsa-link a {
+    color: #c8102e;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

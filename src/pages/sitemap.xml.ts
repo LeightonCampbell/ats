@@ -4,7 +4,11 @@ const SITE_URL = "https://www.alerttrainingservices.com";
 
 const routes = [
   "/",
+  "/courses",
+  "/courses/aha-bls-provider",
+  "/courses/aha-heartsaver-pediatric",
   "/preventative-health-and-safety-training",
+  "/speaking",
   "/about-us",
   "/contact-us",
   "/class-rules",

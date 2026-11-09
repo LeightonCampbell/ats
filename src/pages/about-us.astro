@@ -1,103 +1,108 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { site, routes } from "../lib/site";
 ---
 
 <BaseLayout
-  title="About Us | Alert Training Services"
-  description="Learn more about Alert Training Services, our mission, and instructor experience serving Los Angeles communities."
-  canonical="https://www.alerttrainingservices.com/about-us"
+  title={`About Judith Morgan | ${site.businessName}`}
+  description={`${site.founder} is an AHA instructor and keynote speaker leading Alert Training Services, LLC — CPR, AED, emergency response training, and workplace safety presentations.`}
+  canonical={`${site.siteUrl}/about-us`}
 >
-  <SiteHeader />
-  <style>
-    .about-shell section {
-      padding: 0;
-    }
-  </style>
   <main class="about-shell" style="background:#f5f5f7; padding: 50px 24px;">
     <section style="max-width:920px; margin:0 auto;">
       <div style="text-align:center; margin-bottom:34px;">
         <div
-          style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7a1d2e;margin-bottom:10px;"
+          style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#c8102e;margin-bottom:10px;"
         >
-          About ATS
+          About Judith
         </div>
-        <h1 style="font-size:2.4rem;font-weight:700;color:#1B3A5C;letter-spacing:-0.03em;margin-bottom:12px;">
-          About Alert Training Services
+        <h1 style="font-size:2.4rem;font-weight:700;color:#0f2744;letter-spacing:-0.03em;margin-bottom:12px;">
+          {site.founder} — AHA Instructor &amp; Speaker
         </h1>
         <p style="max-width:760px;margin:0 auto;color:#515154;font-size:1rem;line-height:1.7;">
-          Alert Training Services (ATS) provides practical, EMSA-aligned safety
-          training designed to help people respond confidently in emergencies.
+          {site.legalName} equips lifesavers with official American Heart
+          Association training and inspires resilient communities through
+          keynote speaking and workplace safety presentations.
         </p>
       </div>
 
       <div style="display:grid;gap:16px;">
         <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
-          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">What we offer</h2>
+          <h2 style="font-size:1.35rem;color:#0f2744;margin-bottom:10px;">Instructor &amp; presenter</h2>
           <p style="color:#515154;line-height:1.7;">
-            Our primary offering is the 8-hour Childcare Preventive Health and
-            Safety training (including nutrition hour requirements for
-            California EMSA childcare-related needs). We also offer a
-            comprehensive guide on how to start a home daycare in California,
-            designed to help providers understand key setup steps and
-            requirements.
-            <a href="/how-to-start-a-home-daycare-in-california" style="color:#7a1d2e;font-weight:600;"
-              >View the startup guide →</a
-            >
+            ATS is led by {site.founder}, a Registered Nurse in California with
+            decades of healthcare experience across emergency, medical surgical,
+            home health, and behavioral health case management. She teaches AHA
+            CPR and emergency response courses and delivers engaging keynotes
+            for conferences, corporate wellness events, and healthcare organizations.
           </p>
         </article>
 
         <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
-          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Our mission</h2>
-          <p style="color:#515154;line-height:1.7;">
-            We aim to deliver clear, engaging, and practical instruction so
-            participants can complete training with confidence and be prepared
-            when emergencies happen at work, school, or in the community.
-          </p>
-        </article>
-
-        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
-          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Founder and instructor background</h2>
-          <p style="color:#515154;line-height:1.7;">
-            ATS is led by Judith, a Registered Nurse in California with decades
-            of diverse healthcare experience, including emergency, medical
-            surgical, home health, and behavioral health case management. She
-            has taught CPR and related safety training for many years and brings
-            real-world insight to every class.
-          </p>
-        </article>
-
-        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
-          <h2 style="font-size:1.35rem;color:#1B3A5C;margin-bottom:10px;">Why students choose ATS</h2>
+          <h2 style="font-size:1.35rem;color:#0f2744;margin-bottom:10px;">What we offer</h2>
           <ul style="margin:0;padding-left:20px;color:#515154;line-height:1.8;">
-            <li>Convenient evening schedule and affordable pricing</li>
-            <li>Modern, relevant training content</li>
-            <li>Experienced, hands-on instruction</li>
+            <li>
+              <a href={routes.bls} style="color:#c8102e;font-weight:600;">AHA BLS Provider Training</a>
+              — for healthcare providers and first responders
+            </li>
+            <li>
+              <a href={routes.pediatric} style="color:#c8102e;font-weight:600;">AHA Heartsaver Pediatric First Aid CPR AED</a>
+              — for teachers, babysitters, and caregivers
+            </li>
+            <li>
+              <a href={routes.emsa} style="color:#c8102e;font-weight:600;">EMSA Preventive Health &amp; Safety</a>
+              — evening online enrollment for California childcare providers
+            </li>
+            <li>
+              <a href={routes.speaking} style="color:#c8102e;font-weight:600;">Keynote speaking</a>
+              — safety culture and emergency preparedness presentations
+            </li>
+            <li>
+              <a href={routes.daycareGuide} style="color:#c8102e;font-weight:600;">Home Daycare Guide</a>
+              — California startup resources for family childcare homes
+            </li>
           </ul>
+        </article>
+
+        <article style="background:white;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;">
+          <h2 style="font-size:1.35rem;color:#0f2744;margin-bottom:10px;">Our mission</h2>
+          <p style="color:#515154;line-height:1.7;">
+            Deliver clear, hands-on, and practical instruction so participants
+            leave certified and confident — ready to respond at work, school, or
+            in the community.
+          </p>
         </article>
       </div>
 
       <div
-        style="margin-top:22px;background:#1B3A5C;border-radius:16px;padding:26px 24px;text-align:center;"
+        style="margin-top:22px;background:#0f2744;border-radius:16px;padding:26px 24px;text-align:center;"
       >
         <h2 style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:10px;">
-          Ready to enroll?
+          Ready to train or book Judith?
         </h2>
         <p style="color:rgba(255,255,255,0.8);margin-bottom:18px;">
-          Call <a href="tel:3239216244" style="color:white;">323-921-6244</a> or
+          Call <a href={site.phoneHref} style="color:white;">{site.phone}</a> or
           email
-          <a href="mailto:info@alerttrainingservices.com" style="color:white;">
-            info@alerttrainingservices.com
+          <a href={site.emailHref} style="color:white;">
+            {site.email}
           </a>
-          for help selecting your class.
+          .
         </p>
-        <a
-          href="/preventative-health-and-safety-training"
-          style="display:inline-block;background:#7a1d2e;color:white;text-decoration:none;padding:12px 28px;border-radius:999px;font-weight:700;"
-        >
-          Enroll Now
-        </a>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+          <a
+            href={routes.courses}
+            style="display:inline-block;background:#c8102e;color:white;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:700;"
+          >
+            Find a Class
+          </a>
+          <a
+            href={routes.speakingInquiry}
+            style="display:inline-block;background:transparent;color:white;border:2px solid rgba(255,255,255,0.55);text-decoration:none;padding:10px 26px;border-radius:8px;font-weight:700;"
+          >
+            Book Judith to Speak
+          </a>
+        </div>
       </div>
     </section>
   </main>

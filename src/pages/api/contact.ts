@@ -1,12 +1,9 @@
 import type { APIRoute } from "astro";
-import { submitContactToFormspree } from "../../lib/formspree";
+import { sendInquiryAutoReply, sendInquiryToAdmin } from "../../lib/email";
 import { getEnv } from "../../lib/worker-env";
 
 export const POST: APIRoute = async ({ request }) => {
-  const formId =
-    getEnv("FORMSPREE_CONTACT_FORM_ID") || getEnv("FORMSPREE_FORM_ID");
-
-  if (!formId) {
+  if (!getEnv("RESEND_API_KEY") || !getEnv("FROM_EMAIL") || !getEnv("ADMIN_EMAIL")) {
     return new Response(JSON.stringify({ error: "Contact form is not configured" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -18,6 +15,16 @@ export const POST: APIRoute = async ({ request }) => {
   const email = String(body.email ?? "").trim();
   const phone = String(body.phone ?? "").trim();
   const message = String(body.message ?? "").trim();
+  const website = String(body.website ?? "").trim(); // honeypot
+  const subject = String(body.subject ?? "Contact form inquiry").trim() || "Contact form inquiry";
+
+  // Bot filled the hidden field
+  if (website) {
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   if (!fullName || !email || !message) {
     return new Response(JSON.stringify({ error: "Missing required fields" }), {
@@ -27,7 +34,20 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    await submitContactToFormspree(formId, { fullName, email, phone, message });
+    await sendInquiryToAdmin({
+      fullName,
+      email,
+      phone,
+      message,
+      subject,
+    });
+
+    try {
+      await sendInquiryAutoReply({ to: email, fullName });
+    } catch (autoReplyErr: any) {
+      console.error("Inquiry auto-reply failed:", autoReplyErr?.message ?? autoReplyErr);
+    }
+
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -1,37 +1,389 @@
-<nav>
-  <a class="nav-brand" href="/">
-    <img
-      src="/brand/alert-training-services-logo.jpg"
-      alt="Alert Training Services logo"
-    />
-  </a>
-  <ul class="nav-links">
-    <li class="nav-item-dropdown">
-      <a href="/preventative-health-and-safety-training">Courses</a>
-      <ul class="nav-submenu">
-        <li>
-          <a href="/preventative-health-and-safety-training"
-            >Preventive Health & Safety with Nutrition and Lead Poisoning Prevention</a
-          >
-        </li>
-      </ul>
-    </li>
-    <li><a href="/how-to-start-a-home-daycare-in-california">Home Daycare Guide</a></li>
-    <li><a href="/#faq">FAQs</a></li>
-    <li><a href="/ats-news">Blog</a></li>
-  </ul>
-  <a href="/preventative-health-and-safety-training" class="nav-btn nav-cta">Register Now</a>
-  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+---
+import { site, routes, courseNav } from "../lib/site";
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="/preventative-health-and-safety-training" onclick="closeMenu()">Courses</a>
-  <a href="/how-to-start-a-home-daycare-in-california" onclick="closeMenu()">Home Daycare Guide</a>
-  <a href="/#faq" onclick="closeMenu()">FAQs</a>
-  <a href="/ats-news" onclick="closeMenu()">Blog</a>
-  <a href="tel:3239216244" class="mob-phone">📞 323-921-6244</a>
-  <a href="/preventative-health-and-safety-training" class="mob-enroll" onclick="closeMenu()">Register Now</a>
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+---
+
+<header class:list={["site-header", { "site-header--overlay": overlay }]}>
+  <nav class="site-header__inner" aria-label="Primary">
+    <a class="nav-brand" href={routes.home}>
+      <span class="nav-brand__text">
+        <span class="nav-brand__title">{site.businessName}</span>
+        <span class="nav-brand__sub">{site.brandSubLabel}</span>
+      </span>
+    </a>
+    <ul class="nav-links">
+      <li class="nav-item-dropdown">
+        <a href={routes.courses}>Courses</a>
+        <ul class="nav-submenu">
+          {
+            courseNav.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </li>
+      <li><a href={routes.speaking}>Speaking &amp; Presentations</a></li>
+      <li><a href={routes.about}>About Judith</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <a href={routes.speakingInquiry} class="nav-btn nav-btn--ghost">Book Judith to Speak</a>
+      <a href={routes.courses} class="nav-btn nav-btn--primary">Find a Class</a>
+    </div>
+    <button class="hamburger" type="button" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <p class="mob-section">Courses</p>
+  {courseNav.map((item) => <a href={item.href} onclick="closeMenu()">{item.label}</a>)}
+  <a href={routes.speaking} onclick="closeMenu()">Speaking &amp; Presentations</a>
+  <a href={routes.about} onclick="closeMenu()">About Judith</a>
+  <a href={site.phoneHref} class="mob-phone">{site.phone}</a>
+  <a href={routes.courses} class="mob-enroll" onclick="closeMenu()">Find a Class</a>
+  <a href={routes.speakingInquiry} class="mob-speak" onclick="closeMenu()">Book Judith to Speak</a>
 </div>
 
+<style is:inline>
+  :root {
+    --hdr-navy: #0f2744;
+    --hdr-slate: #1b3a5c;
+    --hdr-accent: #c8102e;
+    --hdr-accent-dark: #a00d25;
+    --hdr-amber: #f5a623;
+    --hdr-height: 88px;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: linear-gradient(90deg, var(--hdr-navy), var(--hdr-slate));
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .site-header--overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: transparent;
+  }
+
+  .site-header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    min-height: var(--hdr-height);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    justify-self: start;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .nav-brand__text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .nav-brand__title {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-brand__sub {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links > li {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item-dropdown::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 14px;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .nav-links > li > a:hover {
+    opacity: 0.8;
+  }
+
+  .nav-submenu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 0;
+    min-width: 300px;
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 220;
+  }
+
+  .nav-submenu li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-submenu a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1d1d1f;
+    white-space: normal;
+  }
+
+  .nav-submenu a:hover {
+    background: #eef2f7;
+    color: var(--hdr-slate);
+  }
+
+  .nav-item-dropdown:hover .nav-submenu,
+  .nav-item-dropdown:focus-within .nav-submenu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    justify-self: end;
+  }
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .nav-btn--primary {
+    background: var(--hdr-accent);
+    color: #ffffff;
+    border: 2px solid var(--hdr-accent);
+  }
+
+  .nav-btn--primary:hover {
+    background: var(--hdr-accent-dark);
+    border-color: var(--hdr-accent-dark);
+  }
+
+  .nav-btn--ghost {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+  }
+
+  .nav-btn--ghost:hover {
+    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    justify-self: end;
+    padding: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 2px;
+  }
+
+  .mobile-menu {
+    display: none !important;
+    flex-direction: column;
+    position: fixed;
+    top: var(--hdr-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 199;
+    padding: 24px 28px 40px;
+    overflow-y: auto;
+    background: #ffffff;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .mobile-menu.open {
+    display: flex !important;
+  }
+
+  .mobile-menu .mob-section {
+    margin: 8px 0 0;
+    padding: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #86868b;
+  }
+
+  .mobile-menu a {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    color: #1d1d1f;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .mobile-menu .mob-phone {
+    color: var(--hdr-slate);
+    border-bottom: none;
+    margin-top: 8px;
+  }
+
+  .mobile-menu .mob-enroll,
+  .mobile-menu .mob-speak {
+    margin-top: 12px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu .mob-enroll {
+    background: var(--hdr-accent);
+    color: #ffffff;
+  }
+
+  .mobile-menu .mob-speak {
+    background: transparent;
+    color: var(--hdr-slate);
+    border: 2px solid var(--hdr-slate);
+  }
+
+  @media (max-width: 1100px) {
+    .nav-brand__sub {
+      max-width: 180px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    :root {
+      --hdr-height: 76px;
+    }
+
+    .site-header__inner {
+      grid-template-columns: 1fr auto;
+    }
+
+    .nav-links,
+    .nav-ctas {
+      display: none !important;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .nav-brand__title {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+    const btn = document.querySelector(".hamburger");
+    if (!menu) return;
+    const open = menu.classList.toggle("open");
+    if (open) menu.removeAttribute("hidden");
+    else menu.setAttribute("hidden", "");
+    if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function closeMenu() {
+    const menu = document.getElementById("mobileMenu");
+    const btn = document.querySelector(".hamburger");
+    if (!menu) return;
+    menu.classList.remove("open");
+    menu.setAttribute("hidden", "");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  }
+  window.toggleMenu = toggleMenu;
+  window.closeMenu = closeMenu;
+</script>

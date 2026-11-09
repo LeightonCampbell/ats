@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import DaycareGuideCheckout from "../components/DaycareGuideCheckout.tsx";
 import { getEnvAtRuntime } from "../lib/env";
@@ -13,7 +12,6 @@ const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
   description="Step-by-step California home daycare startup guide and licensing checklist. PDF download for $29 — licensing, EMSA training, and opening your family childcare home."
   canonical="https://www.alerttrainingservices.com/how-to-start-a-home-daycare-in-california"
 >
-  <SiteHeader />
   <style>
     .daycare-shell section {
       padding: 0;

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BookingWidget from "../components/BookingWidget.tsx";
-import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 import { getEnvAtRuntime } from "../lib/env";
@@ -14,7 +13,6 @@ const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
   description="Enroll in Alert Training Services' EMSA-approved Preventive Health & Safety with Nutrition and Lead Poisoning Prevention course. Monday and Tuesday evening sessions delivered online."
   canonical="https://www.alerttrainingservices.com/preventative-health-and-safety-training"
 >
-  <SiteHeader />
   <style>
     .booking-page {
       margin: 0 auto;
@@ -87,9 +85,9 @@ const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
   >
       <div class="booking-hero">
           <div
-            style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7a1d2e;margin-bottom:10px;"
+            style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#c8102e;margin-bottom:10px;"
           >
-            Choose Upcoming Class
+            EMSA - Approved
           </div>
           <h1 class="booking-page-title">
             Preventive Health &amp; Safety with Nutrition<br />
@@ -99,9 +97,14 @@ const publishableKey = await getEnvAtRuntime("PUBLIC_STRIPE_PUBLISHABLE_KEY");
             Classes are held on Mondays &amp; Tuesdays from 6 PM to 10 PM.<br />
             Select your Monday start date below - the matching Tuesday session is included for the same week.
           </p>
+          <p style="margin-top:18px;">
+            <a href="#register" style="display:inline-flex;background:#c8102e;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:0.85rem;">
+              Register for a Class
+            </a>
+          </p>
       </div>
 
-      <div class="booking-card-wrap">
+      <div class="booking-card-wrap" id="register">
         <div
           style="background:white;border-radius:16px;border:1px solid rgba(0,0,0,0.08);padding:40px;"
         >

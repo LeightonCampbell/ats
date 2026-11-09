@@ -1,0 +1,221 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { site, routes, courseCatalog } from "../../lib/site";
+---
+
+<BaseLayout
+  title={`Courses | ${site.businessName}`}
+  description="Browse AHA BLS Provider, AHA Heartsaver Pediatric First Aid CPR AED, and EMSA-approved Preventive Health & Safety training from Alert Training Services."
+  canonical={`${site.siteUrl}/courses`}
+>
+  <main class="courses-hub">
+    <section class="courses-hero">
+      <div class="wrap">
+        <div class="eyebrow">Course Catalog</div>
+        <h1>Certification Training That Saves Lives</h1>
+        <p>
+          Choose an American Heart Association course or EMSA-approved Preventive
+          Health &amp; Safety training. Register from each course page.
+        </p>
+      </div>
+    </section>
+
+    <section class="courses-list">
+      <div class="wrap grid">
+        {
+          courseCatalog.map((course) => (
+            <article class="card">
+              <div class="badge">{course.badge}</div>
+              <h2>{course.title}</h2>
+              <p class="format">{course.format}</p>
+              <p>{course.body}</p>
+              {"note" in course && course.note && <p class="note">{course.note}</p>}
+              <div class="actions">
+                <a class="btn-primary" href={course.registerHref}>
+                  Register
+                </a>
+                <a class="btn-outline" href={course.href}>
+                  Learn More
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="onsite">
+      <div class="wrap onsite-inner">
+        <div>
+          <div class="eyebrow light">Workplace &amp; Groups</div>
+          <h2>Need on-site training for your team?</h2>
+          <p>
+            We deliver AHA-compliant hands-on training to hospitals, clinics,
+            schools, and corporate offices.
+          </p>
+        </div>
+        <a class="btn-amber" href={`${routes.contact}?intent=group`}>
+          Schedule a Private Group Session
+        </a>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .courses-hub {
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f7;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .courses-hero {
+    padding: 56px 0 48px;
+    background: linear-gradient(105deg, #0f2744, #1b3a5c);
+    color: #fff;
+  }
+  .eyebrow {
+    margin-bottom: 12px;
+    color: #f5a623;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .eyebrow.light {
+    color: #f5a623;
+  }
+  h1 {
+    margin: 0 0 14px;
+    max-width: 720px;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    line-height: 1.18;
+  }
+  .courses-hero p {
+    margin: 0;
+    max-width: 640px;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+  }
+  .courses-list {
+    padding: 48px 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background: #fff;
+  }
+  .badge {
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #eef2f7;
+    color: #1b3a5c;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  h2 {
+    margin: 0 0 10px;
+    color: #0f2744;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  .format {
+    margin: 0 0 12px;
+    color: #1b3a5c;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .card > p {
+    margin: 0;
+    color: #515154;
+    line-height: 1.65;
+    flex: 1;
+  }
+  .note {
+    margin-top: 14px !important;
+    padding: 10px 12px;
+    border-left: 3px solid #f5a623;
+    background: #fff8eb;
+    color: #6a4a10 !important;
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .btn-primary,
+  .btn-outline,
+  .btn-amber {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: #c8102e;
+    color: #fff;
+  }
+  .btn-outline {
+    border: 2px solid #1b3a5c;
+    color: #1b3a5c;
+  }
+  .btn-amber {
+    background: #f5a623;
+    color: #1d1d1f;
+  }
+  .onsite {
+    padding: 56px 0;
+    background: linear-gradient(100deg, #0f2744, #1b3a5c);
+    color: #fff;
+  }
+  .onsite-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+  .onsite h2 {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  .onsite p {
+    margin: 0;
+    max-width: 580px;
+    color: rgba(255, 255, 255, 0.86);
+    line-height: 1.7;
+  }
+  @media (max-width: 900px) {
+    .grid,
+    .onsite-inner {
+      grid-template-columns: 1fr;
+      display: grid;
+    }
+  }
+</style>

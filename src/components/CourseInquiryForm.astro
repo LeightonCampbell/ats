@@ -1,0 +1,241 @@
+---
+import { site } from "../lib/site";
+
+interface Props {
+  courseName: string;
+  heading?: string;
+  intro?: string;
+}
+
+const {
+  courseName,
+  heading = "Register or request a class",
+  intro = "Tell us what you need and we will follow up with available dates, pricing, and next steps.",
+} = Astro.props;
+
+const formId = `course-form-${courseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<section class="course-register" id="register" aria-labelledby={`${formId}-heading`}>
+  <div class="course-register__inner">
+    <h2 id={`${formId}-heading`}>{heading}</h2>
+    <p class="course-register__intro">{intro}</p>
+    <p class="course-register__direct">
+      Prefer to talk now?
+      <a href={site.phoneHref}>{site.phone}</a>
+      ·
+      <a href={site.emailHref}>{site.email}</a>
+    </p>
+
+    <form class="course-register__form" data-course={courseName} onsubmit="handleCourseInquiry(event)">
+      <input type="hidden" name="courseName" value={courseName} />
+      <div class="course-register__row">
+        <div>
+          <label for={`${formId}-name`}>Full Name</label>
+          <input id={`${formId}-name`} name="fullName" type="text" required placeholder="Your full name" />
+        </div>
+        <div>
+          <label for={`${formId}-phone`}>Phone</label>
+          <input id={`${formId}-phone`} name="phone" type="tel" required placeholder="323-921-6244" />
+        </div>
+      </div>
+      <div>
+        <label for={`${formId}-email`}>Email</label>
+        <input id={`${formId}-email`} name="email" type="email" required placeholder="you@example.com" />
+      </div>
+      <div class="course-register__row">
+        <div>
+          <label for={`${formId}-type`}>Inquiry Type</label>
+          <select id={`${formId}-type`} name="inquiryType" required>
+            <option value="Individual registration">Individual registration</option>
+            <option value="On-site / group training">On-site / group training</option>
+            <option value="General question">General question</option>
+          </select>
+        </div>
+        <div>
+          <label for={`${formId}-count`}>Estimated participants</label>
+          <input id={`${formId}-count`} name="participantCount" type="text" placeholder="e.g. 1 or 12" />
+        </div>
+      </div>
+      <div>
+        <label for={`${formId}-message`}>Preferred dates or details</label>
+        <textarea
+          id={`${formId}-message`}
+          name="details"
+          required
+          placeholder="Share preferred dates, location, or questions."
+        ></textarea>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for={`${formId}-website`}>Website</label>
+        <input id={`${formId}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <p class="course-register__status" role="status" aria-live="polite"></p>
+      <button type="submit">Submit Registration Inquiry</button>
+    </form>
+  </div>
+</section>
+
+<style is:inline>
+  .course-register {
+    padding: 48px 0 64px;
+    background: #0f2744;
+    color: #fff;
+  }
+  .course-register__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .course-register h2 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.8rem;
+  }
+  .course-register__intro,
+  .course-register__direct {
+    margin: 0 0 12px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.65;
+  }
+  .course-register__direct a {
+    color: #f5a623;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .course-register__form {
+    margin-top: 22px;
+    padding: 24px;
+    border-radius: 12px;
+    background: #fff;
+    color: #1d1d1f;
+  }
+  .course-register__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .course-register__form > div,
+  .course-register__row > div {
+    margin-bottom: 12px;
+  }
+  .course-register label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #86868b;
+  }
+  .course-register input,
+  .course-register select,
+  .course-register textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    background: #f5f5f7;
+    font: inherit;
+    font-size: 0.92rem;
+  }
+  .course-register textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+  .course-register__status {
+    min-height: 1.25rem;
+    margin: 4px 0 8px;
+    font-size: 0.88rem;
+    color: #c8102e;
+  }
+  .course-register button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #c8102e;
+    color: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .course-register button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .course-register .hp {
+    position: absolute;
+    left: -9999px;
+    height: 0;
+    overflow: hidden;
+  }
+  @media (max-width: 700px) {
+    .course-register__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script is:inline>
+  async function handleCourseInquiry(event) {
+    event.preventDefault();
+    const form = event.target;
+    const status = form.querySelector(".course-register__status");
+    const btn = form.querySelector('button[type="submit"]');
+    const courseName = form.dataset.course || form.courseName.value;
+    const fullName = form.fullName.value.trim();
+    const email = form.email.value.trim();
+    const phone = form.phone.value.trim();
+    const inquiryType = form.inquiryType.value;
+    const participantCount = form.participantCount.value.trim();
+    const details = form.details.value.trim();
+
+    const website = (form.website?.value || "").trim();
+    const message = [
+      `Course inquiry: ${courseName}`,
+      `Inquiry type: ${inquiryType}`,
+      participantCount ? `Estimated participants: ${participantCount}` : null,
+      `Details: ${details}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    status.textContent = "";
+    status.style.color = "#c8102e";
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = "Sending…";
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phone,
+          message,
+          website,
+          subject: `Course inquiry: ${courseName}`,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Unable to send inquiry.");
+      }
+      status.style.color = "#0f2744";
+      status.textContent = "Thank you — your inquiry was sent. We will follow up soon.";
+      form.reset();
+    } catch (err) {
+      status.textContent = err.message || "Something went wrong. Please call 323-921-6244.";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+  window.handleCourseInquiry = handleCourseInquiry;
+</script>
