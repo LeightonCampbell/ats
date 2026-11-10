@@ -349,6 +349,8 @@ const { overlay = false } = Astro.props;
 
     .site-header__inner {
       grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 0 16px;
     }
 
     .nav-links,
@@ -361,7 +363,22 @@ const { overlay = false } = Astro.props;
     }
 
     .nav-brand__title {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+    }
+
+    .nav-brand__sub {
+      max-width: none;
+      font-size: 0.64rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .nav-brand__title {
+      font-size: 0.84rem;
+    }
+
+    .nav-brand__sub {
+      display: none;
     }
   }
 </style>

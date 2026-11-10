@@ -212,10 +212,42 @@ import { site, routes, courseCatalog } from "../../lib/site";
     line-height: 1.7;
   }
   @media (max-width: 900px) {
+    .courses-hero {
+      text-align: center;
+      padding: 40px 0 36px;
+    }
+    .courses-hero h1,
+    .courses-hero p {
+      max-width: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .grid,
     .onsite-inner {
       grid-template-columns: 1fr;
       display: grid;
+    }
+    .onsite-inner {
+      justify-items: center;
+      text-align: center;
+      gap: 22px;
+    }
+    .onsite p {
+      max-width: none;
+    }
+    .actions {
+      flex-direction: column;
+    }
+    .actions a {
+      width: 100%;
+    }
+  }
+  @media (max-width: 560px) {
+    .courses-hero h1 {
+      font-size: clamp(1.7rem, 7vw, 2.2rem);
+    }
+    .card {
+      padding: 22px 18px;
     }
   }
 </style>

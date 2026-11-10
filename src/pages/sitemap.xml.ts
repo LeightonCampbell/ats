@@ -9,6 +9,7 @@ const routes = [
   "/courses/aha-heartsaver-pediatric",
   "/preventative-health-and-safety-training",
   "/speaking",
+  "/speaking/thank-you",
   "/about-us",
   "/contact-us",
   "/class-rules",

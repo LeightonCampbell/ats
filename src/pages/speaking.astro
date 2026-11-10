@@ -2,64 +2,314 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { site, routes } from "../lib/site";
+
+const presentations = [
+  {
+    title: "Depression: Finding Hope Through a Biblical Lens",
+    body: "Depression can affect people from every background—including people of strong faith. This faith-based presentation provides an honest and compassionate discussion of depression while examining biblical accounts of individuals who experienced despair, discouragement, grief, fear, loneliness, and emotional distress. Participants are encouraged to understand that seeking appropriate professional help does not have to conflict with faith.",
+    ideal: "Churches, women's ministries, men's ministries, senior ministries, conferences, faith-based organizations and community groups.",
+  },
+  {
+    title: "Hear My Cry: When a Young Person's Behavior Is Saying What Words Cannot",
+    body: "Sometimes young people communicate emotional pain through their behavior long before they are able—or willing—to put their feelings into words. This presentation helps adults look beyond behavior and consider what a young person may be trying to communicate. Topics include emotional distress, changes in behavior, school and family pressures, social media, isolation, depression, communication, supportive responses, and knowing when additional help may be needed.",
+    ideal: "Schools, churches, parents, teachers, counselors, youth ministries, group homes and organizations serving children and adolescents.",
+  },
+  {
+    title: "Who Ministers to the Minister? Caring for Pastors Who Are Pouring From an Empty Cup",
+    body: "Pastors and ministry leaders spend tremendous amounts of time caring for others—but who cares for the person who is continually pouring into everyone else? This presentation addresses pastoral wellness, emotional exhaustion, boundaries, rest, confidential support and recognizing when professional assistance may be appropriate. It encourages churches to create cultures where leaders can acknowledge that they need support without feeling that doing so represents spiritual weakness.",
+    ideal: "Pastors, ministers, church leadership teams, ministerial associations, clergy conferences and denominational gatherings.",
+  },
+  {
+    title: "Behind the Pulpit, Behind the Smile: The Hidden Emotional Struggles of Church Leaders",
+    body: "A person can preach, teach, lead, counsel and encourage others while privately experiencing emotional pain. This presentation explores some of the pressures church leaders may carry behind the scenes and encourages compassionate, confidential and appropriate support for those who spend their lives supporting others.",
+    ideal: "Clergy groups, churches, leadership retreats, ministry conferences and pastoral-care programs.",
+  },
+  {
+    title: "Shepherding the Hurting: How Churches Can Respond to Depression With Faith, Compassion, and Wisdom",
+    body: "Churches are often among the first places people turn when they are hurting. This presentation helps pastors and ministry leaders understand how churches can respond to people experiencing depression with compassion and wisdom. Participants explore recognizing concerns, listening without judgment, understanding appropriate ministry boundaries, providing spiritual support and recognizing when referral to qualified professional assistance is appropriate.",
+    ideal: "Pastors, ministry leaders, pastoral-care teams, church volunteers and faith-based organizations.",
+  },
+  {
+    title: "Unseen & Unheard: The Connection Between Depression and Homelessness",
+    body: "Behind homelessness is a human story. This presentation explores the relationship between depression, emotional distress, homelessness, isolation and the need for compassionate community responses. The program challenges audiences to look beyond labels and see individuals with dignity, needs, strengths and stories.",
+    ideal: "Churches, community organizations, outreach ministries, social-service organizations, conferences and volunteer groups.",
+  },
+  {
+    title: "NO FILTER: Let's Talk About Depression",
+    subtitle: "Real Feelings, Real Struggles, Real Help",
+    body: "Depression can be difficult to talk about, especially for young people who may feel pressure to appear okay even when they are struggling inside. This presentation creates a safe, honest, and age-appropriate conversation about depression, emotional struggles, asking for help, supporting friends, and understanding that difficult feelings should not be faced alone.",
+    ideal: "Teenagers, youth groups, schools, churches, parents, teachers, counselors, group homes and organizations serving young people.",
+  },
+  {
+    title: "Hope Has a Home: Responding to Depression and Homelessness Through Faith, Compassion, and Action",
+    body: "Depression and homelessness can intersect in complex and deeply human ways. This presentation explores how faith communities and community organizations can respond with compassion, dignity, practical support, and appropriate referrals. It encourages audiences to move beyond assumptions and consider meaningful ways to help people experiencing emotional distress and housing instability.",
+    ideal: "Churches, outreach ministries, community organizations, conferences, volunteer groups, faith-based organizations, and groups serving people experiencing homelessness.",
+  },
+];
+
+const customTopics = [
+  "Caregiver encouragement and support",
+  "Faith and emotional wellness",
+  "Youth emotional wellness",
+  "Depression awareness and education",
+  "Pastoral and ministry-leader wellness",
+  "Compassionate church responses to people who are hurting",
+  "Homelessness and emotional wellness",
+  "Community health education",
+  "Women's ministry programs",
+  "Senior-adult programs",
+];
+
+const audiences = [
+  {
+    title: "Churches & Ministries",
+    body: "Congregations, pastors, ministry leaders, women's ministries, men's ministries, youth ministries and senior ministries.",
+  },
+  {
+    title: "Schools & Youth Organizations",
+    body: "Parents, teachers, counselors, youth leaders and organizations serving young people.",
+  },
+  {
+    title: "Community Organizations",
+    body: "Nonprofit organizations, community programs, outreach programs and support organizations.",
+  },
+  {
+    title: "Caregiver Organizations",
+    body: "Programs serving family caregivers, senior caregivers and individuals supporting loved ones.",
+  },
+  {
+    title: "Conferences & Special Events",
+    body: "Keynotes, workshops, seminars, retreats, community events and educational programs.",
+  },
+  {
+    title: "Professional & Community Groups",
+    body: "Presentations may be customized according to the educational needs and purpose of the organization.",
+  },
+];
+
+const formats = [
+  "60-Minute Presentations",
+  "Educational Workshops",
+  "Conference Presentations",
+  "Church & Ministry Presentations",
+  "Leadership Training",
+  "Youth & Parent Programs",
+  "Virtual Presentations",
+  "In-Person Presentations",
+];
+
+const expectations = [
+  {
+    title: "Educational",
+    body: "Providing information audiences can understand and use.",
+  },
+  {
+    title: "Compassionate",
+    body: "Discussing sensitive subjects without judgment or shame.",
+  },
+  {
+    title: "Engaging",
+    body: "Encouraging participation, reflection and questions.",
+  },
+  {
+    title: "Practical",
+    body: "Helping audiences identify appropriate next steps and resources.",
+  },
+  {
+    title: "Faith-Sensitive",
+    body: "Incorporating Scripture and biblical encouragement when requested for faith-based audiences.",
+  },
+  {
+    title: "Customizable",
+    body: "Adapting presentations when appropriate for the needs of the organization and audience.",
+  },
+];
 ---
 
 <BaseLayout
-  title="Keynote Speaking by Judith Morgan | Alert Training Services"
-  description="Book Judith Morgan for keynote speaking and workplace safety presentations for conferences, corporate wellness events, and healthcare organizations."
+  title={`Speaking | ${site.founderFormal} | Alert Training Services`}
+  description="Invite Rev Judith Morgan, RN, BA, MA for presentations on faith, mental health, youth, caregiving, community wellness, and leadership. In-person and virtual."
   canonical={`${site.siteUrl}/speaking`}
 >
   <main class="speak-page">
     <section class="speak-hero">
-      <div class="wrap">
-        <div class="eyebrow">Speaking &amp; Keynotes</div>
-        <h1>Keynote Speaking &amp; Workplace Safety Presentations by {site.founder}</h1>
-        <p class="sub">
-          Empowering organizations with critical safety culture, emergency
-          preparedness, and life-saving readiness.
-        </p>
-        <a class="btn-primary" href="#inquiry">Inquire About Judith&apos;s Availability</a>
+      <div class="wrap speak-hero__grid">
+        <div class="speak-hero__copy">
+          <p class="eyebrow">{site.founderFormal}</p>
+          <h1>Presentations That Educate, Encourage, Equip &amp; Inspire</h1>
+          <p class="topics">
+            Faith · Mental Health · Youth · Caregiving · Community Wellness · Leadership
+          </p>
+          <p class="lead">
+            Rev Judith Morgan brings healthcare knowledge, ministry experience,
+            compassion, and practical education to difficult issues facing
+            individuals, families, churches, schools, and communities—speaking
+            for congregations, conferences, youth and parent programs, caregiver
+            organizations, group homes, and other community groups.
+          </p>
+          <a class="btn-primary" href="#inquiry">Invite Rev. Morgan to Speak</a>
+        </div>
+        <div class="speak-hero__media">
+          <img
+            src="/images/judith-morgan-speaker-hero.jpg"
+            alt="Rev Judith Morgan, RN, BA, MA"
+            width="900"
+            height="900"
+            loading="eager"
+            decoding="async"
+          />
+          <p class="badge">Available for In-Person &amp; Virtual Presentations</p>
+        </div>
       </div>
     </section>
 
-    <section class="speak-body">
-      <div class="wrap grid">
-        <article>
-          <h2>What organizers book Judith for</h2>
-          <ul>
-            <li>Interactive, memorable safety demonstrations and keynotes</li>
-            <li>
-              Tailored presentations for corporate retreats, healthcare summits,
-              and education conferences
-            </li>
-            <li>
-              Workplace readiness talks that connect clinical expertise with
-              practical emergency response
-            </li>
-          </ul>
-        </article>
-        <aside class="planner">
-          <h2>Meeting Planner Quick Info</h2>
-          <p><strong>Direct contact:</strong> {site.founder}</p>
+    <section class="section" id="about">
+      <div class="wrap narrow">
+        <p class="section-eyebrow">About the Presenter</p>
+        <h2>Meet Rev Judith Morgan</h2>
+        <p>
+          {site.founderFormal} is a registered nurse, minister, educator, and
+          presenter with a passion for helping people better understand the
+          emotional, spiritual, and practical challenges that affect
+          individuals, families, caregivers, young people, and communities.
+        </p>
+        <p>
+          Her presentations combine education with compassion and, when
+          appropriate for the audience, faith-based encouragement and biblical
+          principles.
+        </p>
+        <p>
+          Rather than simply talking about difficult subjects, Rev Morgan seeks
+          to create an environment where people can listen, learn, ask
+          questions, recognize concerns, and understand the importance of
+          reaching for appropriate help and support.
+        </p>
+        <p>
+          Her presentations can be adapted to meet the needs of faith-based and
+          community audiences.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="presentations">
+      <div class="wrap">
+        <p class="section-eyebrow">Featured Presentations</p>
+        <h2>Topics that open meaningful conversations</h2>
+        <div class="presentation-grid">
+          {
+            presentations.map((item) => (
+              <article class="presentation-card">
+                <h3>{item.title}</h3>
+                {item.subtitle && <p class="subtitle">{item.subtitle}</p>}
+                <p>{item.body}</p>
+                <p class="ideal">
+                  <strong>Ideal for:</strong> {item.ideal}
+                </p>
+                <a
+                  class="btn-secondary"
+                  href={`#inquiry`}
+                  data-topic={item.title}
+                  onclick="prefillTopic(this.dataset.topic)"
+                >
+                  Request This Presentation
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="custom">
+      <div class="wrap">
+        <p class="section-eyebrow">Additional Presentation Areas</p>
+        <h2>Custom topics for your audience</h2>
+        <p class="intro">
+          Rev Morgan is also available to develop or customize presentations in
+          areas including:
+        </p>
+        <ul class="topic-list">
+          {customTopics.map((topic) => <li>{topic}</li>)}
+        </ul>
+        <p>
+          Have a particular topic in mind? Contact us to discuss whether a
+          presentation can be customized for your audience.
+        </p>
+        <a class="btn-primary" href="#inquiry" onclick="prefillTopic('Custom presentation')">
+          Discuss a Custom Presentation
+        </a>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="audiences">
+      <div class="wrap">
+        <p class="section-eyebrow">Who I Speak To</p>
+        <h2>Organizations and communities served</h2>
+        <div class="audience-grid">
+          {
+            audiences.map((item) => (
+              <article>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="formats">
+      <div class="wrap">
+        <p class="section-eyebrow">Presentation Options</p>
+        <h2>Formats that fit your event</h2>
+        <ul class="format-list">
+          {formats.map((item) => <li>{item}</li>)}
+        </ul>
+        <p>
+          Presentation length and content can be discussed and customized
+          according to the needs of the organization.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="expect">
+      <div class="wrap">
+        <p class="section-eyebrow">What Audiences Can Expect</p>
+        <h2>A clear, compassionate presentation experience</h2>
+        <div class="expect-grid">
+          {
+            expectations.map((item) => (
+              <article>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="invite" id="inquiry" aria-labelledby="inquiry-heading">
+      <div class="wrap invite-grid">
+        <div>
+          <p class="section-eyebrow light">Invite Rev. Morgan to Speak</p>
+          <h2 id="inquiry-heading">Bring a Meaningful Conversation to Your Organization</h2>
           <p>
-            <a href={site.phoneHref}>{site.phone}</a>
-            ·
+            Are you planning a conference, church program, leadership gathering,
+            youth event, caregiver program, school program or community event?
+            Let&apos;s discuss your audience, your goals and the presentation
+            that would best meet your needs.
+          </p>
+          <p>
+            Rev Judith Morgan is available for selected virtual and in-person
+            speaking engagements.
+          </p>
+          <p class="contact-line">
+            Call <a href={site.phoneHref}>{site.phone}</a>
+            or email
             <a href={site.emailHref}>{site.email}</a>
           </p>
-          <p class="muted">
-            In-person (Los Angeles area and travel) or virtual engagements available.
-          </p>
-        </aside>
-      </div>
-    </section>
-
-    <section class="speak-form-section" id="inquiry" aria-labelledby="inquiry-heading">
-      <div class="wrap narrow">
-        <h2 id="inquiry-heading">Inquire About Judith&apos;s Availability</h2>
-        <p class="lead">
-          Tell us about your event and we will follow up with availability and
-          next steps.
-        </p>
+        </div>
 
         <form class="speak-form" onsubmit="handleSpeakingSubmit(event)">
           <div class="row">
@@ -106,15 +356,15 @@ import { site, routes } from "../lib/site";
               id="objectives"
               name="objectives"
               required
-              placeholder="What should the audience walk away knowing or feeling ready to do?"
+              placeholder="What presentation are you requesting, and what should the audience walk away knowing?"
             ></textarea>
           </div>
-          <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden;">
+          <div class="hp" aria-hidden="true">
             <label for="speak-website">Website</label>
             <input id="speak-website" name="website" type="text" tabindex="-1" autocomplete="off" />
           </div>
           <p id="speakFormStatus" role="status" aria-live="polite"></p>
-          <button id="speakSubmitBtn" type="submit">Inquire About Judith&apos;s Availability</button>
+          <button id="speakSubmitBtn" type="submit">Invite Rev. Morgan to Speak</button>
         </form>
       </div>
     </section>
@@ -126,103 +376,235 @@ import { site, routes } from "../lib/site";
   .speak-page {
     font-family: Poppins, -apple-system, BlinkMacSystemFont, sans-serif;
     background: #f5f5f7;
+    color: #1d1d1f;
   }
   .wrap {
-    max-width: 980px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 24px;
   }
   .narrow {
-    max-width: 720px;
+    max-width: 760px;
   }
   .speak-hero {
-    padding: 56px 0 48px;
-    background: linear-gradient(105deg, #0f2744, #1b3a5c);
+    position: relative;
+    overflow: hidden;
+    padding: 56px 0 0;
     color: #fff;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(245, 166, 35, 0.28), transparent 42%),
+      radial-gradient(circle at 88% 10%, rgba(37, 99, 235, 0.35), transparent 36%),
+      linear-gradient(135deg, #071a33 0%, #123a6b 48%, #1d4f91 100%);
   }
-  .eyebrow {
-    margin-bottom: 12px;
+  .speak-hero::before {
+    content: "";
+    position: absolute;
+    inset: auto -10% -40% 40%;
+    height: 70%;
+    background: radial-gradient(circle, rgba(245, 166, 35, 0.22), transparent 65%);
+    pointer-events: none;
+  }
+  .speak-hero__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 28px;
+    align-items: center;
+  }
+  .speak-hero__copy {
+    padding: 24px 0 56px;
+  }
+  .speak-hero__media {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px 0 40px;
+  }
+  .speak-hero__media::before {
+    content: "";
+    position: absolute;
+    inset: 8% 8% 18%;
+    border-radius: 28px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 40%),
+      linear-gradient(160deg, rgba(29, 79, 145, 0.35), rgba(7, 26, 51, 0.15));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  }
+  .speak-hero__media img {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 520px);
+    height: auto;
+    max-height: 520px;
+    object-fit: cover;
+    object-position: center top;
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
+  }
+  .speak-hero__media .badge {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    text-align: center;
+  }
+  .eyebrow,
+  .section-eyebrow {
+    margin: 0 0 12px;
     color: #f5a623;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  h1 {
-    margin: 0 0 14px;
-    max-width: 820px;
-    color: #fff;
-    font-size: clamp(2rem, 4vw, 2.7rem);
-    line-height: 1.18;
+  .section-eyebrow.light {
+    color: #f5a623;
   }
-  .sub {
-    margin: 0 0 28px;
+  .speak-hero h1 {
+    margin: 0 0 14px;
     max-width: 640px;
-    color: rgba(255, 255, 255, 0.88);
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    line-height: 1.12;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+  }
+  .topics {
+    margin: 0 0 18px;
+    color: #ffe3a8;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .lead {
+    margin: 0 0 14px;
+    max-width: 560px;
+    color: rgba(255, 255, 255, 0.92);
     line-height: 1.7;
   }
-  .btn-primary {
+  .badge {
+    display: inline-block;
+    margin: 8px 0 24px;
+    padding: 8px 12px;
+    border: 1px solid rgba(245, 166, 35, 0.45);
+    border-radius: 999px;
+    background: rgba(245, 166, 35, 0.14);
+    color: #ffe3a8;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .btn-primary,
+  .btn-secondary {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 13px 22px;
     border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .btn-primary {
     background: #c8102e;
     color: #fff;
-    font-weight: 700;
-    text-decoration: none;
   }
-  .speak-body {
-    padding: 48px 0;
+  .btn-secondary {
+    margin-top: 16px;
+    border: 2px solid #1b3a5c;
+    color: #1b3a5c;
+    background: transparent;
   }
-  .grid {
+  .section {
+    padding: 64px 0;
+  }
+  .section-alt {
+    background: #eef2f7;
+  }
+  .section h2,
+  .invite h2 {
+    margin: 0 0 18px;
+    color: #0f2744;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1.2;
+  }
+  .section p,
+  .invite p {
+    margin: 0 0 14px;
+    color: #515154;
+    line-height: 1.7;
+  }
+  .intro {
+    margin-bottom: 18px !important;
+  }
+  .presentation-grid,
+  .audience-grid,
+  .expect-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 28px;
   }
-  article,
-  .planner {
+  .presentation-card,
+  .audience-grid article,
+  .expect-grid article {
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    padding: 28px;
+    padding: 24px;
   }
-  h2 {
-    margin: 0 0 14px;
+  .presentation-card h3,
+  .audience-grid h3,
+  .expect-grid h3 {
+    margin: 0 0 10px;
     color: #0f2744;
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+    line-height: 1.35;
   }
-  ul {
-    margin: 0;
+  .subtitle {
+    margin: -4px 0 12px !important;
+    color: #1b3a5c !important;
+    font-weight: 600;
+  }
+  .ideal {
+    margin-top: 14px !important;
+  }
+  .topic-list,
+  .format-list {
+    margin: 0 0 20px;
     padding-left: 20px;
     color: #515154;
-    line-height: 1.8;
+    line-height: 1.9;
   }
-  .planner p {
-    margin: 0 0 10px;
-    color: #515154;
-    line-height: 1.6;
+  .invite {
+    padding: 64px 0;
+    background: #0f2744;
+    color: #fff;
   }
-  .planner a {
-    color: #1b3a5c;
+  .invite h2 {
+    color: #fff;
+  }
+  .invite p {
+    color: rgba(255, 255, 255, 0.86);
+  }
+  .invite-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .contact-line a {
+    color: #f5a623;
     font-weight: 600;
     text-decoration: none;
   }
-  .muted {
-    color: #86868b !important;
-    font-size: 0.92rem;
-  }
-  .speak-form-section {
-    padding: 0 0 64px;
-  }
-  .lead {
-    margin: 0 0 22px;
-    color: #515154;
-    line-height: 1.7;
-  }
   .speak-form {
     background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    padding: 28px;
+    padding: 24px;
+    color: #1d1d1f;
   }
   .row {
     display: grid;
@@ -257,6 +639,13 @@ import { site, routes } from "../lib/site";
     min-height: 120px;
     resize: vertical;
   }
+  .hp {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
   #speakFormStatus {
     min-height: 1.25rem;
     margin: 4px 0 8px;
@@ -268,7 +657,7 @@ import { site, routes } from "../lib/site";
     padding: 14px;
     border: none;
     border-radius: 8px;
-    background: #0f2744;
+    background: #c8102e;
     color: #fff;
     font: inherit;
     font-size: 0.95rem;
@@ -279,15 +668,104 @@ import { site, routes } from "../lib/site";
     opacity: 0.7;
     cursor: wait;
   }
-  @media (max-width: 768px) {
-    .grid,
+  @media (max-width: 900px) {
+    .speak-hero {
+      padding: 36px 0 40px;
+      text-align: center;
+    }
+    .speak-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      justify-items: center;
+    }
+    .speak-hero__copy {
+      padding: 8px 0 12px;
+      max-width: 640px;
+    }
+    .speak-hero h1,
+    .lead {
+      max-width: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .speak-hero .btn-primary {
+      width: min(100%, 320px);
+    }
+    .speak-hero__media {
+      min-height: 0;
+      order: -1;
+      width: 100%;
+      padding: 0 0 8px;
+    }
+    .speak-hero__media::before {
+      inset: 4% 10% 14%;
+    }
+    .speak-hero__media img {
+      max-height: 380px;
+      width: min(100%, 360px);
+    }
+    .section,
+    .invite {
+      text-align: center;
+    }
+    .topic-list,
+    .format-list {
+      text-align: left;
+      display: inline-block;
+    }
+    .presentation-card,
+    .audience-grid article,
+    .expect-grid article {
+      text-align: left;
+    }
+    .btn-secondary {
+      width: 100%;
+    }
+  }
+  @media (max-width: 860px) {
+    .presentation-grid,
+    .audience-grid,
+    .expect-grid,
+    .invite-grid,
     .row {
       grid-template-columns: 1fr;
+    }
+    .invite-grid {
+      gap: 22px;
+    }
+    .speak-form {
+      text-align: left;
+    }
+  }
+  @media (max-width: 560px) {
+    .speak-hero h1 {
+      font-size: clamp(1.75rem, 7.5vw, 2.25rem);
+    }
+    .topics {
+      font-size: 0.92rem;
+    }
+    .speak-hero__media img {
+      max-height: 300px;
+    }
+    .section {
+      padding: 48px 0;
+    }
+    .invite {
+      padding: 48px 0;
     }
   }
 </style>
 
 <script is:inline>
+  function prefillTopic(topic) {
+    const field = document.getElementById("objectives");
+    if (!field) return;
+    if (!field.value.trim()) {
+      field.value = `Requesting presentation: ${topic}\n\nAudience goals:\n`;
+    }
+  }
+  window.prefillTopic = prefillTopic;
+
   async function handleSpeakingSubmit(event) {
     event.preventDefault();
     const status = document.getElementById("speakFormStatus");
@@ -300,8 +778,8 @@ import { site, routes } from "../lib/site";
     const locationType = document.getElementById("locationType").value;
     const audienceSize = document.getElementById("audienceSize").value.trim();
     const objectives = document.getElementById("objectives").value.trim();
-
     const website = document.getElementById("speak-website")?.value?.trim() ?? "";
+
     const message = [
       "Speaking inquiry",
       `Organization / Event: ${orgName}`,
@@ -332,15 +810,12 @@ import { site, routes } from "../lib/site";
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Unable to send inquiry.");
       }
-      status.style.color = "#0f2744";
-      status.textContent = "Thank you — your speaking inquiry was sent. We will be in touch soon.";
-      event.target.reset();
+      window.location.href = "/speaking/thank-you";
     } catch (err) {
       status.style.color = "#c8102e";
       status.textContent = err.message || "Something went wrong. Please call 323-921-6244.";
-    } finally {
       btn.disabled = false;
-      btn.textContent = "Inquire About Judith's Availability";
+      btn.textContent = "Invite Rev. Morgan to Speak";
     }
   }
   window.handleSpeakingSubmit = handleSpeakingSubmit;

@@ -244,21 +244,57 @@ const {
       @media (max-width: 900px) {
         .hero {
           min-height: 0;
-          padding: calc(var(--hdr-height, 76px) + 48px) 0 72px;
+          padding: calc(var(--hdr-height, 76px) + 40px) 0 64px;
+          text-align: center;
           background:
             linear-gradient(
               180deg,
-              rgba(15, 39, 68, 0.96) 0%,
-              rgba(27, 58, 92, 0.9) 100%
+              rgba(15, 39, 68, 0.97) 0%,
+              rgba(27, 58, 92, 0.92) 100%
             ),
-            url("/images/hero-online-training.webp") 70% center / cover no-repeat var(--navy);
+            url("/images/hero-online-training.webp") center 30% / cover no-repeat var(--navy);
+        }
+        .hero-copy {
+          max-width: 640px;
+          margin: 0 auto;
+        }
+        .hero-eyebrow {
+          justify-content: center;
+        }
+        .hero-sub {
+          max-width: 36rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .hero-actions {
+          justify-content: center;
+        }
+        .hero-badges {
+          justify-content: center;
         }
       }
       @media (max-width: 560px) {
+        .hero {
+          padding: calc(var(--hdr-height, 76px) + 32px) 0 56px;
+        }
+        .hero h1 {
+          font-size: clamp(1.85rem, 8vw, 2.4rem);
+        }
         .hero-actions {
           flex-direction: column;
-          align-items: flex-start;
-          gap: 18px;
+          align-items: stretch;
+          gap: 14px;
+        }
+        .hero-btn,
+        .hero-link {
+          justify-content: center;
+          width: 100%;
+        }
+        .hero-badges {
+          gap: 8px;
+        }
+        .hero-badges li {
+          font-size: 0.72rem;
         }
       }
     </style>
