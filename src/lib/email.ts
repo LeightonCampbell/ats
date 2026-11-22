@@ -8,13 +8,13 @@ function getResend() {
 }
 
 function requireFromEmail(): string {
-  const fromEmail = getEnv("FROM_EMAIL");
+  const fromEmail = getEnv("FROM_EMAIL").trim();
   if (!fromEmail) throw new Error("FROM_EMAIL is not configured");
   return fromEmail;
 }
 
 function requireAdminEmail(): string {
-  const adminEmail = getEnv("ADMIN_EMAIL");
+  const adminEmail = getEnv("ADMIN_EMAIL").trim();
   if (!adminEmail) throw new Error("ADMIN_EMAIL is not configured");
   return adminEmail;
 }
